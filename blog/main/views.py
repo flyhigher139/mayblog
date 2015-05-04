@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404
 from django.views.generic import View
 from django.shortcuts import render
 
-from . import models
+from . import models, forms
 
 # Create your views here.
 
@@ -53,8 +53,11 @@ class AdminPosts(View):
 
 class AdminPost(View):
     template_name = 'blog_admin/post.html'
-    def get(self, request):
+    def get(self, request, form=None):
         data = {}
+        if not form:
+            form = forms.NewPost()
+        data['form'] = form
         return render(request, self.template_name, data)
 
     def post(self, request):

@@ -2,13 +2,16 @@
 {% block title %}New Post{% endblock %}
 
 {% block main %}
+{% load bootstrap3 %}
 <div class="row">
     <div class="col-md-10">
     <!-- <h1>New Post</h1> -->
     <form method="POST" action="" id='new-post'>
     {% csrf_token %}
 
-    <button type="submit" class="btn btn-default">Submit</button>
+    {% bootstrap_form form %}
+
+    <button type="submit" class="btn btn-primary">Submit</button>
 
     </form>
     </div>

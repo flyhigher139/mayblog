@@ -14,7 +14,14 @@
     {% load static %}
     <!-- Bootstrap Core CSS -->
 
-     <link href="{% static 'css/bootstrap.min.css' %} " rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %} " rel="stylesheet">
+    {# Load the tag library #}
+    {% load bootstrap3 %}
+
+
+    
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
 
     <!-- Custom CSS -->
     <!-- <link href="{% static 'css/clean-blog.min.css' %} " rel="stylesheet"> -->
@@ -58,7 +65,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Posts <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="#">All Posts</a></li>
-                <li><a href="#">New Post</a></li>
+                <li><a href="{% url 'main:admin_post' %}">New Post</a></li>
                 <li class="divider"></li>
                 <li><a href="#">Tags</a></li>
                 <li class="divider"></li>
@@ -139,6 +146,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
 
     <!-- Custom Theme JavaScript -->
     
