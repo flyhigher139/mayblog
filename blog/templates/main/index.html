@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block header %}
+<header class="intro-header" style="background-image: url('{% static 'img/home-bg.jpg' %} ')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Clean Blog</h1>
+                        <hr class="small">
+                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            {% for post in posts %}
+            <div class="post-preview">
+                <a href="{% url 'main:post' post.id %}">
+                    <h2 class="post-title">
+                        {{post.title}}
+                    </h2>
+                </a>
+                <p class="post-subtitle">
+                    {{post.abstract}}
+                </p>
+                <p class="post-meta">Posted by <a href="#">{{ post.author.username }}</a> on {{post.date}}</p>
+            </div>
+            <hr>
+            {% endfor %}
+            <!-- Pager -->
+            <ul class="pager">
+                <li class="next">
+                    <a href="#">Older Posts &rarr;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<hr>
+{% endblock %}

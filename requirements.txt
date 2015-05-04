@@ -1,0 +1,4 @@
+-i http://pypi.douban.com/simple
+
+django
+markdown2

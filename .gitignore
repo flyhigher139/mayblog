@@ -1,0 +1,5 @@
+venv/
+*.sqlite
+*.pyc
+.DS_Store
+startbootstrap-clean-blog-1.0.3/
