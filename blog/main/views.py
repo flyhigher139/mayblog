@@ -5,6 +5,8 @@ from django.http import HttpResponse, Http404
 from django.views.generic import View
 from django.shortcuts import render
 
+import markdown2
+
 from . import models, forms
 
 # Create your views here.
@@ -61,7 +63,20 @@ class AdminPost(View):
         return render(request, self.template_name, data)
 
     def post(self, request):
-        return HttpResponse('waiting to code')
+        form = forms.NewPost(request.POST)
+        if form.is_valid():
+            cur_post = models.Post()
+            cur_post.title = form.cleaned_data['title']
+            cur_post.raw = form.cleaned_data['content']
+            cur_post.abstract = form.cleaned_data['abstract']
+            html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
+            cur_post.content_html = html
+            cur_post.author = request.user
+            cur_post.save()
+            return HttpResponse('post has been saved and pulished!')
+
+        return self.get(request, form)
+        
 
 
 

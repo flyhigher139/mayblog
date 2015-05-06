@@ -15,6 +15,7 @@ class Post(models.Model):
     author = models.ForeignKey(User)
     tags = models.ManyToManyField('Tag')
     catagory = models.ForeignKey('Catagory', null=True, blank=True)
+    is_draft = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title

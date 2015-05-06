@@ -71,7 +71,7 @@
                     {% endfor %}
                     {% if request.user.is_authenticated %}
                     <li>
-                        <a href="#">Admin</a>
+                        <a href="{% url 'main:admin_index' %}">Admin</a>
                     </li>
                     {% endif %}
                 </ul>
