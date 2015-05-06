@@ -15,7 +15,7 @@ class Index(View):
     template_name = 'main/index.html'
     def get(self, request):
         data = {}
-        posts = models.Post.objects.all()
+        posts = models.Post.objects.filter(is_draft=False).order_by('-pub_date')
         pages = models.Page.objects.all()
         data['posts'] = posts
         data['pages'] = pages

@@ -10,7 +10,7 @@ class Post(models.Model):
     title = models.CharField(max_length=256, default='new blog')
     abstract = models.TextField(null=True, blank=True)
     raw = models.TextField()
-    date = models.DateTimeField(auto_now=True)
+    pub_date = models.DateTimeField(auto_now=True)
     content_html = models.TextField()
     author = models.ForeignKey(User)
     tags = models.ManyToManyField('Tag')
