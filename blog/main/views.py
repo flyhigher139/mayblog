@@ -26,7 +26,7 @@ class Post(View):
     def get(self, request, pk):
         try:
             post = models.Post.objects.get(pk=pk)
-        except post.DoesNotExist:
+        except models.Post.DoesNotExist:
             raise Http404
         data = {'post':post}
         return render(request, self.template_name, data)
@@ -48,32 +48,55 @@ class AdminIndex(View):
         return render(request, self.template_name, data)
 
 class AdminPosts(View):
-    template_name = 'blog_admin/index.html'
+    template_name = 'blog_admin/posts.html'
     def get(self, request):
         data = {}
+        posts = models.Post.objects.filter(is_draft=False).order_by('-pub_date')
+        data['posts'] = posts
         return render(request, self.template_name, data)
 
 class AdminPost(View):
     template_name = 'blog_admin/post.html'
-    def get(self, request, form=None):
+    def get(self, request, pk=0, form=None):
         data = {}
+        form_data = {}
+        if pk:
+            try:
+                post = models.Post.objects.get(pk=pk)
+                form_data['title'] = post.title
+                form_data['content'] = post.raw
+                form_data['abstract'] = post.abstract
+                data['edit_flag'] = True
+            except models.Post.DoesNotExist:
+                raise Http404
         if not form:
-            form = forms.NewPost()
+            form = forms.NewPost(initial=form_data)
         data['form'] = form
         return render(request, self.template_name, data)
 
-    def post(self, request):
+    def post(self, request, pk=0, form=None):
         form = forms.NewPost(request.POST)
         if form.is_valid():
-            cur_post = models.Post()
+            if not pk:
+                cur_post = models.Post()
+            else:
+                try:
+                    cur_post = models.Post.objects.get(pk=pk)
+                except models.Post.DoesNotExist:
+                    raise Http404
             cur_post.title = form.cleaned_data['title']
             cur_post.raw = form.cleaned_data['content']
             cur_post.abstract = form.cleaned_data['abstract']
             html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             cur_post.content_html = html
             cur_post.author = request.user
-            cur_post.save()
-            return HttpResponse('post has been saved and pulished!')
+            if request.POST.get('publish'):
+                cur_post.save()
+                return HttpResponse('Post has been pulished!')
+            else:
+                cur_post.is_draft=True
+                cur_post.save()
+                return HttpResponse('Draft has been saved')
 
         return self.get(request, form)
         
