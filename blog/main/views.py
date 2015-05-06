@@ -3,7 +3,9 @@
 
 from django.http import HttpResponse, Http404
 from django.views.generic import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 import markdown2
 
@@ -15,7 +17,7 @@ class Index(View):
     template_name = 'main/index.html'
     def get(self, request):
         data = {}
-        posts = models.Post.objects.filter(is_draft=False).order_by('-pub_date')
+        posts = models.Post.objects.filter(is_draft=False).order_by('-id')
         pages = models.Page.objects.all()
         data['posts'] = posts
         data['pages'] = pages
@@ -51,7 +53,12 @@ class AdminPosts(View):
     template_name = 'blog_admin/posts.html'
     def get(self, request):
         data = {}
-        posts = models.Post.objects.filter(is_draft=False).order_by('-pub_date')
+        draft = request.GET.get('draft')
+        if draft and draft.lower()=='true':
+            flag = True
+        else:
+            flag = False
+        posts = models.Post.objects.filter(is_draft=flag).order_by('-pub_date')
         data['posts'] = posts
         return render(request, self.template_name, data)
 
@@ -91,12 +98,21 @@ class AdminPost(View):
             cur_post.content_html = html
             cur_post.author = request.user
             if request.POST.get('publish'):
+                cur_post.is_draft = False
                 cur_post.save()
-                return HttpResponse('Post has been pulished!')
+                # return HttpResponse('Post has been pulished!')
+                # return redirect('/admin/posts')
+                # return redirect(reverse('main:admin_edit_post', kwargs={'pk':cur_post.id}))
+                msg = 'Post has been pulished!'
+                messages.add_message(request, messages.SUCCESS, msg)
+                return redirect(reverse('main:admin_posts'))
             else:
                 cur_post.is_draft=True
                 cur_post.save()
-                return HttpResponse('Draft has been saved')
+                msg = 'Draft has been saved!'
+                messages.add_message(request, messages.SUCCESS, msg)
+                url = '{0}?draft=true'.format(reverse('main:admin_posts'))
+                return redirect(url)
 
         return self.get(request, form)
         
