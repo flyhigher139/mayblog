@@ -27,6 +27,7 @@ class Post(View):
     template_name = 'main/post.html'
     def get(self, request, pk):
         try:
+            pk = int(pk)
             post = models.Post.objects.get(pk=pk)
         except models.Post.DoesNotExist:
             raise Http404
@@ -37,6 +38,7 @@ class Page(View):
     template_name = 'main/page.html'
     def get(self, request, pk):
         try:
+            pk = int(pk)
             page = models.Page.objects.get(pk=pk)
         except page.DoesNotExist:
             raise Http404
@@ -69,6 +71,7 @@ class AdminPost(View):
         form_data = {}
         if pk:
             try:
+                pk = int(pk)
                 post = models.Post.objects.get(pk=pk)
                 form_data['title'] = post.title
                 form_data['content'] = post.raw
@@ -88,6 +91,7 @@ class AdminPost(View):
                 cur_post = models.Post()
             else:
                 try:
+                    pk = int(pk)
                     cur_post = models.Post.objects.get(pk=pk)
                 except models.Post.DoesNotExist:
                     raise Http404
@@ -115,6 +119,22 @@ class AdminPost(View):
                 return redirect(url)
 
         return self.get(request, form)
+
+class DeletePost(View):
+    def get(self, request, pk):
+        try:
+            pk = int(pk)
+            cur_post = models.Post.objects.get(pk=pk)
+            is_draft = cur_post.is_draft
+            url = reverse('main:admin_posts')
+            if is_draft:
+                url = '{0}?draft=true'.format(url)    
+            cur_post.delete()
+        except models.Post.DoesNotExist:
+            raise Http404
+
+        return redirect(url)
+
         
 
 

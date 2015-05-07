@@ -19,7 +19,7 @@
     </thead>
     <tbody>
         {% for post in posts %}
-        <tr>
+        <tr id="post-{{ post.id }}">
             <td>{{ post.title }}</td>
             <td>{{ post.abstract }}</td>
             <td>{{ post.author }}</td>
@@ -27,7 +27,7 @@
             <td>
                 <a href="{% url 'main:admin_edit_post' post.id %}">Edit</a>
                 &nbsp
-                <a href="#">Delete</a>
+                <a href="{% url 'main:admin_delete_post' post.id %}"  class="del-post">Delete</a>
             </td>
         </tr>
         {% endfor %}
@@ -37,4 +37,27 @@
     <!-- </div> -->
     <!-- <div class="col-md-2">.col-md-2</div> -->
 </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$('.del-post').on('click', function (event) {
+    // var answer = confirm("Delete post?");
+    // return answer;
+
+    bootbox.confirm("Are you sure?", function(result) {
+      // url = $('#del-post').attr('href');
+      url = event.target.href;
+
+      // alert(url);
+      if(result){
+        $.get(url, function(){
+            location.reload();
+        });
+        }
+
+    });
+    return false;
+  });
+</script>
 {% endblock %}
