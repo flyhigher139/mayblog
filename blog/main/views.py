@@ -60,7 +60,7 @@ class AdminPosts(View):
             flag = True
         else:
             flag = False
-        posts = models.Post.objects.filter(is_draft=flag).order_by('-pub_date')
+        posts = models.Post.objects.filter(is_draft=flag).order_by('-update_time')
         data['posts'] = posts
         return render(request, self.template_name, data)
 

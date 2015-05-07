@@ -13,7 +13,8 @@
                 <th>Title</th>
                 <th>Abstract</th>
                 <th>Author</th>
-                <th>Pub Date</th>
+                <th>Publish Date</th>
+                <th>Update Date</th>
                 <th>Actions</th>
             </tr>
     </thead>
@@ -23,7 +24,8 @@
             <td>{{ post.title }}</td>
             <td>{{ post.abstract }}</td>
             <td>{{ post.author }}</td>
-            <td>{{ post.pub_date }}</td>
+            <td>{{ post.pub_time }}</td>
+            <td>{{ post.update_time }}</td>
             <td>
                 <a href="{% url 'main:admin_edit_post' post.id %}">Edit</a>
                 &nbsp
