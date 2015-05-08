@@ -1,0 +1,20 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block main %}
+{% load bootstrap3 %}
+<div class="row">
+    <div class="col-xs-6 col-sm-3"></div>
+    <div class="col-xs-6 col-sm-6">
+        <form method="POST" action="" id='login'>
+        {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-primary" name="login">Login</button>
+        </form>
+    </div>
+    <div class="col-xs-6 col-sm-3"></div>
+</div>
+
+{% endblock %}
