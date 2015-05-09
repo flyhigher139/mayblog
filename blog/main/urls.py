@@ -19,4 +19,6 @@ urlpatterns += patterns('',
     url(r'^admin/post$', views.AdminPost.as_view(), name='admin_post'),
     url(r'^admin/posts/(?P<pk>[0-9]+)$', views.AdminPost.as_view(), name='admin_edit_post'),
     url(r'^admin/posts/delete/(?P<pk>[0-9]+)$', views.DeletePost.as_view(), name='admin_delete_post'),
+    url(r'^admin/tags/$', views.AdminTags.as_view(), name='admin_tags'),
+    url(r'^admin/filter-posts$', views.AdminFilterPosts.as_view(), name='admin_filter_posts'),
 )

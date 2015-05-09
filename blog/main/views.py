@@ -65,7 +65,9 @@ class AdminPosts(View):
             flag = True
         else:
             flag = False
-        posts = models.Post.objects.filter(is_draft=flag).order_by('-update_time')
+        # posts = models.Post.objects.filter(is_draft=flag).order_by('-update_time')
+        posts = models.Post.objects.filter(is_draft=flag)
+        posts = posts.order_by('-update_time')
         data['posts'] = posts
         return render(request, self.template_name, data)
 
@@ -145,8 +147,53 @@ class DeletePost(View):
         return redirect(url)
 
         
+class AdminTags(View):
+    template_name = 'blog_admin/tags.html'
 
+    @method_decorator(login_required)
+    def get(self, request):
+        tags = models.Tag.objects.all()
+        data = {'tags':tags}
 
+        return render(request, self.template_name, data)
 
+class AdminFilterPosts(View):
+    template_name = 'blog_admin/posts.html'
 
+    @method_decorator(login_required)
+    def get(self, request):
+        tag_id = request.GET.get('tag')
+        catagory_id = request.GET.get('catagory')
+
+        if tag_id:
+            posts = filter_posts_by_tag(tag_id)
+        elif catagory_id:
+            posts = filter_posts_by_catagory(catagory_id)
+        else:
+            url = reverse('main:admin_posts')
+            return redirect(url)
+
+        if posts == None:
+            raise Http404
+
+        data = {'posts':posts}
+        return render(request, self.template_name, data)
+
+def filter_posts_by_tag(pk):
+    try:
+        tag = models.Tag.objects.get(pk=pk)
+    except models.Tag.DoesNotExist:
+        return None
+
+    posts = tag.post_set.all()
+    return posts
+
+def filter_posts_by_catagory(pk):
+    try:
+        catagory = models.Catagory.objects.get(pk=pk)
+    except models.Catagory.DoesNotExist:
+        return None
+
+    posts = catagory.post_set.all()
+    return posts
 
