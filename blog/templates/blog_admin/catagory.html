@@ -1,5 +1,5 @@
 {% extends "admin_base.html" %}
-{% block title %}Admin Tags{% endblock %}
+{% block title %}Admin Catagory{% endblock %}
 
 {% block main %}
 {% load bootstrap3 %}
@@ -16,10 +16,10 @@
             </tr>
     </thead>
     <tbody>
-        {% for tag in tags %}
-        <tr id="post-{{ tag.id }}">
+        {% for catagory in catagories %}
+        <tr id="post-{{ catagory.id }}">
             <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'main:admin_filter_posts' %}?tag={{ tag.id }}">{{ tag.name }}</a></td>
+            <td><a href="{% url 'main:admin_filter_posts' %}?catagory={{ catagory.id }}">{{ catagory.name }}</a></td>
             <td>
                 <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                 &nbsp

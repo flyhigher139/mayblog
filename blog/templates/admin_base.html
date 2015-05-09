@@ -25,6 +25,7 @@
 
     <!-- Custom CSS -->
     <!-- <link href="{% static 'css/clean-blog.min.css' %} " rel="stylesheet"> -->
+    {% block css %}{% endblock %}
 
     <!-- Custom Fonts -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -71,7 +72,7 @@
                 <li class="divider"></li>
                 <li><a href="{% url 'main:admin_tags' %}">Tags</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Catagory</a></li>
+                <li><a href="{% url 'main:admin_catagory' %}">Catagory</a></li>
               </ul>
             </li>
           </ul>

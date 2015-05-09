@@ -1,4 +1,5 @@
 {% extends "admin_base.html" %}
+{% load static %}
 
 {% block title %}
     {% if edit_flag %}
@@ -6,6 +7,10 @@
     {% else %}
         New Post
     {% endif %}
+{% endblock %}
+
+{% block css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css" rel="stylesheet">
 {% endblock %}
 
 
@@ -26,6 +31,12 @@
         <div class="col-md-2">
             <div class="row">
                 <h3>Tags</h3>
+                <select multiple class="selectpicker" name="tags">
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}" {% if tag in posted_tags %} selected="selected" {% endif %} >
+                        {{ tag.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <hr/>
             <div class="row">
@@ -34,4 +45,9 @@
         </div>
     </div>
 </form>
+{% endblock %}
+
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
 {% endblock %}

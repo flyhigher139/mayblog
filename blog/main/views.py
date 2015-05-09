@@ -88,9 +88,14 @@ class AdminPost(View):
                 data['edit_flag'] = True
             except models.Post.DoesNotExist:
                 raise Http404
+        else:
+            post = None
         if not form:
             form = forms.NewPost(initial=form_data)
         data['form'] = form
+        data['posted_tags'] = [tag for tag in post.tags.all()] if post else None
+        tags = models.Tag.objects.all()
+        data['tags'] = tags
         return render(request, self.template_name, data)
 
     @method_decorator(login_required)
@@ -111,9 +116,13 @@ class AdminPost(View):
             html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             cur_post.content_html = html
             cur_post.author = request.user
+            tag_ids = request.POST.getlist('tags')
+            # return HttpResponse(len(tag_ids))
             if request.POST.get('publish'):
                 cur_post.is_draft = False
                 cur_post.save()
+                cur_post.tags.clear()
+                cur_post.tags.add(*tag_ids)
                 # return HttpResponse('Post has been pulished!')
                 # return redirect('/admin/posts')
                 # return redirect(reverse('main:admin_edit_post', kwargs={'pk':cur_post.id}))
@@ -154,6 +163,16 @@ class AdminTags(View):
     def get(self, request):
         tags = models.Tag.objects.all()
         data = {'tags':tags}
+
+        return render(request, self.template_name, data)
+
+class AdminCatagory(View):
+    template_name = 'blog_admin/catagory.html'
+
+    @method_decorator(login_required)
+    def get(self, request):
+        catagories = models.Catagory.objects.all()
+        data = {'catagories':catagories}
 
         return render(request, self.template_name, data)
 
