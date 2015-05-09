@@ -27,9 +27,9 @@
             <td>{{ post.pub_time }}</td>
             <td>{{ post.update_time }}</td>
             <td>
-                <a href="{% url 'main:admin_edit_post' post.id %}">Edit</a>
+                <a href="{% url 'main:admin_edit_post' post.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                 &nbsp
-                <a href="{% url 'main:admin_delete_post' post.id %}"  class="del-post">Delete</a>
+                <a href="{% url 'main:admin_delete_post' post.id %}"  class="del-post"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
             </td>
         </tr>
         {% endfor %}

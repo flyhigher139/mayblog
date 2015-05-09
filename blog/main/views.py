@@ -6,6 +6,8 @@ from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 import markdown2
 
@@ -47,12 +49,15 @@ class Page(View):
 
 class AdminIndex(View):
     template_name = 'blog_admin/index.html'
+    @method_decorator(login_required)
     def get(self, request):
         data = {}
         return render(request, self.template_name, data)
 
 class AdminPosts(View):
     template_name = 'blog_admin/posts.html'
+
+    @method_decorator(login_required)
     def get(self, request):
         data = {}
         draft = request.GET.get('draft')
@@ -66,6 +71,8 @@ class AdminPosts(View):
 
 class AdminPost(View):
     template_name = 'blog_admin/post.html'
+
+    @method_decorator(login_required)
     def get(self, request, pk=0, form=None):
         data = {}
         form_data = {}
@@ -84,6 +91,7 @@ class AdminPost(View):
         data['form'] = form
         return render(request, self.template_name, data)
 
+    @method_decorator(login_required)
     def post(self, request, pk=0, form=None):
         form = forms.NewPost(request.POST)
         if form.is_valid():
@@ -121,6 +129,7 @@ class AdminPost(View):
         return self.get(request, form)
 
 class DeletePost(View):
+    @method_decorator(login_required)
     def get(self, request, pk):
         try:
             pk = int(pk)

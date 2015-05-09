@@ -33,7 +33,7 @@ class LoginView(View):
                     url = request.GET.get('next', None)
                     if not url:
                         url = reverse('main:admin_index')
-                        return redirect(url)
+                    return redirect(url)
                 else:
                     # Return a 'disabled account' error message
                     msg = 'The user is disabled'
