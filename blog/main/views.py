@@ -94,8 +94,11 @@ class AdminPost(View):
             form = forms.NewPost(initial=form_data)
         data['form'] = form
         data['posted_tags'] = [tag for tag in post.tags.all()] if post else None
+        data['posted_catagory'] = post.catagory if post else None
         tags = models.Tag.objects.all()
         data['tags'] = tags
+        catagories = models.Catagory.objects.all()
+        data['catagories'] = catagories
         return render(request, self.template_name, data)
 
     @method_decorator(login_required)
@@ -117,25 +120,29 @@ class AdminPost(View):
             cur_post.content_html = html
             cur_post.author = request.user
             tag_ids = request.POST.getlist('tags')
+            catagory_id = request.POST.get('catagory', None)
             # return HttpResponse(len(tag_ids))
             if request.POST.get('publish'):
                 cur_post.is_draft = False
-                cur_post.save()
-                cur_post.tags.clear()
-                cur_post.tags.add(*tag_ids)
-                # return HttpResponse('Post has been pulished!')
-                # return redirect('/admin/posts')
-                # return redirect(reverse('main:admin_edit_post', kwargs={'pk':cur_post.id}))
+                
                 msg = 'Post has been pulished!'
                 messages.add_message(request, messages.SUCCESS, msg)
-                return redirect(reverse('main:admin_posts'))
+                url = reverse('main:admin_posts')
+
             else:
                 cur_post.is_draft=True
-                cur_post.save()
+
                 msg = 'Draft has been saved!'
                 messages.add_message(request, messages.SUCCESS, msg)
                 url = '{0}?draft=true'.format(reverse('main:admin_posts'))
-                return redirect(url)
+                
+
+            cur_post.catagory_id = catagory_id
+            cur_post.save()
+            cur_post.tags.clear()
+            cur_post.tags.add(*tag_ids)
+
+            return redirect(url)
 
         return self.get(request, form)
 
