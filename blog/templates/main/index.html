@@ -7,9 +7,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>Clean Blog</h1>
+                        <h1>Gevin's Blog</h1>
                         <hr class="small">
-                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                        <span class="subheading">技术、生活都要折腾</span>
                     </div>
                 </div>
             </div>
@@ -20,7 +20,7 @@
 {% block main %}
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="col-lg-6 col-lg-offset-2 col-md-8 col-md-offset-1">
             {% for post in posts %}
             <div class="post-preview">
                 <a href="{% url 'main:post' post.id %}">
@@ -32,15 +32,36 @@
                     {{post.abstract}}
                 </p>
                 <p class="post-meta">Posted by <a href="#">{{ post.author.username }}</a> on {{post.pub_time}}</p>
+                <p class="post-meta">catagory: <a href="#">{{ post.catagory.name }}</a></p>
             </div>
             <hr>
+            {% empty %}
+                <p class="post-subtitle">
+                    No articles found here
+                </p>
             {% endfor %}
             <!-- Pager -->
+            {% if posts %}
             <ul class="pager">
                 <li class="next">
                     <a href="#">Older Posts &rarr;</a>
                 </li>
             </ul>
+            {% endif %}
+        </div>
+        <div class="col-lg-3 col-md-2">
+            <h3>Tags</h3>
+            {% for tag in tags %}
+                <span class="label label-default"><a href="?tag={{tag.id}}" class="post-tag">{{ tag.name }}</a></span>
+            {% endfor %}
+            <hr/>
+            <h3>Catagory</h3>
+            <ul class="nav">
+                {% for catagory in catagories %}
+                <li><a href="?catagory={{catagory.id}}">{{ catagory.name }}</a></li>
+                {% endfor %}
+            </ul>
+            
         </div>
     </div>
 </div>

@@ -19,10 +19,27 @@ class Index(View):
     template_name = 'main/index.html'
     def get(self, request):
         data = {}
-        posts = models.Post.objects.filter(is_draft=False).order_by('-id')
+        
+        tag = request.GET.get('tag')
+        catagory = request.GET.get('catagory')
+
+        if tag:
+            posts = filter_posts_by_tag(tag)
+        elif catagory:
+            posts = filter_posts_by_catagory(catagory)
+        else:
+            posts = models.Post.objects.all()
+        posts = posts.filter(is_draft=False).order_by('-id')
+
         pages = models.Page.objects.all()
+        tags = models.Tag.objects.all()
+        catagories = models.Catagory.objects.all()
+
         data['posts'] = posts
         data['pages'] = pages
+        data['tags'] = tags
+        data['catagories'] = catagories
+
         return render(request, self.template_name, data)
 
 class Post(View):
