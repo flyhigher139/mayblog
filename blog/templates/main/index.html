@@ -41,13 +41,16 @@
                 </p>
             {% endfor %}
             <!-- Pager -->
-            {% if posts %}
             <ul class="pager">
+                {% if posts.has_next %}
                 <li class="next">
-                    <a href="#">Older Posts &rarr;</a>
+                    <a href="?page={{ posts.next_page_number }}">Older Posts &rarr;</a>
                 </li>
+                {% endif %}
+                {% if posts.has_previous %}
+                    <li class="next"><a href="?page={{ posts.previous_page_number }}">Previous Posts</a></li>
+                {% endif %}
             </ul>
-            {% endif %}
         </div>
         <div class="col-lg-3 col-md-2">
             <h3>Tags</h3>

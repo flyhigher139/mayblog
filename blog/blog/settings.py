@@ -109,3 +109,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MAY_BLOG = {
+    'PER_PAGE': 5,
+    'PER_PAGE_ADMIN': 10,
+}
+

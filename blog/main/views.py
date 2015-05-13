@@ -5,6 +5,8 @@ from django.http import HttpResponse, Http404
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -14,6 +16,10 @@ import markdown2
 from . import models, forms
 
 # Create your views here.
+
+PER_PAGE = settings.MAY_BLOG['PER_PAGE']
+PER_PAGE_ADMIN = settings.MAY_BLOG['PER_PAGE_ADMIN']
+
 
 class Index(View):
     template_name = 'main/index.html'
@@ -30,13 +36,26 @@ class Index(View):
         else:
             posts = models.Post.objects.all()
         posts = posts.filter(is_draft=False).order_by('-id')
+        post_pages = models.Page.objects.all()
 
-        pages = models.Page.objects.all()
+        paginator = Paginator(posts, PER_PAGE)
+
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            posts = paginator.page(paginator.num_pages)
+
+
         tags = models.Tag.objects.all()
         catagories = models.Catagory.objects.all()
 
         data['posts'] = posts
-        data['pages'] = pages
+        data['pages'] = post_pages
         data['tags'] = tags
         data['catagories'] = catagories
 
@@ -85,7 +104,18 @@ class AdminPosts(View):
         # posts = models.Post.objects.filter(is_draft=flag).order_by('-update_time')
         posts = models.Post.objects.filter(is_draft=flag)
         posts = posts.order_by('-update_time')
+
+        paginator = Paginator(posts, PER_PAGE_ADMIN)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
         data['posts'] = posts
+        
         return render(request, self.template_name, data)
 
 class AdminPost(View):
@@ -186,6 +216,19 @@ class AdminTags(View):
     @method_decorator(login_required)
     def get(self, request):
         tags = models.Tag.objects.all()
+
+        paginator = Paginator(tags, PER_PAGE_ADMIN)
+        page = request.GET.get('page')
+
+        try:
+            tags = paginator.page(page)
+
+        except PageNotAnInteger:
+            tags = paginator.page(1)
+        except EmptyPage:
+            tags = paginator.page(paginator.num_pages)
+
+
         data = {'tags':tags}
 
         return render(request, self.template_name, data)
@@ -196,6 +239,15 @@ class AdminCatagory(View):
     @method_decorator(login_required)
     def get(self, request):
         catagories = models.Catagory.objects.all()
+        paginator = Paginator(catagories, PER_PAGE_ADMIN)
+        page = request.GET.get('page')
+        try:
+            catagories = paginator.page(page)
+        except PageNotAnInteger:
+            catagories = paginator.page(1)
+        except EmptyPage:
+            catagories = paginator.page(paginator.num_pages)
+
         data = {'catagories':catagories}
 
         return render(request, self.template_name, data)

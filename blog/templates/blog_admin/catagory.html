@@ -14,21 +14,23 @@
                 <th>name</th>
                 <th>Actions</th>
             </tr>
-    </thead>
-    <tbody>
-        {% for catagory in catagories %}
-        <tr id="post-{{ catagory.id }}">
-            <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'main:admin_filter_posts' %}?catagory={{ catagory.id }}">{{ catagory.name }}</a></td>
-            <td>
-                <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-                &nbsp
-                <a href="#"  class="del-tag"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+        </thead>
+        <tbody>
+            {% for catagory in catagories %}
+            <tr id="post-{{ catagory.id }}">
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'main:admin_filter_posts' %}?catagory={{ catagory.id }}">{{ catagory.name }}</a></td>
+                <td>
+                    <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                    &nbsp
+                    <a href="#"  class="del-tag"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+
+    {% bootstrap_pagination catagories %}
 
     <!-- </div> -->
     <!-- <div class="col-md-2">.col-md-2</div> -->
