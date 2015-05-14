@@ -37,12 +37,12 @@ class LoginView(View):
                 else:
                     # Return a 'disabled account' error message
                     msg = 'The user is disabled'
-                    messages.add_message(request, messages.SUCCESS, msg)
+                    messages.add_message(request, messages.WARNING, msg)
                     return self.get(request, form)
             else:
                 # Return an 'invalid login' error message.
                 msg = 'Invalid login, user does not exist'
-                messages.add_message(request, messages.SUCCESS, msg)
+                messages.add_message(request, messages.ERROR, msg)
                 return self.get(request, form)
 
         else:
