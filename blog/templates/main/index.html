@@ -55,15 +55,21 @@
         <div class="col-lg-3 col-md-2">
             <h3>Tags</h3>
             {% for tag in tags %}
-                <span class="label label-default"><a href="?tag={{tag.id}}" class="post-tag">{{ tag.name }}</a></span>
+                <span class="label {% if tag.id == tag_id %}label-primary{% else %}label-default{% endif %}">
+                    <a href="?tag={{tag.id}}" class="post-tag">{{ tag.name }}</a>
+                </span>
+                &nbsp;
             {% endfor %}
             <hr/>
-            <h3>Catagory</h3>
-            <ul class="nav">
+            <h3>Category</h3>
+            <ul class="nav nav-pills nav-stacked">
                 {% for catagory in catagories %}
-                <li><a href="?catagory={{catagory.id}}">{{ catagory.name }}</a></li>
+                <li {% if catagory_id == catagory.id %}class="active"{% endif %}>
+                    <a href="?catagory={{catagory.id}}">{{ catagory.name }}</a>
+                </li>
                 {% endfor %}
             </ul>
+
             
         </div>
     </div>

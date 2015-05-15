@@ -28,6 +28,11 @@ class Index(View):
         
         tag = request.GET.get('tag')
         catagory = request.GET.get('catagory')
+        try:
+            tag = int(tag) if tag else 0
+            catagory = int(catagory) if catagory else 0
+        except:
+            raise Http404
 
         if tag:
             posts = filter_posts_by_tag(tag)
@@ -58,6 +63,8 @@ class Index(View):
         data['pages'] = post_pages
         data['tags'] = tags
         data['catagories'] = catagories
+        data['catagory_id'] = catagory
+        data['tag_id'] = tag
 
         return render(request, self.template_name, data)
 
@@ -70,6 +77,8 @@ class Post(View):
         except models.Post.DoesNotExist:
             raise Http404
         data = {'post':post}
+        tags = post.tags.all()
+        data['tags'] = tags
         return render(request, self.template_name, data)
 
 class Page(View):
