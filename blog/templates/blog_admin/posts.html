@@ -21,7 +21,7 @@
     <tbody>
         {% for post in posts %}
         <tr id="post-{{ post.id }}">
-            <td>{{ post.title }}</td>
+            <td><a href="{% url 'main:post' post.id %}" target="_blank">{{ post.title }}</td>
             <td>{{ post.abstract }}</td>
             <td>{{ post.author }}</td>
             <td>{{ post.pub_time }}</td>
