@@ -53,27 +53,75 @@
             </ul>
         </div>
         <div class="col-lg-3 col-md-2">
-            <h3>Tags</h3>
+            <h3>Tags</h3><hr/>
             {% for tag in tags %}
-                <span class="label {% if tag.id == tag_id %}label-primary{% else %}label-default{% endif %}">
-                    <a href="?tag={{tag.id}}" class="post-tag">{{ tag.name }}</a>
-                </span>
+                <a href="?tag={{tag.id}}" class="post-tag">
+                    {% if tag.id == tag_id %}
+                    <span class="label label-primary">
+                        {{ tag.name }}
+                        <small><span class="glyphicon glyphicon-remove small rm-filter" aria-hidden="true"></span></small>
+                    </span>
+                    
+                    {% else %}
+                    <span class="label label-default">
+                        {{ tag.name }}
+                    </span>
+                    
+                    {% endif %}
+                    
+                </a>
                 &nbsp;
             {% endfor %}
-            <hr/>
-            <h3>Category</h3>
-            <ul class="nav nav-pills nav-stacked">
+            
+            <h3>Category</h3><hr/>
+            <div class="list-group">
                 {% for catagory in catagories %}
-                <li {% if catagory_id == catagory.id %}class="active"{% endif %}>
-                    <a href="?catagory={{catagory.id}}">{{ catagory.name }}</a>
-                </li>
+                    {% if catagory_id == catagory.id %}
+                        <a href="?catagory={{catagory.id}}" class="list-group-item catagory-list active">{{ catagory.name }} 
+                        <small><span class="glyphicon glyphicon-remove small rm-filter" aria-hidden="true"></span></small>
+                        <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
+                    {% else %}
+                        <a href="?catagory={{catagory.id}}" class="list-group-item catagory-list ">{{ catagory.name }} 
+                        <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
+                    {% endif %}
+                    
+                {% endfor %}
+            </div>
+
+            <!-- <ul class="list-group">
+                {% for catagory in catagories %}
+                    {% if catagory_id == catagory.id %}
+                        <li class="list-group-item catagory-list active">
+                            <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
+                            <a href="?catagory={{catagory.id}}">{{ catagory.name }} </a>
+                            <a href="."><span class="glyphicon glyphicon-remove small" aria-hidden="true"></span></a>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item catagory-list">
+                            <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
+                            <a href="?catagory={{catagory.id}}">{{ catagory.name }} </a>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
-
+ -->
             
         </div>
     </div>
 </div>
 
 <hr>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$('.rm-filter').on('click', function (event) {
+    // var answer = confirm("Delete post?");
+    // return answer;
+
+    // alert("something");
+    location.href = "{% url 'main:index' %}";
+    return false;
+  });
+</script>
 {% endblock %}

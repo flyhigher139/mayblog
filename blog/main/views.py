@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.db.models import Count
 
 import markdown2
 
@@ -57,7 +58,7 @@ class Index(View):
 
 
         tags = models.Tag.objects.all()
-        catagories = models.Catagory.objects.all()
+        catagories = models.Catagory.objects.annotate(num_posts=Count('post'))
 
         data['posts'] = posts
         data['pages'] = post_pages

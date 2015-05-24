@@ -19,6 +19,7 @@
 
     <!-- Custom CSS -->
     <link href="{% static 'css/clean-blog.min.css' %} " rel="stylesheet">
+    <link href="{% static 'css/mayblog.css' %} " rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/styles/default.min.css">
 
     <!-- Custom Fonts -->
@@ -135,6 +136,9 @@
     <script src="{% static 'js/clean-blog.min.js' %}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
+    {% block js %}
+    {% endblock %}
 
 </body>
 
