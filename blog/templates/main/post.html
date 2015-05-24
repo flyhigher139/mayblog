@@ -12,7 +12,15 @@
                         <!-- <h2 class="subheading">Problems look mighty small from 150 miles up</h2> -->
                         <span class="meta">Posted by <a href="#">{{post.author}}</a> on {{post.pub_time}}</span>
 
-                        <span class="meta">tags:
+                        <span class="meta">Category:
+                        {% if post.catagory %}
+                            <a href="{% url 'main:index' %}?catagory={{post.catagory.id}}">{{post.catagory.name}}</a>
+                        {% else %}
+                            None
+                        {% endif %}
+                        </span>
+
+                        <span class="meta">Tags:
                         {% for tag in tags %}
                             <a href="{% url 'main:index' %}?tag={{tag.id}}">{{tag.name}}</a>{% if not forloop.last%},  {% else %}{% endif %} 
                         {% empty %}
