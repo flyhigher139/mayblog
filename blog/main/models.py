@@ -41,6 +41,7 @@ class Page(models.Model):
     update_time = models.DateTimeField(auto_now=True)
     content_html = models.TextField()
     author = models.ForeignKey(User)
+    is_draft = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.title

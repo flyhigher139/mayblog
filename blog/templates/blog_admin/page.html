@@ -1,0 +1,40 @@
+{% extends "admin_base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if edit_flag %}
+        Edit Post
+    {% else %}
+        New Post
+    {% endif %}
+{% endblock %}
+
+{% block css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block main %}
+{% load bootstrap3 %}
+<form method="POST" action="" id='new-post'>
+{% csrf_token %}
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+        
+        {% bootstrap_form form %}
+
+        <button type="submit" class="btn btn-primary" name="publish" value="publish">Publish</button>
+        <button type="submit" class="btn btn-success" name="draft" value="draft">Save draft</button>
+        <button type="submit" class="btn btn-default" name="preview" value="draft">Preview</button>
+
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</form>
+{% endblock %}
+
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
+{% endblock %}

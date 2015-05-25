@@ -42,7 +42,7 @@ class Index(View):
         else:
             posts = models.Post.objects.all()
         posts = posts.filter(is_draft=False).order_by('-id')
-        post_pages = models.Page.objects.all()
+        post_pages = models.Page.objects.filter(is_draft=False)
 
         paginator = Paginator(posts, PER_PAGE)
 
@@ -104,15 +104,18 @@ class AdminPosts(View):
     template_name = 'blog_admin/posts.html'
 
     @method_decorator(login_required)
-    def get(self, request):
+    def get(self, request, is_blog_page=False):
         data = {}
         draft = request.GET.get('draft')
         if draft and draft.lower()=='true':
             flag = True
         else:
             flag = False
-        # posts = models.Post.objects.filter(is_draft=flag).order_by('-update_time')
-        posts = models.Post.objects.filter(is_draft=flag)
+        if is_blog_page:
+            posts = models.Page.objects.all()
+        else:
+            posts = models.Post.objects.all()
+        posts = posts.filter(is_draft=flag)
         posts = posts.order_by('-update_time')
 
         paginator = Paginator(posts, PER_PAGE_ADMIN)
@@ -125,6 +128,7 @@ class AdminPosts(View):
             posts = paginator.page(paginator.num_pages)
 
         data['posts'] = posts
+        data['is_blog_page'] = is_blog_page
         
         return render(request, self.template_name, data)
 
@@ -203,6 +207,73 @@ class AdminPost(View):
 
         return self.get(request, form)
 
+
+class AdminPage(View):
+    template_name = 'blog_admin/page.html'
+
+    @method_decorator(login_required)
+    def get(self, request, pk=0, form=None):
+        data = {}
+        form_data = {}
+        if pk:
+            try:
+                pk = int(pk)
+                page = models.Page.objects.get(pk=pk)
+                form_data['title'] = page.title
+                form_data['content'] = page.raw
+                form_data['slug'] = page.slug
+                data['edit_flag'] = True
+            except models.Post.DoesNotExist:
+                raise Http404
+        else:
+            page = None
+        if not form:
+            form = forms.NewPage(initial=form_data)
+        data['form'] = form
+
+        return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request, pk=0, form=None):
+        form = forms.NewPage(request.POST)
+        if form.is_valid():
+            if not pk:
+                cur_post = models.Page()
+            else:
+                try:
+                    pk = int(pk)
+                    cur_post = models.Page.objects.get(pk=pk)
+                except models.Page.DoesNotExist:
+                    raise Http404
+            cur_post.title = form.cleaned_data['title']
+            cur_post.raw = form.cleaned_data['content']
+            cur_post.slug = form.cleaned_data['slug']
+            html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
+            cur_post.content_html = html
+            cur_post.author = request.user
+
+            if request.POST.get('publish'):
+                cur_post.is_draft = False
+                
+                msg = 'Page has been pulished!'
+                messages.add_message(request, messages.SUCCESS, msg)
+                url = reverse('main:admin_pages')
+
+            else:
+                cur_post.is_draft=True
+
+                msg = 'Draft has been saved!'
+                messages.add_message(request, messages.SUCCESS, msg)
+                url = '{0}?draft=true'.format(reverse('main:admin_pages'))
+                
+
+            cur_post.save()
+
+            return redirect(url)
+
+        return self.get(request, form)
+
+
 class DeletePost(View):
     @method_decorator(login_required)
     def get(self, request, pk):
@@ -215,6 +286,22 @@ class DeletePost(View):
                 url = '{0}?draft=true'.format(url)    
             cur_post.delete()
         except models.Post.DoesNotExist:
+            raise Http404
+
+        return redirect(url)
+
+class DeletePage(View):
+    @method_decorator(login_required)
+    def get(self, request, pk):
+        try:
+            pk = int(pk)
+            cur_post = models.Page.objects.get(pk=pk)
+            is_draft = cur_post.is_draft
+            url = reverse('main:admin_pages')
+            if is_draft:
+                url = '{0}?draft=true'.format(url)    
+            cur_post.delete()
+        except models.Page.DoesNotExist:
             raise Http404
 
         return redirect(url)
@@ -280,6 +367,15 @@ class AdminFilterPosts(View):
 
         if posts == None:
             raise Http404
+
+        paginator = Paginator(posts, PER_PAGE_ADMIN)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
 
         data = {'posts':posts}
         return render(request, self.template_name, data)
