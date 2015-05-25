@@ -11,5 +11,6 @@ urlpatterns = patterns('',
 
     url(r'^login/$', views.LoginView.as_view(), name='login'),
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
-    # url(r'^page/(?P<pk>[0-9]+)$', views.Page.as_view(), name='page'),
+    url(r'^register/$', views.RegisterView.as_view(), name='register'),
+    url(r'^users/$', views.UsersView.as_view(), name='users'),
 )

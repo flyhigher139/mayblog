@@ -1,0 +1,66 @@
+{% extends "admin_base.html" %}
+{% block title %}Posts{% endblock %}
+
+{% block main %}
+{% load bootstrap3 %}
+<div class="row">
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Is Active</th>
+                <th>Last Login</th>
+                <th>Create Date</th>
+                <th>Actions</th>
+            </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr id="user-{{ user.id }}">
+            <td>{{ forloop.counter }}</td>
+            <td><a href="#">{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.is_active }}</td>
+            <td>{{ user.last_login }}</td>
+            <td>{{ user.date_joined }}</td>
+            <td>
+                <a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                &nbsp
+                <a href="#"  class="del-user"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">No user yet</td></tr>
+    {% endfor %}     
+    </tbody>
+    </table>
+
+    {% bootstrap_pagination users %}
+
+    <!-- </div> -->
+    <!-- <div class="col-md-2">.col-md-2</div> -->
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$('.del-user').on('click', function (event) {
+    // var answer = confirm("Delete post?");
+    // return answer;
+    var url = $(this).attr('href');
+
+    bootbox.confirm("Are you sure?", function(result) {
+      if(result){
+        $.get(url, function(){
+            location.reload();
+        });
+        }
+
+    });
+    return false;
+  });
+</script>
+{% endblock %}
