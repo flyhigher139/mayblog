@@ -10,6 +10,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>No.</th>
                 <th>Title</th>
                 <th>Slug</th>
                 <th>Author</th>
@@ -22,6 +23,7 @@
     {% if is_blog_page %}
         {% for post in posts %}
         <tr id="post-{{ post.id }}">
+            <td>{{ forloop.counter }}</td>
             <td><a href="{% url 'main:page' post.id %}" target="_blank">{{ post.title }}</td>
             <td>{{ post.slug }}</td>
             <td>{{ post.author }}</td>
@@ -34,11 +36,12 @@
             </td>
         </tr>
         {% empty %}
-        <tr><td colspan="6">No pages yet</td></tr>
+        <tr><td colspan="7" style="text-align: left">No pages yet</td></tr>
         {% endfor %}
     {% else %}
         {% for post in posts %}
         <tr id="post-{{ post.id }}">
+            <td>{{ forloop.counter }}</td>
             <td><a href="{% url 'main:post' post.id %}" target="_blank">{{ post.title }}</td>
             <td>{{ post.abstract }}</td>
             <td>{{ post.author }}</td>
@@ -51,7 +54,7 @@
             </td>
         </tr>
         {% empty %}
-        <tr><td colspan="6">No posts yet</td></tr>
+        <tr><td colspan="7" style="text-align: left">No posts yet</td></tr>
         {% endfor %}
     {% endif %}      
     </tbody>
