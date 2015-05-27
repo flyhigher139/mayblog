@@ -88,7 +88,9 @@ class Post(View):
             comment_script = 'no comment script for {0}'.format(comment_type)
         else:
             comment_func = misc.get_comment_func(comment_type)
-            post_url = reverse('main:post', kwargs={'pk':post.id})
+            # post_url = reverse('main:post', kwargs={'pk':post.id})
+            url_partial = [request.META['SERVER_NAME'], ':', request.META['SERVER_PORT'], request.path]
+            post_url = ''.join(url_partial)
             comment_script = comment_func(request, comment_type_id, post.id, post.title, post_url)
 
         data['comment_script'] = comment_script
