@@ -14,7 +14,7 @@ from django.db.models import Count
 
 import markdown2
 
-from . import models, forms
+from . import models, forms, misc
 
 # Create your views here.
 
@@ -80,6 +80,19 @@ class Post(View):
         data = {'post':post}
         tags = post.tags.all()
         data['tags'] = tags
+
+        comment_type = settings.MAY_BLOG['COMMENT_TYPE']
+        comment_type_id = settings.MAY_BLOG['COMMENT_OPT'].get(comment_type)
+
+        if not comment_type_id:
+            comment_script = 'no comment script for {0}'.format(comment_type)
+        else:
+            comment_func = misc.get_comment_func(comment_type)
+            post_url = reverse('main:post', kwargs={'pk':post.id})
+            comment_script = comment_func(request, comment_type_id, post.id, post.title, post_url)
+
+        data['comment_script'] = comment_script
+
         return render(request, self.template_name, data)
 
 class Page(View):

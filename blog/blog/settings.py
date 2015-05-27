@@ -113,5 +113,9 @@ STATIC_URL = '/static/'
 MAY_BLOG = {
     'PER_PAGE': 5,
     'PER_PAGE_ADMIN': 10,
+    'COMMENT_TYPE': 'duoshuo',
+    'COMMENT_OPT':{
+        'duoshuo':'mayblog',
+    },
 }
 
