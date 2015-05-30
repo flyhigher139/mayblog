@@ -1,5 +1,5 @@
 -i http://pypi.douban.com/simple
 
-django
-django-bootstrap3
-markdown2
+Django==1.8b1
+django-bootstrap3==5.4.0
+markdown2==2.3.0
