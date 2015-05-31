@@ -71,8 +71,8 @@ Then, you can administer MayBlog with following admin interface:
 - MayBlog admin: http://127.0.0.1:8000:admin/
 - Django's default admin: http://127.0.0.1:8000:admin2/
 
-Login page: http://127.0.0.1:5000/accounts/login/
-Register page: http://127.0.0.1:5000/accounts/register/ (if `REGISTER_IS_ALLOWED` is set to True in settings)
+- Login page: http://127.0.0.1:5000/accounts/login/
+- Register page: http://127.0.0.1:5000/accounts/register/ (if `REGISTER_IS_ALLOWED` is set to True in settings)
 
 ###MayBlog settings
 
