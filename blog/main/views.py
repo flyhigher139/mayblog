@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db.models import Count
 
+from guardian.shortcuts import assign_perm, get_perms
+from guardian.core import ObjectPermissionChecker
+
 import markdown2
 
 from . import models, forms, misc
@@ -158,6 +161,20 @@ class AdminPost(View):
             try:
                 pk = int(pk)
                 post = models.Post.objects.get(pk=pk)
+                
+                #############################
+                # It works! 
+                #############################
+                # if not 'change_post' in get_perms(request.user, post):
+                #     raise Http404
+
+                #############################
+                # It works two!
+                #############################
+                checker = ObjectPermissionChecker(request.user)
+                if not checker.has_perm('change_post', post):
+                    raise Http404
+
                 form_data['title'] = post.title
                 form_data['content'] = post.raw
                 form_data['abstract'] = post.abstract
@@ -217,6 +234,9 @@ class AdminPost(View):
             cur_post.save()
             cur_post.tags.clear()
             cur_post.tags.add(*tag_ids)
+
+            assign_perm('main.change_post', request.user, cur_post)
+            assign_perm('main.delete_post', request.user, cur_post)
 
             return redirect(url)
 
