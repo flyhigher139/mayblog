@@ -33,6 +33,7 @@ def create_admin_group():
     group, created = Group.objects.get_or_create(name='administrator')
     codenames = [
         'add_user', 'change_user', 'delete_user',
+        'add_blogmeta', 'change_blogmeta', 'delete_blogmeta',
         'add_post', 'change_post', 'delete_post', 
         'add_page', 'change_page', 'delete_page',
         'add_category', 'change_category', 'delete_category',
