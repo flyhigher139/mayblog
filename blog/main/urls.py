@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
-from . import views
+from . import views, preblog
 
 urlpatterns = patterns('',
     # Examples:
@@ -26,4 +26,8 @@ urlpatterns += patterns('',
     url(r'^admin/tags/$', views.AdminTags.as_view(), name='admin_tags'),
     url(r'^admin/category/$', views.AdminCategory.as_view(), name='admin_category'),
     url(r'^admin/filter-posts$', views.AdminFilterPosts.as_view(), name='admin_filter_posts'),
+)
+
+urlpatterns += patterns('',
+    url(r'^init$', preblog.init_blog),
 )
