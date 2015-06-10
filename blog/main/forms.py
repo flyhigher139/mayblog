@@ -8,7 +8,7 @@ class NewPost(forms.Form):
     content = forms.CharField(widget=forms.Textarea)
     abstract = forms.CharField(widget=forms.Textarea)
     # tag = forms.CharField(max_length=256, required=False)
-    # catagory = forms.CharField(max_length=256, required=False)
+    # category = forms.CharField(max_length=256, required=False)
 
 class NewPage(forms.Form):
     title = forms.CharField(max_length=256)

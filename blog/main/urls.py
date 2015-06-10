@@ -24,6 +24,6 @@ urlpatterns += patterns('',
     url(r'^admin/posts/delete/(?P<pk>[0-9]+)$', views.DeletePost.as_view(), name='admin_delete_post'),
     url(r'^admin/pages/delete/(?P<pk>[0-9]+)$', views.DeletePage.as_view(), name='admin_delete_page'),
     url(r'^admin/tags/$', views.AdminTags.as_view(), name='admin_tags'),
-    url(r'^admin/catagory/$', views.AdminCatagory.as_view(), name='admin_catagory'),
+    url(r'^admin/category/$', views.AdminCategory.as_view(), name='admin_category'),
     url(r'^admin/filter-posts$', views.AdminFilterPosts.as_view(), name='admin_filter_posts'),
 )

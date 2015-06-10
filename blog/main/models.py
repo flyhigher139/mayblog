@@ -15,7 +15,7 @@ class Post(models.Model):
     content_html = models.TextField()
     author = models.ForeignKey(User)
     tags = models.ManyToManyField('Tag')
-    catagory = models.ForeignKey('Catagory', null=True, blank=True)
+    category = models.ForeignKey('Category', null=True, blank=True)
     is_draft = models.BooleanField(default=False)
 
     def __unicode__(self):
@@ -27,7 +27,7 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.name
 
-class Catagory(models.Model):
+class Category(models.Model):
     name = models.CharField(max_length=256)
 
     def __unicode__(self):

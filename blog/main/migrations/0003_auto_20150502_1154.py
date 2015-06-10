@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateTimeField(auto_now=True)),
                 ('content_html', models.TextField()),
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('catagory', models.ForeignKey(blank=True, to='main.Catagory', null=True)),
+                ('category', models.ForeignKey(blank=True, to='main.Category', null=True)),
                 ('tags', models.ManyToManyField(to='main.Tag')),
             ],
         ),
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RemoveField(
             model_name='article',
-            name='catagory',
+            name='category',
         ),
         migrations.RemoveField(
             model_name='article',

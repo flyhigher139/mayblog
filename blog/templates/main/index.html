@@ -32,7 +32,7 @@
                     {{post.abstract}}
                 </p>
                 <p class="post-meta">Posted by <a href="#">{{ post.author.username }}</a> on {{post.pub_time}}</p>
-                <p class="post-meta">catagory: <a href="#">{{ post.catagory.name }}</a></p>
+                <p class="post-meta">category: <a href="#">{{ post.category.name }}</a></p>
             </div>
             <hr>
             {% empty %}
@@ -75,31 +75,31 @@
             
             <h3>Category</h3><hr/>
             <div class="list-group">
-                {% for catagory in catagories %}
-                    {% if catagory_id == catagory.id %}
-                        <a href="?catagory={{catagory.id}}" class="list-group-item catagory-list active">{{ catagory.name }} 
+                {% for category in catagories %}
+                    {% if category_id == category.id %}
+                        <a href="?category={{category.id}}" class="list-group-item category-list active">{{ category.name }} 
                         <small><span class="glyphicon glyphicon-remove small rm-filter" aria-hidden="true"></span></small>
-                        <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
+                        <span class="badge">&nbsp;{{category.num_posts}}&nbsp;</span></a>
                     {% else %}
-                        <a href="?catagory={{catagory.id}}" class="list-group-item catagory-list ">{{ catagory.name }} 
-                        <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
+                        <a href="?category={{category.id}}" class="list-group-item category-list ">{{ category.name }} 
+                        <span class="badge">&nbsp;{{category.num_posts}}&nbsp;</span></a>
                     {% endif %}
                     
                 {% endfor %}
             </div>
 
             <!-- <ul class="list-group">
-                {% for catagory in catagories %}
-                    {% if catagory_id == catagory.id %}
-                        <li class="list-group-item catagory-list active">
-                            <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
-                            <a href="?catagory={{catagory.id}}">{{ catagory.name }} </a>
+                {% for category in catagories %}
+                    {% if category_id == category.id %}
+                        <li class="list-group-item category-list active">
+                            <span class="badge">&nbsp;{{category.num_posts}}&nbsp;</span></a>
+                            <a href="?category={{category.id}}">{{ category.name }} </a>
                             <a href="."><span class="glyphicon glyphicon-remove small" aria-hidden="true"></span></a>
                         </li>
                     {% else %}
-                        <li class="list-group-item catagory-list">
-                            <span class="badge">&nbsp;{{catagory.num_posts}}&nbsp;</span></a>
-                            <a href="?catagory={{catagory.id}}">{{ catagory.name }} </a>
+                        <li class="list-group-item category-list">
+                            <span class="badge">&nbsp;{{category.num_posts}}&nbsp;</span></a>
+                            <a href="?category={{category.id}}">{{ category.name }} </a>
                         </li>
                     {% endif %}
                 {% endfor %}

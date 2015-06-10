@@ -40,11 +40,11 @@
             </div>
             <hr/>
             <div class="row">
-                <h3>Catagory</h3>
-                <select class="selectpicker" name="catagory">
-                    {% for catagory in catagories %}
-                    <option value="{{ catagory.id }}" {% if catagory == posted_catagory %} selected="selected" {% endif %} >
-                        {{ catagory.name }}</option>
+                <h3>Category</h3>
+                <select class="selectpicker" name="category">
+                    {% for category in catagories %}
+                    <option value="{{ category.id }}" {% if category == posted_category %} selected="selected" {% endif %} >
+                        {{ category.name }}</option>
                     {% endfor %}
                 </select>
             </div>

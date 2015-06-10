@@ -13,8 +13,8 @@
                         <span class="meta">Posted by <a href="#">{{post.author}}</a> on {{post.pub_time}}</span>
 
                         <span class="meta">Category:
-                        {% if post.catagory %}
-                            <a href="{% url 'main:index' %}?catagory={{post.catagory.id}}">{{post.catagory.name}}</a>
+                        {% if post.category %}
+                            <a href="{% url 'main:index' %}?category={{post.category.id}}">{{post.category.name}}</a>
                         {% else %}
                             None
                         {% endif %}

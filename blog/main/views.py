@@ -31,17 +31,17 @@ class Index(View):
         data = {}
         
         tag = request.GET.get('tag')
-        catagory = request.GET.get('catagory')
+        category = request.GET.get('category')
         try:
             tag = int(tag) if tag else 0
-            catagory = int(catagory) if catagory else 0
+            category = int(category) if category else 0
         except:
             raise Http404
 
         if tag:
             posts = filter_posts_by_tag(tag)
-        elif catagory:
-            posts = filter_posts_by_catagory(catagory)
+        elif category:
+            posts = filter_posts_by_category(category)
         else:
             posts = models.Post.objects.all()
         posts = posts.filter(is_draft=False).order_by('-id')
@@ -61,13 +61,13 @@ class Index(View):
 
 
         tags = models.Tag.objects.all()
-        catagories = models.Catagory.objects.annotate(num_posts=Count('post'))
+        catagories = models.Category.objects.annotate(num_posts=Count('post'))
 
         data['posts'] = posts
         data['pages'] = post_pages
         data['tags'] = tags
         data['catagories'] = catagories
-        data['catagory_id'] = catagory
+        data['category_id'] = category
         data['tag_id'] = tag
 
         return render(request, self.template_name, data)
@@ -187,10 +187,10 @@ class AdminPost(View):
             form = forms.NewPost(initial=form_data)
         data['form'] = form
         data['posted_tags'] = [tag for tag in post.tags.all()] if post else None
-        data['posted_catagory'] = post.catagory if post else None
+        data['posted_category'] = post.category if post else None
         tags = models.Tag.objects.all()
         data['tags'] = tags
-        catagories = models.Catagory.objects.all()
+        catagories = models.Category.objects.all()
         data['catagories'] = catagories
         return render(request, self.template_name, data)
 
@@ -213,7 +213,7 @@ class AdminPost(View):
             cur_post.content_html = html
             cur_post.author = request.user
             tag_ids = request.POST.getlist('tags')
-            catagory_id = request.POST.get('catagory', None)
+            category_id = request.POST.get('category', None)
             # return HttpResponse(len(tag_ids))
             if request.POST.get('publish'):
                 cur_post.is_draft = False
@@ -230,7 +230,7 @@ class AdminPost(View):
                 url = '{0}?draft=true'.format(reverse('main:admin_posts'))
                 
 
-            cur_post.catagory_id = catagory_id
+            cur_post.category_id = category_id
             cur_post.save()
             cur_post.tags.clear()
             cur_post.tags.add(*tag_ids)
@@ -365,12 +365,12 @@ class AdminTags(View):
 
         return render(request, self.template_name, data)
 
-class AdminCatagory(View):
-    template_name = 'blog_admin/catagory.html'
+class AdminCategory(View):
+    template_name = 'blog_admin/category.html'
 
     @method_decorator(login_required)
     def get(self, request):
-        catagories = models.Catagory.objects.all()
+        catagories = models.Category.objects.all()
         paginator = Paginator(catagories, PER_PAGE_ADMIN)
         page = request.GET.get('page')
         try:
@@ -390,12 +390,12 @@ class AdminFilterPosts(View):
     @method_decorator(login_required)
     def get(self, request):
         tag_id = request.GET.get('tag')
-        catagory_id = request.GET.get('catagory')
+        category_id = request.GET.get('category')
 
         if tag_id:
             posts = filter_posts_by_tag(tag_id)
-        elif catagory_id:
-            posts = filter_posts_by_catagory(catagory_id)
+        elif category_id:
+            posts = filter_posts_by_category(category_id)
         else:
             url = reverse('main:admin_posts')
             return redirect(url)
@@ -424,12 +424,12 @@ def filter_posts_by_tag(pk):
     posts = tag.post_set.all()
     return posts
 
-def filter_posts_by_catagory(pk):
+def filter_posts_by_category(pk):
     try:
-        catagory = models.Catagory.objects.get(pk=pk)
-    except models.Catagory.DoesNotExist:
+        category = models.Category.objects.get(pk=pk)
+    except models.Category.DoesNotExist:
         return None
 
-    posts = catagory.post_set.all()
+    posts = category.post_set.all()
     return posts
 
