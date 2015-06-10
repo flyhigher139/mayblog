@@ -2,35 +2,52 @@
 {% block title %}Admin Category{% endblock %}
 
 {% block main %}
-{% load bootstrap3 %}
-<div class="row">
-    <!-- <div class="col-md-10"> -->
-    <!-- <h1>New Post</h1> -->
-    
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in catagories %}
-            <tr id="post-{{ category.id }}">
-                <td>{{ forloop.counter }}</td>
-                <td><a href="{% url 'main:admin_filter_posts' %}?category={{ category.id }}">{{ category.name }}</a></td>
-                <td>
-                    <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-                    &nbsp
-                    <a href="#"  class="del-tag"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    {% bootstrap_pagination catagories %}
+{% load bootstrap3 %}
+
+<div class="row">
+    <!-- <div class="col-md-10 col-md-offset-1"> -->
+        <form class="form-inline" method="POST" >
+        {% csrf_token %}                
+                    
+            {% bootstrap_form form %}
+
+            <button type="submit" class="btn btn-primary" name="publish" value="publish">Create</button>
+        </form>
+    <!-- </div> -->
+
+
+</div>
+
+<hr>
+
+<div class="row">
+
+    <!-- <div class="col-md-10 col-md-offset-1"> -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in catagories %}
+                <tr id="post-{{ category.id }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'main:admin_filter_posts' %}?category={{ category.id }}">{{ category.name }}</a></td>
+                    <td>
+                        <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                        &nbsp
+                        <a href="#"  class="del-tag"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% bootstrap_pagination catagories %}
 
     <!-- </div> -->
     <!-- <div class="col-md-2">.col-md-2</div> -->

@@ -369,7 +369,9 @@ class AdminCategory(View):
     template_name = 'blog_admin/category.html'
 
     @method_decorator(login_required)
-    def get(self, request):
+    def get(self, request, form=None):
+        if not form:
+            form = forms.CategoryForm()
         catagories = models.Category.objects.all()
         paginator = Paginator(catagories, PER_PAGE_ADMIN)
         page = request.GET.get('page')
@@ -380,9 +382,24 @@ class AdminCategory(View):
         except EmptyPage:
             catagories = paginator.page(paginator.num_pages)
 
-        data = {'catagories':catagories}
+        data = {'catagories':catagories, 'form':form}
 
         return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request, form=None):
+        form = forms.CategoryForm(request.POST)
+        if form.is_valid():
+            category = models.Category()
+            category.name = form.cleaned_data['name']
+            category.save()
+
+            msg = 'Succeed to create new category'
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('main:admin_category')
+            return redirect(url)
+        else:
+            return self.get(request, form=form)
 
 class AdminFilterPosts(View):
     template_name = 'blog_admin/posts.html'
