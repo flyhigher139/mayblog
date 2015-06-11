@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -14,6 +14,7 @@ from django.db.models import Count
 
 from guardian.shortcuts import assign_perm, get_perms
 from guardian.core import ObjectPermissionChecker
+from guardian.decorators import permission_required
 
 import markdown2
 
@@ -130,9 +131,14 @@ class AdminPosts(View):
         else:
             flag = False
         if is_blog_page:
+            if not request.user.has_perm('main.change_page'):
+                return HttpResponseForbidden()
             posts = models.Page.objects.all()
         else:
             posts = models.Post.objects.all()
+            if not request.user.has_perm('main.change_post'):
+                posts = posts.filter(author=request.user)
+
         posts = posts.filter(is_draft=flag)
         posts = posts.order_by('-update_time')
 
@@ -153,7 +159,8 @@ class AdminPosts(View):
 class AdminPost(View):
     template_name = 'blog_admin/post.html'
 
-    @method_decorator(login_required)
+    # @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def get(self, request, pk=0, form=None):
         data = {}
         form_data = {}
@@ -166,14 +173,14 @@ class AdminPost(View):
                 # It works! 
                 #############################
                 # if not 'change_post' in get_perms(request.user, post):
-                #     raise Http404
+                #     raise HttpResponseForbidden()
 
                 #############################
                 # It works two!
                 #############################
                 checker = ObjectPermissionChecker(request.user)
                 if not checker.has_perm('change_post', post):
-                    raise Http404
+                    return HttpResponseForbidden()
 
                 form_data['title'] = post.title
                 form_data['content'] = post.raw
@@ -194,7 +201,7 @@ class AdminPost(View):
         data['catagories'] = catagories
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def post(self, request, pk=0, form=None):
         form = forms.NewPost(request.POST)
         if form.is_valid():
@@ -204,6 +211,9 @@ class AdminPost(View):
                 try:
                     pk = int(pk)
                     cur_post = models.Post.objects.get(pk=pk)
+                    checker = ObjectPermissionChecker(request.user)
+                    if not checker.has_perm('change_post', cur_post):
+                        return HttpResponseForbidden('forbidden')
                 except models.Post.DoesNotExist:
                     raise Http404
             cur_post.title = form.cleaned_data['title']
@@ -246,7 +256,7 @@ class AdminPost(View):
 class AdminPage(View):
     template_name = 'blog_admin/page.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_page', accept_global_perms=True))
     def get(self, request, pk=0, form=None):
         data = {}
         form_data = {}
@@ -268,7 +278,7 @@ class AdminPage(View):
 
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_page', accept_global_perms=True))
     def post(self, request, pk=0, form=None):
         form = forms.NewPage(request.POST)
         if form.is_valid():
@@ -310,12 +320,18 @@ class AdminPage(View):
 
 
 class DeletePost(View):
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def get(self, request, pk):
         try:
             pk = int(pk)
             cur_post = models.Post.objects.get(pk=pk)
             is_draft = cur_post.is_draft
+
+            checker = ObjectPermissionChecker(request.user)
+            if not checker.has_perm('delete_post', cur_post):
+                # return HttpResponseForbidden('forbidden')
+                return HttpResponse('forbidden')
+
             url = reverse('main:admin_posts')
             if is_draft:
                 url = '{0}?draft=true'.format(url)    
@@ -326,12 +342,18 @@ class DeletePost(View):
         return redirect(url)
 
 class DeletePage(View):
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.delete_page', accept_global_perms=True))
     def get(self, request, pk):
         try:
             pk = int(pk)
             cur_post = models.Page.objects.get(pk=pk)
             is_draft = cur_post.is_draft
+
+            checker = ObjectPermissionChecker(request.user)
+            if not checker.has_perm('delete_page', cur_post):
+                # return HttpResponseForbidden('forbidden')
+                return HttpResponse('forbidden')
+
             url = reverse('main:admin_pages')
             if is_draft:
                 url = '{0}?draft=true'.format(url)    
