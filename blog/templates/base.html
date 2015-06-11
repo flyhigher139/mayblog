@@ -72,7 +72,7 @@
                     {% endfor %}
                     {% if request.user.is_authenticated %}
                     <li>
-                        <a href="{% url 'main:admin_index' %}">Admin</a>
+                        <a href="{% url 'main:admin_index' %}">{{ request.user.username }}</a>
                     </li>
                     {% endif %}
                 </ul>
