@@ -4,7 +4,7 @@
 {% block main %}
 {% load bootstrap3 %}
 <div class="row">
-    
+    <div class="col-md-10">
     <table class="table table-striped">
         <thead>
             <tr>
@@ -24,8 +24,8 @@
             <td><a href="#">{{ user.username }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.is_active }}</td>
-            <td>{{ user.last_login }}</td>
-            <td>{{ user.date_joined }}</td>
+            <td>{{ user.last_login|date:"M d, Y" }}</td>
+            <td>{{ user.date_joined|date:"M d, Y" }}</td>
             <td>
                 <a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                 &nbsp
@@ -40,8 +40,18 @@
 
     {% bootstrap_pagination users %}
 
-    <!-- </div> -->
-    <!-- <div class="col-md-2">.col-md-2</div> -->
+    </div>
+    <div class="col-md-2">
+        <!-- <h4>Filter By Group</h4> -->
+        <p><strong>Filter By Group</strong></p>
+        <hr>
+        <div class="list-group">
+          <a href="{% url 'accounts:users' %}" class="list-group-item group-list {% if all %}active{% endif %}">All</a>
+          {% for group in groups %}
+            <a href="{% url 'accounts:group_users' group.id %}" class="list-group-item group-list {% if group_id == group.id %}active{% endif %}">{{ group.name }}</a>
+          {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
 

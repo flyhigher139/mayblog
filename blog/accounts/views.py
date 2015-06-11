@@ -94,8 +94,17 @@ class RegisterView(View):
 
 class UsersView(View):
     template_name = 'accounts/users.html'
-    def get(self, request):
-        users = User.objects.all()
+    def get(self, request, group_id=0):
+        data = {}
+        
+        if group_id:
+            group = Group.objects.get(pk=group_id)
+            users = group.user_set.all()
+            data['group_id'] = int(group_id)
+        else:
+            users = User.objects.all()
+            data['all'] = True
+
         paginator = Paginator(users, PER_PAGE)
         page = request.GET.get('page')
         try:
@@ -105,7 +114,10 @@ class UsersView(View):
         except EmptyPage:
             users = paginator.page(paginator.num_pages)
 
-        data = {'users':users}
+        groups = Group.objects.all()
+        # data = {'users':users, 'groups':groups}
+        data['users'] = users
+        data['groups'] = groups
 
         return render(request, self.template_name, data)
 
