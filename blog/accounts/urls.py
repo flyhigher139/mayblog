@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'^register/$', views.RegisterView.as_view(), name='register'),
     url(r'^users/$', views.UsersView.as_view(), name='users'),
+    url(r'^groups/$', views.GroupView.as_view(), name='groups'),
 )

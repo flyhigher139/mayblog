@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
@@ -106,6 +106,14 @@ class UsersView(View):
             users = paginator.page(paginator.num_pages)
 
         data = {'users':users}
+
+        return render(request, self.template_name, data)
+
+class GroupView(View):
+    template_name = 'accounts/groups.html'
+    def get(self, request):
+        groups = Group.objects.all()
+        data = {'groups':groups}
 
         return render(request, self.template_name, data)
 
