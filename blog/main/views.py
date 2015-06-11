@@ -179,8 +179,9 @@ class AdminPost(View):
                 # It works two!
                 #############################
                 checker = ObjectPermissionChecker(request.user)
-                if not checker.has_perm('change_post', post):
-                    return HttpResponseForbidden()
+                if not request.user.has_perm('main.change_post') \
+                    and not checker.has_perm('change_post', post):
+                    return HttpResponse('Forbidden')
 
                 form_data['title'] = post.title
                 form_data['content'] = post.raw
@@ -320,17 +321,17 @@ class AdminPage(View):
 
 
 class DeletePost(View):
-    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
+    @method_decorator(permission_required('main.delete_post', (models.Post, 'id', 'pk'), accept_global_perms=True))
     def get(self, request, pk):
         try:
             pk = int(pk)
             cur_post = models.Post.objects.get(pk=pk)
             is_draft = cur_post.is_draft
 
-            checker = ObjectPermissionChecker(request.user)
-            if not checker.has_perm('delete_post', cur_post):
-                # return HttpResponseForbidden('forbidden')
-                return HttpResponse('forbidden')
+            # checker = ObjectPermissionChecker(request.user)
+            # if not request.user.has_perm('main.delete_post') \
+            #     and not checker.has_perm('delete_post', cur_post):
+            #     return HttpResponse('forbidden')
 
             url = reverse('main:admin_posts')
             if is_draft:
