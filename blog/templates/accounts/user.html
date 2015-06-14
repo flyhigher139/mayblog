@@ -31,7 +31,7 @@
     <hr>
     <ul class="list-group">
         {% for permission in permissions %}
-            <li class="list-group-item group-list">{{ permission.name }}</li>
+            <li class="list-group-item group-list">{{ permission }}</li>
         {% empty %}
             <p>No permission yet!</p>
         {% endfor %}

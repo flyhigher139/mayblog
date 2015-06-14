@@ -135,7 +135,7 @@ class UserView(View):
         groups = user.groups.all()
         data['groups'] = groups
 
-        permissions = user.user_permissions.all()
+        permissions = user.get_all_permissions()
         data['permissions'] = permissions
 
         return render(request, self.template_name, data)
