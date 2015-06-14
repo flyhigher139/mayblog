@@ -29,21 +29,21 @@ class RegisterForm(forms.Form):
 class UserForm(forms.Form):
     username = forms.CharField(max_length=256)
     email = forms.EmailField(max_length=256, required=False)
-    password = forms.CharField(max_length=256, widget=forms.PasswordInput(attrs={'placeholder': 'password'}), required=False)
-    password_confirm = forms.CharField(max_length=256, widget=forms.PasswordInput)
-    is_staff = forms.BooleanField(required=False)
-    is_superuser = forms.BooleanField(required=False)
+    # password = forms.CharField(max_length=256, widget=forms.PasswordInput(attrs={'placeholder': 'password'}), required=False)
+    # password_confirm = forms.CharField(max_length=256, widget=forms.PasswordInput)
+    # is_staff = forms.BooleanField(required=False)
+    # is_superuser = forms.BooleanField(required=False)
 
-    def clean(self):
-        cleaned_data = super(RegisterForm, self).clean()
-        password = cleaned_data.get('password')
-        password_confirm = cleaned_data.get('password_confirm')
-        if password != password_confirm:
-            raise forms.ValidationError('Two passwords are not the same')
+    # def clean(self):
+    #     cleaned_data = super(RegisterForm, self).clean()
+    #     password = cleaned_data.get('password')
+    #     password_confirm = cleaned_data.get('password_confirm')
+    #     if password != password_confirm:
+    #         raise forms.ValidationError('Two passwords are not the same')
 
 class UserGroupForm(forms.Form):
     GROUP_CHOICES = group_values()
-    groups = forms.MultipleChoiceField(choices=GROUP_CHOICES)
+    groups = forms.MultipleChoiceField(choices=GROUP_CHOICES, widget=forms.SelectMultiple(attrs={'size':len(GROUP_CHOICES)}))
 
     
 

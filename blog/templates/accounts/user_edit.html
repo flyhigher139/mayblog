@@ -11,7 +11,19 @@
         <form method="POST" action="">
         {% csrf_token %}
             {% bootstrap_form user_form %}
-            <button type="submit" class="btn btn-primary" name="user">Submit</button>
+            {% if user.is_superuser %}
+            <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="is_superuser" {% if user_edited.is_superuser %}checked{% endif %}> is_superuser
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="is_staff" {% if user_edited.is_staff %}checked{% endif %}> is_staff
+                </label>
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-primary" name="user" value="user">Submit</button>
         </form>
     </div>
     <div class="col-md-4">
@@ -20,7 +32,7 @@
         <form method="POST" action="">
         {% csrf_token %}
             {% bootstrap_form user_group_form %}{{groups}}
-            <button type="submit" class="btn btn-primary" name="user">Submit</button>
+            <button type="submit" class="btn btn-primary" name="group" value="group">Submit</button>
         </form>
     </div>
 

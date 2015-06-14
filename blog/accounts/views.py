@@ -142,18 +142,19 @@ class UserView(View):
 
 class UserEditView(View):
     template_name = 'accounts/user_edit.html'
-    def get(self, request, pk):
+    def get(self, request, pk, user_form=None):
         pk = int(pk)
         data = {}
         try:
             user = User.objects.get(pk=pk)
         except User.DoesNotExist:
             raise Http404
-        # data['user'] = user
+        
+        data['user_edited'] = user
 
         user_dict = {'username':user.username, 'email': user.email}
-
-        user_form = forms.UserForm(initial=user_dict)
+        if not user_form:
+            user_form = forms.UserForm(initial=user_dict)
         data['user_form'] = user_form
 
         groups = user.groups.all()
@@ -163,6 +164,39 @@ class UserEditView(View):
         data['user_group_form'] = user_group_form
 
         return render(request, self.template_name, data)
+
+    def post(self, request, pk):
+        pk = int(pk)
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+        if request.POST.get('user'):
+            form = forms.UserForm(request.POST)
+            if form.is_valid():
+                user.username = form.cleaned_data['username']
+                user.email = form.cleaned_data['email']
+                if request.user.is_superuser:
+                    user.is_superuser = request.POST.get('is_superuser', False)
+                    user.is_staff = request.POST.get('is_staff', False)
+                user.save()
+
+                url = reverse('accounts:user_edit', args=(pk,))
+                msg = 'Succeed to update user details'
+                messages.add_message(request, messages.SUCCESS, msg)
+                return redirect(url)
+
+            return self.get(request, pk, user_form=form)
+        else:
+            group_ids = request.POST.getlist('groups')
+            # user.groups.add(*group_ids)
+            user.groups = group_ids
+            # return HttpResponse(group_ids)
+            url = reverse('accounts:user_edit', args=(pk,))
+            msg = 'Succeed to update user groups'
+            messages.add_message(request, messages.SUCCESS, msg)
+            return redirect(url)
+
 
 class GroupView(View):
     template_name = 'accounts/groups.html'
