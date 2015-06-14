@@ -149,13 +149,19 @@ class UserEditView(View):
             user = User.objects.get(pk=pk)
         except User.DoesNotExist:
             raise Http404
-        data['user'] = user
+        # data['user'] = user
 
-        user_form = forms.UserForm()
+        user_dict = {'username':user.username, 'email': user.email}
+
+        user_form = forms.UserForm(initial=user_dict)
         data['user_form'] = user_form
 
         groups = user.groups.all()
-        data['groups'] = groups
+        user_groups = [group.id for group in groups ]
+        group_dict = {'groups':user_groups}
+        user_group_form = forms.UserGroupForm(initial=group_dict)
+        data['user_group_form'] = user_group_form
+
         return render(request, self.template_name, data)
 
 class GroupView(View):

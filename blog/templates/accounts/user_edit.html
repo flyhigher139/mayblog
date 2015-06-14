@@ -4,10 +4,26 @@
 {% load bootstrap3 %}
 
 {% block main %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-1">
+        <h3>User Details</h3>
+        <hr>
+        <form method="POST" action="">
+        {% csrf_token %}
+            {% bootstrap_form user_form %}
+            <button type="submit" class="btn btn-primary" name="user">Submit</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h3>Groups</h3>
+        <hr>
+        <form method="POST" action="">
+        {% csrf_token %}
+            {% bootstrap_form user_group_form %}{{groups}}
+            <button type="submit" class="btn btn-primary" name="user">Submit</button>
+        </form>
+    </div>
 
-<form method="POST" action="">
-{% csrf_token %}
-    {% bootstrap_form user_form %}
-    <button type="submit" class="btn btn-primary" name="user">Submit</button>
-</form>
+</div>
+
 {% endblock %}
