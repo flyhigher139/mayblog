@@ -107,7 +107,7 @@ class Page(View):
         try:
             pk = int(pk)
             page = models.Page.objects.get(pk=pk)
-        except page.DoesNotExist:
+        except models.Page.DoesNotExist:
             raise Http404
         data = {'page':page}
         return render(request, self.template_name, data)

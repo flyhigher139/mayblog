@@ -121,6 +121,43 @@ class UsersView(View):
 
         return render(request, self.template_name, data)
 
+class UserView(View):
+    template_name = 'accounts/user.html'
+    def get(self, request, pk):
+        pk = int(pk)
+        data = {}
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+        data['user'] = user
+
+        groups = user.groups.all()
+        data['groups'] = groups
+
+        permissions = user.user_permissions.all()
+        data['permissions'] = permissions
+
+        return render(request, self.template_name, data)
+
+class UserEditView(View):
+    template_name = 'accounts/user_edit.html'
+    def get(self, request, pk):
+        pk = int(pk)
+        data = {}
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+        data['user'] = user
+
+        user_form = forms.UserForm()
+        data['user_form'] = user_form
+
+        groups = user.groups.all()
+        data['groups'] = groups
+        return render(request, self.template_name, data)
+
 class GroupView(View):
     template_name = 'accounts/groups.html'
     def get(self, request):
