@@ -105,6 +105,10 @@ class UsersView(View):
             users = User.objects.all()
             data['all'] = True
 
+        key = request.GET.get('key')
+        if key:
+            users = users.filter(username__icontains=key)
+
         paginator = Paginator(users, PER_PAGE)
         page = request.GET.get('page')
         try:
@@ -118,6 +122,8 @@ class UsersView(View):
         # data = {'users':users, 'groups':groups}
         data['users'] = users
         data['groups'] = groups
+
+        data['allow_search'] = True
 
         return render(request, self.template_name, data)
 
