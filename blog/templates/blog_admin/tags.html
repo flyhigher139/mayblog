@@ -3,6 +3,25 @@
 
 {% block main %}
 {% load bootstrap3 %}
+
+<div class="row">
+    <!-- <div class="col-md-10 col-md-offset-1"> -->
+    <form class="form-inline" method="POST" >
+    {% csrf_token %}                
+                
+        {% bootstrap_form form %}        
+
+        <button type="submit" class="btn btn-primary" name="publish" value="publish">Create</button>
+        <em>(Seperate tags with ",")</em>
+    </form>
+    <!-- </div> -->
+        
+
+
+</div>
+
+<hr>
+
 <div class="row">
     <!-- <div class="col-md-10"> -->
     <!-- <h1>New Post</h1> -->

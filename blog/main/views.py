@@ -373,7 +373,9 @@ class AdminTags(View):
     template_name = 'blog_admin/tags.html'
 
     @method_decorator(login_required)
-    def get(self, request):
+    def get(self, request, form=None):
+        if not form:
+            form = forms.TagForm()
         tags = models.Tag.objects.all()
 
         paginator = Paginator(tags, PER_PAGE_ADMIN)
@@ -388,9 +390,24 @@ class AdminTags(View):
             tags = paginator.page(paginator.num_pages)
 
 
-        data = {'tags':tags}
+        data = {'tags':tags, 'form':form}
 
         return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request, form=None):
+        form = forms.TagForm(request.POST)
+        if form.is_valid():
+            tags = form.cleaned_data['tags'].split(',')
+            for tag in tags:
+                tag_model, created = models.Tag.objects.get_or_create(name=tag)
+
+            msg = 'Succeed to create tags'
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('main:admin_tags')
+            return redirect(url)
+        else:
+            return self.get(request, form=form)
 
 class AdminCategory(View):
     template_name = 'blog_admin/category.html'

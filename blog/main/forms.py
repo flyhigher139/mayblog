@@ -16,4 +16,7 @@ class NewPage(forms.Form):
     content = forms.CharField(widget=forms.Textarea)
 
 class CategoryForm(forms.Form):
-    name = forms.CharField(max_length=256)
+    name = forms.CharField(max_length=256, label='Category Name')
+
+class TagForm(forms.Form):
+    tags = forms.CharField(max_length=256, label='Tags')
