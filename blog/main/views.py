@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from guardian.shortcuts import assign_perm, get_perms
 from guardian.core import ObjectPermissionChecker
@@ -140,6 +140,9 @@ class AdminPosts(View):
                 posts = posts.filter(author=request.user)
 
         posts = posts.filter(is_draft=flag)
+        key = request.GET.get('key')
+        if key:
+            posts = posts.filter(Q(title__icontains=key)|Q(raw__icontains=key))
         posts = posts.order_by('-update_time')
 
         paginator = Paginator(posts, PER_PAGE_ADMIN)
@@ -153,6 +156,7 @@ class AdminPosts(View):
 
         data['posts'] = posts
         data['is_blog_page'] = is_blog_page
+        data['allow_search'] = True
         
         return render(request, self.template_name, data)
 
