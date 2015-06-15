@@ -22,7 +22,7 @@
                     <th>Is Active</th>
                     <th>Last Login</th>
                     <th>Create Date</th>
-                    <th>Actions</th>
+                    <th style="text-align:center">Remove out</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,10 +34,10 @@
                     <td>{{ user.is_active }}</td>
                     <td>{{ user.last_login|date:"M d, Y" }}</td>
                     <td>{{ user.date_joined|date:"M d, Y" }}</td>
-                    <td>
-                        <a href="{% url 'accounts:user_edit' user.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-                        &nbsp
-                        <a href="#"  class="del-user"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                    <td style="text-align:center">
+                        <!-- <a href="{% url 'accounts:user_edit' user.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                        &nbsp -->
+                        <a href="#"  class="remove-user"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> </a>
                     </td>
                 </tr>
                 {% empty %}
