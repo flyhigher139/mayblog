@@ -1,0 +1,63 @@
+{% extends 'admin_base.html' %}
+
+{% block main %}
+<div class="row">
+  <div class="col-md-9">
+    <div class="row">
+        <h4>Group Details &nbsp; 
+            <small><a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a></small>
+        </h4>
+        <hr>
+        <p><label>Name</label>: {{ group.name }}</p>
+    </div>
+    <div class="row">
+        <h4>Users</h4>
+        <hr>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Is Active</th>
+                    <th>Last Login</th>
+                    <th>Create Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr id="user-{{ user.id }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'accounts:user' user.id %}">{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_active }}</td>
+                    <td>{{ user.last_login|date:"M d, Y" }}</td>
+                    <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'accounts:user_edit' user.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                        &nbsp
+                        <a href="#"  class="del-user"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7">No user yet</td></tr>
+            {% endfor %}     
+            </tbody>
+        </table>
+    </div>
+  </div>
+    <div class="col-md-2 col-md-offset-1">
+    <h4>Permissions</h4>
+    <hr>
+    <ul class="list-group">
+        {% for permission in permissions %}
+            <li class="list-group-item group-list">{{ permission.name }}</li>
+        {% empty %}
+            <p>No permission yet!</p>
+        {% endfor %}
+    </ul>
+  </div>
+
+</div>
+{% endblock %}

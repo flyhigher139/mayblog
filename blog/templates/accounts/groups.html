@@ -17,7 +17,7 @@
         {% for group in groups %}
             <tr id="group-{{ group.id }}">
                 <td>{{ forloop.counter }}</td>
-                <td><a href="#">{{ group.name }}</td>
+                <td><a href="{% url 'accounts:group' group.id %}">{{ group.name }}</td>
                 <td>
                     <a href="#"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                 </td>

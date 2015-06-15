@@ -176,7 +176,7 @@ class AdminPost(View):
                 #     raise HttpResponseForbidden()
 
                 #############################
-                # It works two!
+                # It works, too!
                 #############################
                 checker = ObjectPermissionChecker(request.user)
                 if not request.user.has_perm('main.change_post') \

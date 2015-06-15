@@ -135,8 +135,29 @@ class UserView(View):
         groups = user.groups.all()
         data['groups'] = groups
 
-        permissions = user.get_all_permissions()
+        # permissions = user.get_all_permissions()
+        # data['permissions'] = permissions
+        permissions = user.user_permissions.all()
         data['permissions'] = permissions
+
+        return render(request, self.template_name, data)
+
+class GroupView(View):
+    template_name = 'accounts/group.html'
+    def get(self, request, pk):
+        pk = int(pk)
+        data = {}
+        try:
+            group = Group.objects.get(pk=pk)
+        except group.DoesNotExist:
+            raise Http404
+        data['group'] = group
+
+        permissions = group.permissions.all()
+        data['permissions'] = permissions
+
+        users = group.user_set.all()
+        data['users'] = users
 
         return render(request, self.template_name, data)
 
@@ -198,7 +219,7 @@ class UserEditView(View):
             return redirect(url)
 
 
-class GroupView(View):
+class GroupsView(View):
     template_name = 'accounts/groups.html'
     def get(self, request):
         groups = Group.objects.all()
