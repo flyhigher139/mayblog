@@ -111,6 +111,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+#For deployment
+STATIC_ROOT = os.path.join(BASE_DIR, "static2/")
+
 #################################
 # guardian settings
 #################################
