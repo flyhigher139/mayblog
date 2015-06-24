@@ -3,11 +3,15 @@
 
 # from django.db import models
 from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 
 from . import models
 
 def init_blog(request):
+    # Create superuser
+    # get_user_model().objects.create_superuser(username='su', email='su@email.com', password='su')
+    User.objects.create_superuser(username='su', email='su@email.com', password='su')
     # Create admin group
     group = create_admin_group()
 

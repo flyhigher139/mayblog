@@ -33,11 +33,12 @@ RUN pip install -r /usr/src/app/requirements.txt
 #     service nginx restart
 
 # RUN python manage.py collectstatic --noinput && python manage.py migrate
-RUN python manage.py migrate
+RUN /usr/bin/python2.7 manage.py migrate && \
+    /usr/bin/python2.7 manage.py createsuperuser --username admin --email admin@gmail.com --noinput
 
 
 EXPOSE 8000
 
 # ENTRYPOINT ["/bin/bash"]
 # CMD ["/bin/bash"]
-CMD ["python" "manage.py" "runserver" "0.0.0.0:8000"]
+CMD ["/usr/bin/python2.7", "manage.py", "runserver", "0.0.0.0:8000"]
