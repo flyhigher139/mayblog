@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y curl wget tar bzip2 unzip vim && \
     apt-get install -y nginx git python-dev python-pip libmysqlclient-dev && \
     apt-get clean all
 
-RUN pip install supervisor uwsgi -i http://pypi.douban.com/simple
+# RUN pip install supervisor uwsgi -i http://pypi.douban.com/simple
 
 # ADD supervisord.conf /etc/supervisord.conf
 
@@ -29,11 +29,15 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app
 RUN pip install -r /usr/src/app/requirements.txt
-RUN ln -s /usr/src/app/mayblog_nginx.conf /etc/nginx/sites-enabled && \
-    service nginx restart
+# RUN ln -s /usr/src/app/mayblog_nginx.conf /etc/nginx/sites-enabled && \
+#     service nginx restart
+
+# RUN python manage.py collectstatic --noinput && python manage.py migrate
+RUN python manage.py migrate
 
 
 EXPOSE 8000
 
 # ENTRYPOINT ["/bin/bash"]
-CMD ["/bin/bash"]
+# CMD ["/bin/bash"]
+CMD ["python" "manage.py" "runserver" "0.0.0.0:8000"]

@@ -1,17 +1,20 @@
 blog:
-  restart: always
+  # restart: always
   build: ./blog
   # expose:
   #   - "8000"
   ports:
     - "8000:8000"
-  links:
-    - mysql:mysql
+    # - "5000:5000"
+  # links:
+  #   - mysql:mysql
   volumes:
     - /usr/src/app/static
   env_file: .env
   # command: /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
-  command: /usr/local/bin/uwsgi --ini mayblog_uwsgi.ini
+  # command: /usr/local/bin/uwsgi --ini mayblog_uwsgi.ini
+  command: /usr/bin/python2.7 manage.py runserver 0.0.0.0:8000
+
 
 # nginx:
 #   restart: always
@@ -25,14 +28,14 @@ blog:
 #   links:
 #     - web:web
 
-mysql:
-  restart: always
-  image: sameersbn/mysql:latest
-  env_file: .env
-  volumes_from:
-    - data
-  ports:
-    - "3306:3306"
+# mysql:
+#   restart: always
+#   image: sameersbn/mysql:latest
+#   env_file: .env
+#   volumes_from:
+#     - data
+#   ports:
+#     - "3306:3306"
 
 # redis:
 #   restart: always
@@ -40,9 +43,9 @@ mysql:
 #   ports:
 #     - "6379:6379"
 
-data:
-  restart: always
-  image: sameersbn/mysql:latest
-  volumes:
-    - /var/lib/mysql
-  command: true
+# data:
+#   restart: always
+#   image: sameersbn/mysql:latest
+#   volumes:
+#     - /var/lib/mysql
+#   command: true
