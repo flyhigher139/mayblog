@@ -42,8 +42,13 @@ class UserForm(forms.Form):
     #         raise forms.ValidationError('Two passwords are not the same')
 
 class UserGroupForm(forms.Form):
-    GROUP_CHOICES = group_values()
+    # GROUP_CHOICES = group_values()
+    GROUP_CHOICES = ()
     groups = forms.MultipleChoiceField(choices=GROUP_CHOICES, widget=forms.SelectMultiple(attrs={'size':len(GROUP_CHOICES)}))
+
+    def __init__(self, *args, **kwargs):
+        super(UserGroupForm, self).__init__(*args, **kwargs)
+        self.fields['groups'].choices = [(group.id, group.name) for group in Group.objects.all() ]
 
     
 
