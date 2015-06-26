@@ -12,7 +12,7 @@ blog:
     - /usr/src/app/static
   env_file: .env
   # command: /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
-  command: /usr/local/bin/uwsgi --ini mayblog_uwsgi.ini
+  # command: /usr/local/bin/uwsgi --ini mayblog_uwsgi.ini
   # command: /usr/bin/python2.7 manage.py runserver 0.0.0.0:5000
   # command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
 
