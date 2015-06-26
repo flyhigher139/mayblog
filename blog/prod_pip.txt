@@ -1,3 +1,2 @@
 -r base.txt
-uwsgi
 mysqlclient
