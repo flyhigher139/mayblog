@@ -1,0 +1,16 @@
+image: gevin/mayblog
+
+services:
+  - mysql
+
+env:
+  - DJANGO_SETTINGS_MODULE="blog.settings.daocloud"
+  - MYSQL_USERNAME="u1lXxFkfI6VZMY3R"
+  - MYSQL_PASSWORD="p6IU12qCNwuyDH8mv"
+  - MYSQL_INSTANCE_NAME="yuq4PD1r3o7hmKAb"
+
+script:
+  - /usr/bin/python2.7 /usr/src/app/manage.py migrate
+  - /usr/bin/python2.7 /usr/src/app/manage.py createsuperuser --username admin --email admin@gmail.com --noinput
+  - /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
+  - service nginx restart
