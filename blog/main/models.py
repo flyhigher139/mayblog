@@ -47,10 +47,11 @@ class Page(models.Model):
         return self.title
 
 class BlogMeta(models.Model):
-    value = models.CharField(max_length=256)
+    key = models.CharField(max_length=256)
+    value = models.CharField(max_length=256, null=True, blank=True)
     flag = models.BooleanField(default=False)
     misc = models.CharField(max_length=256, null=True, blank=True)
 
     def __unicode__(self):
-        return self.value + ":" + str(self.flag)
+        return self.key
 

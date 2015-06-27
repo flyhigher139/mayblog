@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% load static %}
+
+
+{% block main %}
+{% load bootstrap3 %}
+<div class="row">
+    <div class="col-xs-6 col-sm-3"></div>
+    <div class="col-xs-6 col-sm-6">
+    <h3>{{ heading }}</h3>
+    <hr>
+        <form method="POST" action="">
+        {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-primary" name="submit">
+            {% if btn_name %}
+                {{ btn_name }}
+            {% else %}
+                submit
+            {% endif %}
+            </button>
+        </form>
+    </div>
+    <div class="col-xs-6 col-sm-3"></div>
+</div>
+
+{% endblock %}

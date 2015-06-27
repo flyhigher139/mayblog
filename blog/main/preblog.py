@@ -5,13 +5,21 @@
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
+from django.views.generic import View
+from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
+from django.contrib import messages
 
+from accounts import forms
 from . import models
 
 def init_blog(request):
     # Create superuser
     # get_user_model().objects.create_superuser(username='su', email='su@email.com', password='su')
-    User.objects.create_superuser(username='su', email='su@email.com', password='su')
+    try:
+        su = User.objects.get(username='su')
+    except User.DoesNotExist:
+        User.objects.create_superuser(username='su', email='su@email.com', password='su')
     # Create admin group
     group = create_admin_group()
 
@@ -32,6 +40,76 @@ def init_blog(request):
     default_category, created = models.Category.objects.get_or_create(name='default')
 
     return HttpResponse('succeed to init blog')
+
+class BlogInitView(View):
+    template_name = 'main/simple_form.html'
+    def get(self, request, form=None):
+        initialized = False
+
+        try:
+            initialization = models.BlogMeta.objects.get(key='initialization')
+            initialized = initialization.flag
+        except models.BlogMeta.DoesNotExist:
+            initialized = False
+        
+        if initialized:
+            url = reverse('main:admin_index')
+            return redirect(url)
+
+
+        if not form:
+            form = forms.RegisterForm()
+        data = {'form':form}
+        data['title'] = 'System Initialization'
+        data['heading'] = 'Create Superuser'
+        return render(request, self.template_name, data)
+
+    def post(self, request):
+        form = forms.RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            user = User.objects.create_superuser(username, email, password)
+
+
+            # Create admin group
+            group = create_admin_group()
+
+            # Create editor group
+            group = create_editor_group()
+
+            # Create writer group
+            group = create_writer_group()
+
+            # Create contributor group
+            group = create_contributor_group()
+
+            # Create reader group
+            group = create_reader_group()
+
+            initialization, created = models.BlogMeta.objects.get_or_create(key='initialization')
+            initialization.flag = True
+            initialization.save()
+
+            obj = models.BlogMeta()
+            obj.key = 'blog_name'
+            obj.value = 'MayBlog'
+            obj.save()
+
+            obj = models.BlogMeta()
+            obj.key = 'blog_subtitle'
+            obj.value = 'Welcome to MayBlog'
+            obj.save()
+
+            msg = 'Successfully Initialized'
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('main:admin_index')
+            return redirect(url)
+
+        else:
+            return self.get(request, form)
 
 def create_admin_group():
     group, created = Group.objects.get_or_create(name='administrator')

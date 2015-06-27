@@ -29,5 +29,6 @@ urlpatterns += patterns('',
 )
 
 urlpatterns += patterns('',
-    url(r'^init$', preblog.init_blog),
+    # url(r'^init$', preblog.init_blog),
+    url(r'^init$', preblog.BlogInitView.as_view()),
 )
