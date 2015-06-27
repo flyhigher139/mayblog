@@ -11,6 +11,5 @@ env:
 
 script:
   - /usr/bin/python2.7 /usr/src/app/manage.py migrate
-  - /usr/bin/python2.7 /usr/src/app/manage.py createsuperuser --username admin --email admin@gmail.com --noinput
   - /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
   - service nginx restart
