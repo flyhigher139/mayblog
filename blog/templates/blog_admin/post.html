@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block css %}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/css/bootstrap-select.min.css" rel="stylesheet">
+<link href="http://cdn.staticfile.org/bootstrap-select/1.6.3/css/bootstrap-select.min.css" rel="stylesheet">
 {% endblock %}
 
 
@@ -19,41 +19,53 @@
 <form method="POST" action="" id='new-post'>
 {% csrf_token %}
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+                {% bootstrap_form form %}
+            </div>
         
-        {% bootstrap_form form %}
-
-        <button type="submit" class="btn btn-primary" name="publish" value="publish">Publish</button>
-        <button type="submit" class="btn btn-success" name="draft" value="draft">Save draft</button>
-        <button type="submit" class="btn btn-default" name="preview" value="draft">Preview</button>
-
-        </div>
-        <div class="col-md-2">
             <div class="row">
-                <h3>Tags</h3>
-                <select multiple class="selectpicker" name="tags">
-                    {% for tag in tags %}
-                    <option value="{{ tag.id }}" {% if tag in posted_tags %} selected="selected" {% endif %} >
-                        {{ tag.name }}</option>
-                    {% endfor %}
-                </select>
+                <div class="col-md-5">
+                    <h3>Tags</h3>
+                    <hr>
+                    <select multiple class="selectpicker" name="tags">
+                        {% for tag in tags %}
+                        <option value="{{ tag.id }}" {% if tag in posted_tags %} selected="selected" {% endif %} >
+                            {{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+
+                <div class="col-md-5">
+                    <h3>Category</h3>
+                        <hr>
+                        <select class="selectpicker" name="category">
+                            {% for category in catagories %}
+                            <option value="{{ category.id }}" {% if category == posted_category %} selected="selected" {% endif %} >
+                                {{ category.name }}</option>
+                            {% endfor %}
+                    </select>
+                </div>
             </div>
-            <hr/>
+            <br><br><br><br>
             <div class="row">
-                <h3>Category</h3>
-                <select class="selectpicker" name="category">
-                    {% for category in catagories %}
-                    <option value="{{ category.id }}" {% if category == posted_category %} selected="selected" {% endif %} >
-                        {{ category.name }}</option>
-                    {% endfor %}
-                </select>
+                <button type="submit" class="btn btn-primary" name="publish" value="publish">Publish</button>
+                <button type="submit" class="btn btn-success" name="draft" value="draft">Save draft</button>
+                <button type="submit" class="btn btn-default" name="preview" value="draft">Preview</button>
             </div>
+        
         </div>
     </div>
+
+            
+
+    
+
 </form>
 {% endblock %}
 
 
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.5/js/bootstrap-select.min.js"></script>
+<script src="http://cdn.staticfile.org/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
 {% endblock %}
