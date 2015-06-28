@@ -24,18 +24,12 @@ MayBlog is a blog system with following features:
     - RESTful API (under development)
 
 
-To Do:
-
-- allow register flag
-- roles
-- access limitation by roles
-- RESTful API
 
 ##How to run it ?
 
 ###Run from source code
 
-If you want to see more about the source code, checkout the [source code readme](blog/readme.md)
+If you want to see more about the source code, checkout the [source code readme](blog)
 
 
 ###Run by docker
