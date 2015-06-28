@@ -1,29 +1,7 @@
 Welcome to May Blog
 ====================
 
-##Why name it MayBlog?
-
-Just because it is a blog system and started in May, 2015, and MayBlog is vivid.
- :P
-
-##Features
-
-MayBlog is a django based blog system with following features:
-
-- multiuser
-- multirole (under development)
-- posts, pages, tags, and categories
-- markdown support
-- admin interface
-- RESTful API (under development)
-- multiple setting files, easily switch environment: dev, prod, custom, etc
-
-To Do:
-
-- allow register flag
-- roles
-- access limitation by roles
-- RESTful API
+>MayBlog is Powered by django, here are some instruction on how to run it.
 
 ##How to run it ?
 
@@ -47,6 +25,11 @@ If the models are changed after the datebase is created, you need to run the fol
 python manage.py makemigrations #create migration script
 python manage.py migrate #migrate datebase
 ```
+
+
+####ps: 
+
+I use sqlite in dev settings and mysql in prod settings, if you would like to use postgres, mongodb, etc, install relevant python prerequisite first.
 
 ###Run MayBlog
 
@@ -80,13 +63,19 @@ By default, MayBlog uses dev settings(`blog.settings.dev`) in `blog/settings/dev
 
 `blog.settings.prod` is used in product environment and `blog.settings.stage` is in test environment. You can overwrite these settings or create your custom settings and switch to it.
 
-####How to switch to your aim settings
+####How to switch settings
 
 Just set your settings in bash with `export` command. For example, if you want to run MayBlog in product environment, you can switch to prod settings like this:
 
 ```
 export DJANGO_SETTINGS_MODULE="blog.settings.prod"
 ```
+
+##Deploy MayBlog
+
+I recommend you to deploy MayBlog by `Ubuntu + nginx + uwsgi`.
+
+[Here](http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html) is an instruction.
 
 ###What's more
 
