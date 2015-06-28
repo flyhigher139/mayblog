@@ -48,7 +48,11 @@ class UserGroupForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(UserGroupForm, self).__init__(*args, **kwargs)
-        self.fields['groups'].choices = [(group.id, group.name) for group in Group.objects.all() ]
+        groups = [(group.id, group.name) for group in Group.objects.all() ]
+        # self.fields['groups'].choices = groups
+        # self.fields['groups'].widget = forms.SelectMultiple(attrs={'size':len(groups)})
+        self.fields['groups'] = forms.MultipleChoiceField(choices=groups, widget=forms.SelectMultiple(attrs={'size':len(groups)}))
+
 
     
 
