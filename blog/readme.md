@@ -1,7 +1,7 @@
 Welcome to May Blog
 ====================
 
->MayBlog is Powered by django, here are some instruction on how to run it.
+>MayBlog is powered by django, here are some instruction on how to run it.
 
 ##How to run it ?
 
@@ -41,6 +41,12 @@ python manage.py runserver 0.0.0.0:8000
 
 Then you can visit the blog with url: http://127.0.0.1:8000
 
+###Initialize MayBlog
+
+When the blog is run, checkout `http://127.0.0.1:8000/init` to initialize the system
+
+It will create the superuser, user groups(administrator, editor, writer, contributor, and reader), and assign permissions for each group.
+
 ###Admin MayBlog
 
 You can create a superuser to administer MayBlog in its admin interface:
@@ -51,8 +57,8 @@ python manage.py createsuperuser
 
 Then, you can administer MayBlog with following admin interface:
 
-- MayBlog admin: http://127.0.0.1:8000:admin/
-- Django's default admin: http://127.0.0.1:8000:admin2/
+- MayBlog admin: http://127.0.0.1:8000/admin/
+- Django's default admin: http://127.0.0.1:8000/admin2/
 
 - Login page: http://127.0.0.1:5000/accounts/login/
 - Register page: http://127.0.0.1:5000/accounts/register/ (if `REGISTER_IS_ALLOWED` is set to True in settings)
@@ -76,6 +82,8 @@ export DJANGO_SETTINGS_MODULE="blog.settings.prod"
 I recommend you to deploy MayBlog by `Ubuntu + nginx + uwsgi`.
 
 [Here](http://uwsgi-docs.readthedocs.org/en/latest/tutorials/Django_and_nginx.html) is an instruction.
+
+*Using [MayBlog's docker image](https://registry.hub.docker.com/u/gevin/mayblog/) is another recommended option*
 
 ###What's more
 

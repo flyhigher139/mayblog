@@ -47,6 +47,11 @@ Pull MayBlog image from docker hub:
 Build your own MayBlog image:
 
 
+###Initialize MayBlog
+
+When the blog is run, checkout `http://host:port/init` to initialize the system
+
+It will create the superuser, user groups(administrator, editor, writer, contributor, and reader), and assign permissions for each group.
 
 ##What's more
 
