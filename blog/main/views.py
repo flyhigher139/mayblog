@@ -120,7 +120,8 @@ class AdminIndex(View):
         return render(request, self.template_name, data)
 
 class AdminPosts(View):
-    template_name = 'blog_admin/posts.html'
+    template_name_posts = 'blog_admin/posts.html'
+    template_name_pages = 'blog_admin/pages.html'
 
     @method_decorator(login_required)
     def get(self, request, is_blog_page=False):
@@ -134,10 +135,12 @@ class AdminPosts(View):
             if not request.user.has_perm('main.change_page'):
                 return HttpResponseForbidden()
             posts = models.Page.objects.all()
+            template_name = self.template_name_pages
         else:
             posts = models.Post.objects.all()
             if not request.user.has_perm('main.change_post'):
                 posts = posts.filter(author=request.user)
+            template_name = self.template_name_posts
 
         posts = posts.filter(is_draft=flag)
         key = request.GET.get('key')
@@ -158,7 +161,7 @@ class AdminPosts(View):
         data['is_blog_page'] = is_blog_page
         data['allow_search'] = True
         
-        return render(request, self.template_name, data)
+        return render(request, template_name, data)
 
 class AdminPost(View):
     template_name = 'blog_admin/post.html'

@@ -12,52 +12,32 @@
             <tr>
                 <th>No.</th>
                 <th>Title</th>
-                <th>Slug</th>
+                <th>Abstract</th>
                 <th>Author</th>
                 <th>Publish Date</th>
                 <th>Update Date</th>
                 <th>Actions</th>
             </tr>
-    </thead>
-    <tbody>
-    {% if is_blog_page %}
-        {% for post in posts %}
-        <tr id="post-{{ post.id }}">
-            <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'main:page' post.id %}" target="_blank">{{ post.title }}</td>
-            <td>{{ post.slug }}</td>
-            <td>{{ post.author }}</td>
-            <td>{{ post.pub_time }}</td>
-            <td>{{ post.update_time }}</td>
-            <td>
-                <a href="{% url 'main:admin_edit_page' post.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-                &nbsp
-                <a href="{% url 'main:admin_delete_page' post.id %}"  class="del-post"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="7" style="text-align: left">No pages yet</td></tr>
-        {% endfor %}
-    {% else %}
-        {% for post in posts %}
-        <tr id="post-{{ post.id }}">
-            <td>{{ forloop.counter }}</td>
-            <td><a href="{% url 'main:post' post.id %}" target="_blank">{{ post.title }}</td>
-            <td>{{ post.abstract }}</td>
-            <td>{{ post.author }}</td>
-            <td>{{ post.pub_time }}</td>
-            <td>{{ post.update_time }}</td>
-            <td>
-                <a href="{% url 'main:admin_edit_post' post.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
-                &nbsp
-                <a href="{% url 'main:admin_delete_post' post.id %}"  class="del-post"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="7" style="text-align: left">No posts yet</td></tr>
-        {% endfor %}
-    {% endif %}      
-    </tbody>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+            <tr id="post-{{ post.id }}">
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'main:post' post.id %}" target="_blank">{{ post.title }}</td>
+                <td>{{ post.abstract }}</td>
+                <td>{{ post.author }}</td>
+                <td>{{ post.pub_time }}</td>
+                <td>{{ post.update_time }}</td>
+                <td>
+                    <a href="{% url 'main:admin_edit_post' post.id %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                    &nbsp
+                    <a href="{% url 'main:admin_delete_post' post.id %}"  class="del-post"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="text-align: left">No posts yet</td></tr>
+            {% endfor %}      
+        </tbody>
     </table>
 
     {% bootstrap_pagination posts %}
