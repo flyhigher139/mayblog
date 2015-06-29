@@ -1,7 +1,7 @@
 import os
 from base import *
 
-DEBUG = False
+DEBUG = os.environ['DEBUG'] or True
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['localhost', '127.0.0.1', '111.222.333.444', 'mywebsite.com']
 
