@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     url(r'^admin/$', views.AdminIndex.as_view(), name='admin_index'),
+    url(r'^admin/meta$', views.AdminBlogMeta.as_view(), name='admin_blog_meta'),
     url(r'^admin/posts$', views.AdminPosts.as_view(), name='admin_posts'),
     url(r'^admin/pages$', views.AdminPosts.as_view(), {'is_blog_page':True}, name='admin_pages'),
     url(r'^admin/post$', views.AdminPost.as_view(), name='admin_post'),

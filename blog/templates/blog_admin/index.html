@@ -1,2 +1,35 @@
 {% extends 'admin_base.html' %}
 {% block title %}May Blog Admin {% endblock %}
+
+{%block main %}
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <h3>
+            Blog Meta Data &nbsp;
+            <small><a href="{% url 'main:admin_blog_meta' %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a></small>
+        </h3>
+        <hr>
+        <dl class="dl-horizontal">
+            <dt>Blog Name:</dt>
+            <dd>{{ site_info.title }}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Blog Subtitle:</dt>
+            <dd>{{ site_info.subtitle }}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Blog Description:</dt>
+            <dd>{{ site_info.desc }}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Blog Owner:</dt>
+            <dd>{{ site_info.author }}</dd>
+        </dl>
+        <dl class="dl-horizontal">
+            <dt>Blog Keywords:</dt>
+            <dd>{{ site_info.keywords }}</dd>
+        </dl>
+    </div>
+</div>
+
+{% endblock %}

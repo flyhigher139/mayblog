@@ -53,6 +53,12 @@ def get_site_meta():
     except models.BlogMeta.DoesNotExist:
         pass
 
+    try:
+        record = models.BlogMeta.objects.get(key='blog_subtitle')
+        seo['subtitle'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
     return seo
 
 class Index(View):
@@ -151,15 +157,60 @@ class Page(View):
             raise Http404
         data = {'page':page}
         data['seo'] = get_site_meta()
-        
+
         return render(request, self.template_name, data)
 
 class AdminIndex(View):
     template_name = 'blog_admin/index.html'
     @method_decorator(login_required)
     def get(self, request):
-        data = {}
+        data = {'site_info':get_site_meta()}
         return render(request, self.template_name, data)
+
+class AdminBlogMeta(View):
+    template_name = 'main/simple_form.html'
+    @method_decorator(login_required)
+    def get(self, request, form=None):
+        if not form:
+            form = forms.BlogMetaForm(initial=get_site_meta())
+
+        data = {'form':form}
+        return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = forms.BlogMetaForm(request.POST)
+        if form.is_valid():
+            record = models.BlogMeta.objects.get(key='blog_name')
+            record.value = form.cleaned_data['title']
+            record.save()
+
+            record = models.BlogMeta.objects.get(key='blog_desc')
+            record.value = form.cleaned_data['desc']
+            record.save()
+            
+            record = models.BlogMeta.objects.get(key='owner')
+            record.value = form.cleaned_data['author']
+            record.save()
+            
+            record = models.BlogMeta.objects.get(key='keywords')
+            record.value = form.cleaned_data['keywords']
+            record.save()
+            
+            record = models.BlogMeta.objects.get(key='blog_subtitle')
+            record.value = form.cleaned_data['subtitle']
+            record.save()
+
+            msg = 'Succeed to update blog meta'
+            messages.add_message(request, messages.SUCCESS, msg)
+            url = reverse('main:admin_index')
+
+            return redirect(url)
+
+            
+
+
+        return self.get(request, form)
 
 class AdminPosts(View):
     template_name_posts = 'blog_admin/posts.html'

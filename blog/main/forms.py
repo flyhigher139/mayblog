@@ -20,3 +20,10 @@ class CategoryForm(forms.Form):
 
 class TagForm(forms.Form):
     tags = forms.CharField(max_length=256, label='Tags')
+
+class BlogMetaForm(forms.Form):
+    title = forms.CharField(max_length=256, label='Title')
+    subtitle = forms.CharField(max_length=256, label='SubTitle')
+    desc = forms.CharField(max_length=256, label='Description')
+    author = forms.CharField(max_length=256, label='Owner')
+    keywords = forms.CharField(max_length=256, label='Keywords')
