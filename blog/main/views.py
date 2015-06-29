@@ -27,6 +27,34 @@ PER_PAGE = settings.MAY_BLOG['PER_PAGE']
 PER_PAGE_ADMIN = settings.MAY_BLOG['PER_PAGE_ADMIN']
 
 
+def get_site_meta():
+    seo = {}
+    try:
+        record = models.BlogMeta.objects.get(key='blog_name')
+        seo['title'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    try:
+        record = models.BlogMeta.objects.get(key='blog_desc')
+        seo['desc'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    try:
+        record = models.BlogMeta.objects.get(key='owner')
+        seo['author'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    try:
+        record = models.BlogMeta.objects.get(key='keywords')
+        seo['keywords'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    return seo
+
 class Index(View):
     template_name = 'main/index.html'
     def get(self, request):
@@ -72,6 +100,8 @@ class Index(View):
         data['category_id'] = category
         data['tag_id'] = tag
 
+        data['seo'] = get_site_meta()
+
         return render(request, self.template_name, data)
 
 class Post(View):
@@ -100,6 +130,15 @@ class Post(View):
 
         data['comment_script'] = comment_script
 
+        seo = {
+            'title': post.title, 
+            'desc': post.abstract,
+            'author': post.author.username,
+            'keywords': ', '.join([tag.name for tag in tags])
+        }
+
+        data['seo'] = seo
+
         return render(request, self.template_name, data)
 
 class Page(View):
@@ -111,6 +150,8 @@ class Page(View):
         except models.Page.DoesNotExist:
             raise Http404
         data = {'page':page}
+        data['seo'] = get_site_meta()
+        
         return render(request, self.template_name, data)
 
 class AdminIndex(View):

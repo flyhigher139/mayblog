@@ -96,15 +96,22 @@ class BlogInitView(View):
             initialization.flag = True
             initialization.save()
 
-            obj = models.BlogMeta()
-            obj.key = 'blog_name'
-            obj.value = 'MayBlog'
-            obj.save()
+            # obj = models.BlogMeta()
+            # obj.key = 'blog_name'
+            # obj.value = 'MayBlog'
+            # obj.save()
 
-            obj = models.BlogMeta()
-            obj.key = 'blog_subtitle'
-            obj.value = 'Welcome to MayBlog'
-            obj.save()
+            obj, created = models.BlogMeta.objects.get_or_create(key='blog_name', defaults={'value':'MayBlog'})
+
+            # # obj = models.BlogMeta()
+            # # obj.key = 'blog_subtitle'
+            # # obj.value = 'Welcome to MayBlog'
+            # # obj.save()
+
+            obj, created = models.BlogMeta.objects.get_or_create(key='blog_subtitle', defaults={'value':'Welcome to MayBlog'})
+            obj, created = models.BlogMeta.objects.get_or_create(key='blog_desc', defaults={'value':'desc'})
+            obj, created = models.BlogMeta.objects.get_or_create(key='owner', defaults={'value':'MayBlog'})
+            obj, created = models.BlogMeta.objects.get_or_create(key='keywords', defaults={'value':'MayBlog'})
 
             msg = 'Successfully Initialized'
             messages.add_message(request, messages.SUCCESS, msg)
