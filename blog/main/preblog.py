@@ -89,6 +89,9 @@ class BlogInitView(View):
             # Create reader group
             group = create_reader_group()
 
+            # Create default category
+            default_category, created = models.Category.objects.get_or_create(name='default')
+
             initialization, created = models.BlogMeta.objects.get_or_create(key='initialization')
             initialization.flag = True
             initialization.save()
