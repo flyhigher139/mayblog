@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.encoding import smart_text
 from django.db.models import Count, Q
 
 from guardian.shortcuts import assign_perm, get_perms
@@ -228,7 +229,7 @@ class AdminPost(View):
             cur_post.raw = form.cleaned_data['content']
             cur_post.abstract = form.cleaned_data['abstract']
             html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
-            cur_post.content_html = html
+            cur_post.content_html = smart_text(html)
             cur_post.author = request.user
             tag_ids = request.POST.getlist('tags')
             category_id = request.POST.get('category', None)
@@ -302,7 +303,7 @@ class AdminPage(View):
             cur_post.raw = form.cleaned_data['content']
             cur_post.slug = form.cleaned_data['slug']
             html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
-            cur_post.content_html = html
+            cur_post.content_html = smart_text(html)
             cur_post.author = request.user
 
             if request.POST.get('publish'):
