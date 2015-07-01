@@ -38,9 +38,9 @@
                     <td>{{ forloop.counter }}</td>
                     <td><a href="{% url 'main:admin_filter_posts' %}?category={{ category.id }}">{{ category.name }}</a></td>
                     <td>
-                        <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                        <a href="{% url 'main:admin_edit_category' category.id %}" class="edit-category" data-name='{{ category.name }}'><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                         &nbsp
-                        <a href="#"  class="del-tag"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                        <a href="{% url 'main:admin_delete_category' category.id %}" class="del-category"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -56,23 +56,47 @@
 
 {% block js %}
 <script type="text/javascript">
-$('.del-post').on('click', function (event) {
-    // var answer = confirm("Delete post?");
-    // return answer;
-
+$('.del-category').on('click', function (event) {
+    id = $(this).data('id')
+    var url = $(this).attr('href');
     bootbox.confirm("Are you sure?", function(result) {
-      // url = $('#del-post').attr('href');
-      url = event.target.href;
-
-      // alert(url);
-      if(result){
-        $.get(url, function(){
-            location.reload();
-        });
+        if(result){
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(result){
+                    location.reload();
+                }
+            });
         }
 
     });
     return false;
   });
+
+$('.edit-category').on('click', function (event){
+    var url = $(this).attr('href');
+    var name = $(this).data('name')
+    bootbox.prompt({
+        title: "Update category",
+        value: name,
+        callback: function(result) {
+            if (result === null) {
+              return;
+            } else {
+              $.ajax({
+                url:url,
+                type: 'GET',
+                data: {'name': result},
+                success: function(result2){
+                    location.reload();
+                }
+              });
+            }
+        }
+    });
+    return false;
+});
+
 </script>
 {% endblock %}

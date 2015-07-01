@@ -40,9 +40,9 @@
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{% url 'main:admin_filter_posts' %}?tag={{ tag.id }}">{{ tag.name }}</a></td>
                 <td>
-                    <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
+                    <a href="{% url 'main:admin_edit_tag' tag.id %}" class="edit-tag" data-name={{ tag.name }}><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                     &nbsp
-                    <a href="{% url 'main:api_tag' tag.id %}"  class="del-tag" data-id={{tag.id}} ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                    <a href="{% url 'main:admin_delete_tag' tag.id %}" class="del-tag" data-id={{ tag.id }} ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
                 </td>
             </tr>
             {% endfor %}
@@ -64,27 +64,56 @@ $('.del-tag').on('click', function (event) {
     id = $(this).data('id')
     var url = $(this).attr('href');
     bootbox.confirm("Are you sure?", function(result) {
-      if(result){
-        $.ajax({
-            url: url,
-            type: 'DELETE',
-            crossDomain: false,
-            // username = 'gevin',
-            // password = 'gevin',
-            beforeSend: function(xhr){
-                xhr.setRequestHeader("Authorization",
-                    "Basic " + btoa('gevin' + ":" + 'gevin'));
-            },
+        if(result){
+            // $.ajax({
+            //     url: url,
+            //     type: 'DELETE',
+            //     crossDomain: false,
+            //     beforeSend: function(xhr){
+            //         xhr.setRequestHeader("Authorization",
+            //             "Basic " + btoa('gevin' + ":" + 'gevin'));
+            //     },
 
-            success: function(result) {
-                // Do something with the result
-                location.reload();
-            }
-        });
-      }
+            //     success: function(result) {
+            //         location.reload();
+            //     }
+            // });
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(result){
+                    location.reload();
+                }
+            });
+        }
 
     });
     return false;
   });
+
+$('.edit-tag').on('click', function (event){
+    var url = $(this).attr('href');
+    var name = $(this).data('name')
+    bootbox.prompt({
+        title: "Update tag",
+        value: name,
+        callback: function(result) {
+            if (result === null) {
+              return;
+            } else {
+              $.ajax({
+                url:url,
+                type: 'GET',
+                data: {'name': result},
+                success: function(result2){
+                    location.reload();
+                }
+              });
+            }
+        }
+    });
+    return false;
+});
+
 </script>
 {% endblock %}

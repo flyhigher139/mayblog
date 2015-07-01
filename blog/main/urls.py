@@ -27,6 +27,10 @@ urlpatterns += patterns('',
     url(r'^admin/tags/$', views.AdminTags.as_view(), name='admin_tags'),
     url(r'^admin/category/$', views.AdminCategory.as_view(), name='admin_category'),
     url(r'^admin/filter-posts$', views.AdminFilterPosts.as_view(), name='admin_filter_posts'),
+    url(r'^admin/tags/delete/(?P<pk>[0-9]+)$', views.simple_delete, {'flag':'tag'}, name='admin_delete_tag'),
+    url(r'^admin/categories/delete/(?P<pk>[0-9]+)$', views.simple_delete, {'flag':'category'}, name='admin_delete_category'),
+    url(r'^admin/tags/edit/(?P<pk>[0-9]+)$', views.simple_update, {'flag':'tag'}, name='admin_edit_tag'),
+    url(r'^admin/categories/edit/(?P<pk>[0-9]+)$', views.simple_update, {'flag':'category'}, name='admin_edit_category'),
 )
 
 urlpatterns += patterns('',

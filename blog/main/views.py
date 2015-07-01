@@ -590,42 +590,43 @@ def filter_posts_by_category(pk):
     posts = category.post_set.all()
     return posts
 
-# def simple_update(request, pk, flag=None):
-#     # flag = request.GET.get('flag', '')
-#     if not flag:
-#         raise Http404
+def simple_update(request, pk, flag=None):
+    # flag = request.GET.get('flag', '')
+    if not flag:        raise Http404
 
-#     if flag.lower() == 'tag':
-#         model = models.Tag
-#     elif flag.lower == 'category':
-#         model = models.Category
-#     else:
-#         raise Http404
+    if flag.lower() == 'tag':
+        model = models.Tag
+    elif flag.lower() == 'category':
+        model = models.Category
+    else:
+        return HttpResponse(flag)
 
-#     name = request.POST.get('name', '')
-#     if not name:
-#         return HttpResponse('Please post the correct name')
+        raise Http404
 
-#     record = model.objects.get(pk=pk)
-#     record.name = name
-#     record.save()
+    name = request.GET.get('name', '')
+    if not name:
+        return HttpResponse('Please post the correct name')
 
-#     return HttpResponse('Succeed to update {0}'.format(flag))
+    record = model.objects.get(pk=pk)
+    record.name = name
+    record.save()
 
-# def simple_delete(request, pk, flag=None):
-#     # flag = request.GET.get('flag', '')
-#     if not flag:
-#         raise Http404
+    return HttpResponse('Succeed to update {0}'.format(flag))
 
-#     if flag.lower() == 'tag':
-#         model = models.Tag
-#     elif flag.lower == 'category':
-#         model = models.Category
-#     else:
-#         raise Http404
+def simple_delete(request, pk, flag=None):
+    # flag = request.GET.get('flag', '')
+    if not flag:
+        raise Http404
 
-#     record = model.objects.get(pk=pk)
-#     record.delete()
+    if flag.lower() == 'tag':
+        model = models.Tag
+    elif flag.lower() == 'category':
+        model = models.Category
+    else:
+        raise Http404
 
-#     return HttpResponse('Succeed to delete {0}'.format(flag)) 
+    record = model.objects.get(pk=pk)
+    record.delete()
+
+    return HttpResponse('Succeed to delete {0}'.format(flag)) 
 
