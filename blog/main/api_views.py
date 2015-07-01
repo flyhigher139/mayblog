@@ -1,0 +1,30 @@
+from django.http import HttpResponse
+# from django.conf import settings
+
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
+from . import models
+from . import serializers
+
+
+class CategoryListView(generics.ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+    queryset = models.Category.objects.all()
+    serializer_class = serializers.CategorySerializer
+
+class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Category.objects.all()
+    serializer_class = serializers.CategorySerializer
+    permission_classes = (IsAdminUser,)
+
+class TagListView(generics.ListCreateAPIView):
+    permission_classes = (IsAdminUser,)
+    queryset = models.Tag.objects.all()
+    serializer_class = serializers.TagSerializer
+
+class TagDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Tag.objects.all()
+    serializer_class = serializers.TagSerializer
+    permission_classes = (IsAdminUser,)

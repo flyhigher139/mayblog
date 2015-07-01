@@ -233,5 +233,10 @@ class GroupsView(View):
 
         return render(request, self.template_name, data)
 
+class ProfileView(View):
+    template_name = ''
+    def get(self, request):
+        return HttpResponse('waiting to code')
+
 
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
-from . import views, preblog
+from . import views, preblog, api_views
 
 urlpatterns = patterns('',
     # Examples:
@@ -32,4 +32,12 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     # url(r'^init$', preblog.init_blog),
     url(r'^init$', preblog.BlogInitView.as_view()),
+)
+
+#APIs
+urlpatterns += patterns('',
+    url(r'^api/categories$', api_views.CategoryListView.as_view()),
+    url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
+    url(r'^api/tags$', api_views.TagListView.as_view()),
+    url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view()),
 )
