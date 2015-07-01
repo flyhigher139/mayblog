@@ -10,14 +10,14 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.utils.encoding import smart_text
+# from django.utils.encoding import smart_text
 from django.db.models import Count, Q
 
 from guardian.shortcuts import assign_perm, get_perms
 from guardian.core import ObjectPermissionChecker
 from guardian.decorators import permission_required
 
-import markdown2
+# import markdown2
 
 from . import models, forms, misc
 
@@ -320,8 +320,8 @@ class AdminPost(View):
             cur_post.title = form.cleaned_data['title']
             cur_post.raw = form.cleaned_data['content']
             cur_post.abstract = form.cleaned_data['abstract']
-            html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
-            cur_post.content_html = smart_text(html)
+            # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
+            # cur_post.content_html = smart_text(html)
             cur_post.author = request.user
             tag_ids = request.POST.getlist('tags')
             category_id = request.POST.get('category', None)
@@ -394,8 +394,8 @@ class AdminPage(View):
             cur_post.title = form.cleaned_data['title']
             cur_post.raw = form.cleaned_data['content']
             cur_post.slug = form.cleaned_data['slug']
-            html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
-            cur_post.content_html = smart_text(html)
+            # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
+            # cur_post.content_html = smart_text(html)
             cur_post.author = request.user
 
             if request.POST.get('publish'):
@@ -589,4 +589,43 @@ def filter_posts_by_category(pk):
 
     posts = category.post_set.all()
     return posts
+
+# def simple_update(request, pk, flag=None):
+#     # flag = request.GET.get('flag', '')
+#     if not flag:
+#         raise Http404
+
+#     if flag.lower() == 'tag':
+#         model = models.Tag
+#     elif flag.lower == 'category':
+#         model = models.Category
+#     else:
+#         raise Http404
+
+#     name = request.POST.get('name', '')
+#     if not name:
+#         return HttpResponse('Please post the correct name')
+
+#     record = model.objects.get(pk=pk)
+#     record.name = name
+#     record.save()
+
+#     return HttpResponse('Succeed to update {0}'.format(flag))
+
+# def simple_delete(request, pk, flag=None):
+#     # flag = request.GET.get('flag', '')
+#     if not flag:
+#         raise Http404
+
+#     if flag.lower() == 'tag':
+#         model = models.Tag
+#     elif flag.lower == 'category':
+#         model = models.Category
+#     else:
+#         raise Http404
+
+#     record = model.objects.get(pk=pk)
+#     record.delete()
+
+#     return HttpResponse('Succeed to delete {0}'.format(flag)) 
 

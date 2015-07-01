@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+import markdown2
 
 # Create your models here.
 
@@ -12,11 +13,15 @@ class Post(models.Model):
     raw = models.TextField()
     pub_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
-    content_html = models.TextField()
+    content_html = models.TextField(null=True, blank=True)
     author = models.ForeignKey(User)
     tags = models.ManyToManyField('Tag')
     category = models.ForeignKey('Category', null=True, blank=True)
     is_draft = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        self.content_html = markdown2.markdown(self.raw, extras=['code-friendly', 'fenced-code-blocks'])
+        super(Post, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
@@ -42,6 +47,10 @@ class Page(models.Model):
     content_html = models.TextField()
     author = models.ForeignKey(User)
     is_draft = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        self.content_html = markdown2.markdown(self.raw, extras=['code-friendly', 'fenced-code-blocks'])
+        super(Post, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.title
