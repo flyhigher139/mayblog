@@ -42,7 +42,7 @@
                 <td>
                     <a href="#" class="edit-tag"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a>
                     &nbsp
-                    <a href="#"  class="del-tag"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
+                    <a href="{% url 'main:api_tag' tag.id %}"  class="del-tag" data-id={{tag.id}} ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> </a>
                 </td>
             </tr>
             {% endfor %}
@@ -58,20 +58,22 @@
 
 {% block js %}
 <script type="text/javascript">
-$('.del-post').on('click', function (event) {
+$('.del-tag').on('click', function (event) {
     // var answer = confirm("Delete post?");
     // return answer;
-
+    id = $(this).data('id')
+    var url = $(this).attr('href');
     bootbox.confirm("Are you sure?", function(result) {
-      // url = $('#del-post').attr('href');
-      url = event.target.href;
-
-      // alert(url);
       if(result){
-        $.get(url, function(){
-            location.reload();
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function(result) {
+                // Do something with the result
+                location.reload();
+            }
         });
-        }
+      }
 
     });
     return false;

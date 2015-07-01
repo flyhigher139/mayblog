@@ -27,4 +27,4 @@ class TagListView(generics.ListCreateAPIView):
 class TagDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Tag.objects.all()
     serializer_class = serializers.TagSerializer
-    permission_classes = (IsAdminUser,)
+    # permission_classes = (IsAdminUser,)

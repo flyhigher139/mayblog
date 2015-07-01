@@ -39,5 +39,5 @@ urlpatterns += patterns('',
     url(r'^api/categories$', api_views.CategoryListView.as_view()),
     url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
     url(r'^api/tags$', api_views.TagListView.as_view()),
-    url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view()),
+    url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view(), name='api_tag'),
 )
