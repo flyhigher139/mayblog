@@ -68,6 +68,14 @@ $('.del-tag').on('click', function (event) {
         $.ajax({
             url: url,
             type: 'DELETE',
+            crossDomain: false,
+            // username = 'gevin',
+            // password = 'gevin',
+            beforeSend: function(xhr){
+                xhr.setRequestHeader("Authorization",
+                    "Basic " + btoa('gevin' + ":" + 'gevin'));
+            },
+
             success: function(result) {
                 // Do something with the result
                 location.reload();
