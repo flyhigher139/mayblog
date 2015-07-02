@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -12,7 +14,15 @@ class Account(models.Model):
     homepage = models.URLField(null=True, blank=True)
     weixin = models.URLField(null=True, blank=True)
     douban = models.URLField(null=True, blank=True)
+    weibo = models.URLField(null=True, blank=True)
+    twitter = models.URLField(null=True, blank=True)
     user = models.OneToOneField(User)
+
+
+    @receiver(post_save, sender=User)
+    def create_user_account(sender, instance=None, created=False, **kwargs):
+        if created:
+            Account.objects.get_or_create(user=instance, defaults={'display_name':instance.username})
 
     def __unicode__(self):
         return self.display_name
