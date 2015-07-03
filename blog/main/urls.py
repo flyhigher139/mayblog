@@ -44,4 +44,6 @@ urlpatterns += patterns('',
     url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
     url(r'^api/tags$', api_views.TagListView.as_view()),
     url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view(), name='api_tag'),
+    url(r'^api/posts$', api_views.PostListView.as_view()),
+    url(r'^api/posts/(?P<pk>[0-9]+)$', api_views.PostDetailView.as_view()),
 )
