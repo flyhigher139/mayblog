@@ -496,7 +496,7 @@ class AdminTags(View):
         if form.is_valid():
             tags = form.cleaned_data['tags'].split(',')
             for tag in tags:
-                tag_model, created = models.Tag.objects.get_or_create(name=tag)
+                tag_model, created = models.Tag.objects.get_or_create(name=tag.strip())
 
             msg = 'Succeed to create tags'
             messages.add_message(request, messages.SUCCESS, msg)
