@@ -25,7 +25,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{% url 'main:post' post.id %}" target="_blank">{{ post.title }}</td>
                 <td>{{ post.abstract }}</td>
-                <td>{{ post.author }}</td>
+                <td>{{ post.author.account.display_name }}</td>
                 <td>{{ post.pub_time }}</td>
                 <td>{{ post.update_time }}</td>
                 <td>
