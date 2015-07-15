@@ -39,23 +39,40 @@
         <hr>
         <dl class="dl-horizontal">
             <dt>Username Name:</dt>
-            <dd>***</dd>
+            <dd>{{account_info.username}}</dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Display Name:</dt>
-            <dd>***</dd>
+            <dd>{{account_info.display_name}}</dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Biography:</dt>
-            <dd>***</dd>
+            <dd>{{account_info.biography}}</dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Social Network:</dt>
-            <dd>***</dd>
+            <dd>
+                {% if account_info.github %}
+                    <a href='account_info.github'><i class="fa fa-github"></i></a>
+                {% endif %}
+
+                {% if account_info.twitter %}
+                    <a href='account_info.twitter'><i class="fa fa-twitter"></i></a>
+                {% endif %}
+
+                {% if account_info.weibo %}
+                    <a href='account_info.weibo'><i class="fa fa-weibo"></i></a>
+                {% endif %}
+
+            </dd>
         </dl>
         <dl class="dl-horizontal">
             <dt>Homepage:</dt>
-            <dd>****</dd>
+            <dd>
+                {% if account_info.homepage %}
+                <a href="{{account_info.homepage}}"><i class="fa fa-home"></i></a> {{account_info.homepage}}
+                {% endif %}
+            </dd>
         </dl>
     </div>
 </div>

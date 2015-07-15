@@ -16,6 +16,7 @@ class Account(models.Model):
     douban = models.URLField(null=True, blank=True)
     weibo = models.URLField(null=True, blank=True)
     twitter = models.URLField(null=True, blank=True)
+    github = models.URLField(null=True, blank=True)
     user = models.OneToOneField(User)
 
 

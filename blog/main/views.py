@@ -61,6 +61,24 @@ def get_site_meta():
 
     return seo
 
+def get_user_info(user):
+    try:
+        data = {
+            'username': user.username,
+            'display_name': user.account.display_name,
+            'biography': user.account.biography,
+            'homepage': user.account.homepage,
+            'weixin': user.account.weixin,
+            'douban': user.account.douban,
+            'twitter': user.account.twitter,
+            'github': user.account.github,
+            'weibo': user.account.weibo,
+        }
+    except:
+        data = None
+
+    return data
+
 class Index(View):
     template_name = 'main/index.html'
     def get(self, request):
@@ -164,7 +182,7 @@ class AdminIndex(View):
     template_name = 'blog_admin/index.html'
     @method_decorator(login_required)
     def get(self, request):
-        data = {'site_info':get_site_meta()}
+        data = {'site_info':get_site_meta(), 'account_info':get_user_info(request.user)}
         return render(request, self.template_name, data)
 
 class AdminBlogMeta(View):
