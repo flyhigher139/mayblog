@@ -53,6 +53,21 @@ class UserGroupForm(forms.Form):
         # self.fields['groups'].widget = forms.SelectMultiple(attrs={'size':len(groups)})
         self.fields['groups'] = forms.MultipleChoiceField(choices=groups, widget=forms.SelectMultiple(attrs={'size':len(groups)}))
 
+class ProfileForm(forms.Form):
+    display_name = forms.CharField(max_length='128')
+    biography = forms.CharField(required=False, widget=forms.Textarea)
+    homepage = forms.URLField(required=False)
+    weixin = forms.URLField(required=False)
+    douban = forms.URLField(required=False)
+    weibo = forms.URLField(required=False)
+    twitter = forms.URLField(required=False)
+    github = forms.URLField(required=False)
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(max_length=256, widget=forms.PasswordInput)
+    new_password = forms.CharField(max_length=256, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(max_length=256, widget=forms.PasswordInput)
+
 
     
 

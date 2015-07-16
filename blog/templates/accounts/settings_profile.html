@@ -1,0 +1,27 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block main %}
+{% load bootstrap3 %}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <ul class="nav nav-tabs">
+            <li role="presentation" {% if is_profile %} class="active" {% endif %}><a href="{% url 'accounts:profile' %}">Profile</a></li>
+            <li role="presentation" {% if is_password %} class="active" {% endif %}onkeyup=""><a href="{% url 'accounts:change_password' %}">Password</a></li>
+        </ul>
+        
+        <br>
+
+        <div class="col-md-10 col-md-offset-1">
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="btn btn-primary" name="submit">submit</button>
+        </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

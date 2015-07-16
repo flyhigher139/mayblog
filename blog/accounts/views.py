@@ -234,9 +234,29 @@ class GroupsView(View):
         return render(request, self.template_name, data)
 
 class ProfileView(View):
-    template_name = ''
-    def get(self, request):
-        return HttpResponse('waiting to code')
+    template_name = 'accounts/settings_profile.html'
+    def get(self, request, form=None):
+        data = {}
+        if not form:
+            form = forms.ProfileForm()
+
+        data['form'] = form
+        data['is_profile'] = True
+
+        return render(request, self.template_name, data)
+
+class ChangePasswordView(View):
+    template_name = 'accounts/settings_profile.html'
+    def get(self, request, form=None):
+        data = {}
+        if not form:
+            form = forms.ChangePasswordForm()
+
+        data['form'] = form
+        data['is_password'] = True
+
+        return render(request, self.template_name, data)
+
 
 
 
