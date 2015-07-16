@@ -235,15 +235,50 @@ class GroupsView(View):
 
 class ProfileView(View):
     template_name = 'accounts/settings_profile.html'
+
     def get(self, request, form=None):
         data = {}
+        form_data = {
+            'display_name' : request.user.account.display_name,
+            'biography' : request.user.account.biography,
+            'homepage' : request.user.account.homepage,
+            'weixin' : request.user.account.weixin,
+            'douban' : request.user.account.douban,
+            'weibo' : request.user.account.weibo,
+            'twitter' : request.user.account.twitter,
+            'github' : request.user.account.github
+        }
+
         if not form:
-            form = forms.ProfileForm()
+            form = forms.ProfileForm(initial=form_data)
 
         data['form'] = form
         data['is_profile'] = True
 
         return render(request, self.template_name, data)
+
+    def post(self, request):
+        form = forms.ProfileForm(request.POST)
+        if form.is_valid():
+            account = request.user.account
+
+            account.display_name = form.cleaned_data['display_name']
+            account.biography = form.cleaned_data['biography']
+            account.homepage = form.cleaned_data['homepage']
+            account.weixin = form.cleaned_data['weixin']
+            account.douban = form.cleaned_data['douban']
+            account.weibo = form.cleaned_data['weibo']
+            account.twitter = form.cleaned_data['twitter']
+            account.github = form.cleaned_data['github']
+
+            account.save()
+
+            msg = 'Succeed to update profile'
+            url = reverse('accounts:profile')
+            messages.add_message(request, messages.SUCCESS, msg)
+            return redirect(url)
+
+        return self.get(request, form)
 
 class ChangePasswordView(View):
     template_name = 'accounts/settings_profile.html'
