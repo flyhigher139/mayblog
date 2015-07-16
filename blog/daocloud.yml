@@ -8,8 +8,11 @@ env:
   - MYSQL_USERNAME="u1lXxFkfI6VZMY3R"
   - MYSQL_PASSWORD="p6IU12qCNwuyDH8mv"
   - MYSQL_INSTANCE_NAME="yuq4PD1r3o7hmKAb"
+  - MYSQL_PORT = 3306
+  - MYSQL_PORT_3306_TCP_ADDR = 10.10.26.58
 
 script:
+  - /usr/bin/python2.7 /usr/src/app/manage.py makemigrations
   - /usr/bin/python2.7 /usr/src/app/manage.py migrate
-  - /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
-  - service nginx restart
+  # - /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
+  # - service nginx restart
