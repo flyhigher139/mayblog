@@ -43,8 +43,8 @@ RUN ln -s /usr/src/app/mayblog_nginx.conf /etc/nginx/sites-enabled
 ADD supervisord.conf /etc/supervisord.conf
 
 RUN /usr/bin/python2.7 manage.py collectstatic --noinput
-RUN /usr/bin/python2.7 manage.py makemigrations
-RUN /usr/bin/python2.7 manage.py migrate
+# RUN /usr/bin/python2.7 manage.py makemigrations
+# RUN /usr/bin/python2.7 manage.py migrate
 RUN /usr/bin/python2.7 manage.py makemigrations
 RUN /usr/bin/python2.7 manage.py migrate
 

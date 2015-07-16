@@ -15,9 +15,9 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'huEa6SbKq9Zf2nFJ',
-        'USER': 'u5LhA34TwmuQr0Gb',
-        'PASSWORD': 'psba2ZyhOoxwTmGDW',
+        'NAME': 'V4HQUqcEA83F9BL1',
+        'USER': 'u4uf8Gl7bUCnXFQs',
+        'PASSWORD': 'pcqm8nCvzspDwFBAG',
         'HOST': '10.10.26.58',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
         # 'NAME': os.environ['MYSQL_INSTANCE_NAME'],
