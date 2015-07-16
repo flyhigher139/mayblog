@@ -10,6 +10,8 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from . import forms
 
@@ -236,6 +238,7 @@ class GroupsView(View):
 class ProfileView(View):
     template_name = 'accounts/settings_profile.html'
 
+    @method_decorator(login_required)
     def get(self, request, form=None):
         data = {}
         form_data = {
@@ -257,6 +260,7 @@ class ProfileView(View):
 
         return render(request, self.template_name, data)
 
+    @method_decorator(login_required)
     def post(self, request):
         form = forms.ProfileForm(request.POST)
         if form.is_valid():
@@ -282,15 +286,35 @@ class ProfileView(View):
 
 class ChangePasswordView(View):
     template_name = 'accounts/settings_profile.html'
+
+    @method_decorator(login_required)
     def get(self, request, form=None):
         data = {}
         if not form:
-            form = forms.ChangePasswordForm()
+            form = forms.ChangePasswordForm(initial={'username':request.user.username})
 
         data['form'] = form
         data['is_password'] = True
 
         return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = forms.ChangePasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['new_password']
+            user = request.user
+            user.set_password(password)
+
+            user.save()
+
+            msg = 'Succeed to update profile'
+            url = reverse('accounts:change_password')
+            messages.add_message(request, messages.SUCCESS, msg)
+            return redirect(url)
+
+        return self.get(request, form)
+
 
 
 
