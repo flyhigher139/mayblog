@@ -10,7 +10,7 @@ MAINTAINER Gevin <flyhigher139@gmail.com>
 ENV TZ "Asia/Shanghai"
 ENV TERM xterm
 
-ADD sources.list /etc/apt/sources.list
+# ADD sources.list /etc/apt/sources.list
 
 
 RUN apt-get update && apt-get install -y curl wget tar bzip2 unzip vim && \
