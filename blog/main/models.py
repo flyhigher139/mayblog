@@ -49,7 +49,7 @@ class Page(models.Model):
     is_draft = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        self.content_html = markdown2.markdown(self.raw, extras=['code-friendly', 'fenced-code-blocks'])
+        self.content_html = markdown2.markdown(self.raw, extras=['code-friendly', 'fenced-code-blocks']).encode('utf-8')
         super(Post, self).save(*args, **kwargs)
 
     def __unicode__(self):
