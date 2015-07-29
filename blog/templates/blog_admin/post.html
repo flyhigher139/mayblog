@@ -50,7 +50,10 @@
             </div>
             <br><br><br><br>
             <div class="row">
+                {% if perms.main.add_tag %}
+                <!-- { #contributors can not create new tag, but writer can# } -->
                 <button type="submit" class="btn btn-primary" name="publish" value="publish">Publish</button>
+                {% endif %}
                 <button type="submit" class="btn btn-success" name="draft" value="draft">Save draft</button>
                 <button type="submit" class="btn btn-default" name="preview" value="draft">Preview</button>
             </div>

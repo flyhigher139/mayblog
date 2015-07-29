@@ -7,7 +7,9 @@
     <div class="row">
         <h3>
             Blog Meta Data &nbsp;
+            {% if perms.main.change_blogmeta %}
             <small><a href="{% url 'main:admin_blog_meta' %}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> </a></small>
+            {% endif %}
         </h3>
         <hr>
         <dl class="dl-horizontal">
