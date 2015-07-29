@@ -63,18 +63,25 @@
           <ul class="nav navbar-nav">
             <li class="_active"><a href="{% url 'main:admin_index' %}">Home <span class="sr-only">(current)</span></a></li>
             <!-- <li><a href="#">Link</a></li> -->
+            {% if perms.main.add_post %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Posts <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{% url 'main:admin_posts' %}">All Posts</a></li>
                 <li><a href="{% url 'main:admin_post' %}">New Post</a></li>
                 <li><a href="{% url 'main:admin_posts' %}?draft=true">Drafts</a></li>
+                {% if perms.main.add_tag %}
                 <li class="divider"></li>
                 <li><a href="{% url 'main:admin_tags' %}">Tags</a></li>
+                {% endif %}
+
+                {% if perms.main.add_category %}
                 <li class="divider"></li>
                 <li><a href="{% url 'main:admin_category' %}">Category</a></li>
+                {% endif %}
               </ul>
             </li>
+            {% endif %}
             {% if perms.main.add_page %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Pages <span class="caret"></span></a>
