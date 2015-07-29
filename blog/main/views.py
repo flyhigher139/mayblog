@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # from django.utils.encoding import smart_text
 from django.db.models import Count, Q
+from django.contrib.auth.models import User
 
 from guardian.shortcuts import assign_perm, get_perms
 from guardian.core import ObjectPermissionChecker
@@ -304,6 +305,7 @@ class AdminPost(View):
                 form_data['title'] = post.title
                 form_data['content'] = post.raw
                 form_data['abstract'] = post.abstract
+                form_data['author_id'] = post.author.id
                 data['edit_flag'] = True
             except models.Post.DoesNotExist:
                 raise Http404
@@ -331,8 +333,9 @@ class AdminPost(View):
                     pk = int(pk)
                     cur_post = models.Post.objects.get(pk=pk)
                     checker = ObjectPermissionChecker(request.user)
-                    if not checker.has_perm('change_post', cur_post):
-                        return HttpResponseForbidden('forbidden')
+                    if not checker.has_perm('change_post', cur_post) \
+                        and not request.user.has_perm('main.change_post'):
+                        return HttpResponseForbidden('forbidden1')
                 except models.Post.DoesNotExist:
                     raise Http404
             cur_post.title = form.cleaned_data['title']
@@ -340,7 +343,8 @@ class AdminPost(View):
             cur_post.abstract = form.cleaned_data['abstract']
             # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             # cur_post.content_html = smart_text(html)
-            cur_post.author = request.user
+            cur_post.author = User.objects.get(pk=form.cleaned_data['author_id']) if form.cleaned_data['author_id'] else request.user
+            # cur_post.author = request.user
             tag_ids = request.POST.getlist('tags')
             category_id = request.POST.get('category', None)
             # return HttpResponse(len(tag_ids))
@@ -386,6 +390,7 @@ class AdminPage(View):
                 form_data['title'] = page.title
                 form_data['content'] = page.raw
                 form_data['slug'] = page.slug
+                form_data['author_id'] = page.author.id
                 data['edit_flag'] = True
             except models.Post.DoesNotExist:
                 raise Http404
@@ -414,7 +419,8 @@ class AdminPage(View):
             cur_post.slug = form.cleaned_data['slug']
             # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             # cur_post.content_html = smart_text(html)
-            cur_post.author = request.user
+            # cur_post.author = request.user
+            cur_post.author = User.objects.get(pk=form.cleaned_data['author_id']) if form.cleaned_data['author_id'] else request.user
 
             if request.POST.get('publish'):
                 cur_post.is_draft = False
