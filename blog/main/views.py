@@ -187,7 +187,7 @@ class AdminIndex(View):
 
 class AdminBlogMeta(View):
     template_name = 'main/simple_form.html'
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_blogmeta', accept_global_perms=True))
     def get(self, request, form=None):
         if not form:
             form = forms.BlogMetaForm(initial=get_site_meta())
@@ -195,7 +195,7 @@ class AdminBlogMeta(View):
         data = {'form':form}
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_blogmeta', accept_global_perms=True))
     def post(self, request):
         form = forms.BlogMetaForm(request.POST)
         if form.is_valid():
@@ -234,7 +234,7 @@ class AdminPosts(View):
     template_name_posts = 'blog_admin/posts.html'
     template_name_pages = 'blog_admin/pages.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def get(self, request, is_blog_page=False):
         data = {}
         draft = request.GET.get('draft')
@@ -486,7 +486,7 @@ class DeletePage(View):
 class AdminTags(View):
     template_name = 'blog_admin/tags.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_tag', accept_global_perms=True))
     def get(self, request, form=None):
         if not form:
             form = forms.TagForm()
@@ -508,7 +508,7 @@ class AdminTags(View):
 
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_tag', accept_global_perms=True))
     def post(self, request, form=None):
         form = forms.TagForm(request.POST)
         if form.is_valid():
@@ -526,7 +526,7 @@ class AdminTags(View):
 class AdminCategory(View):
     template_name = 'blog_admin/category.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_category', accept_global_perms=True))
     def get(self, request, form=None):
         if not form:
             form = forms.CategoryForm()
@@ -544,7 +544,7 @@ class AdminCategory(View):
 
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_category', accept_global_perms=True))
     def post(self, request, form=None):
         form = forms.CategoryForm(request.POST)
         if form.is_valid():
@@ -562,7 +562,7 @@ class AdminCategory(View):
 class AdminFilterPosts(View):
     template_name = 'blog_admin/posts.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def get(self, request):
         tag_id = request.GET.get('tag')
         category_id = request.GET.get('category')
@@ -608,9 +608,13 @@ def filter_posts_by_category(pk):
     posts = category.post_set.all()
     return posts
 
+# In MayBlog's permission system, if you can change tags, 
+# you can also change categories
+@permission_required('main.change_tag', accept_global_perms=True)
 def simple_update(request, pk, flag=None):
     # flag = request.GET.get('flag', '')
-    if not flag:        raise Http404
+    if not flag:
+        raise Http404
 
     if flag.lower() == 'tag':
         model = models.Tag
@@ -631,6 +635,9 @@ def simple_update(request, pk, flag=None):
 
     return HttpResponse('Succeed to update {0}'.format(flag))
 
+# In MayBlog's permission system, if you can delete tags, 
+# you can also delete categories
+@permission_required('main.delete_tag', accept_global_perms=True)
 def simple_delete(request, pk, flag=None):
     # flag = request.GET.get('flag', '')
     if not flag:
