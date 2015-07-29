@@ -371,6 +371,8 @@ class AdminPost(View):
             assign_perm('main.change_post', request.user, cur_post)
             assign_perm('main.delete_post', request.user, cur_post)
 
+            if request.POST.get('preview'):
+                url = reverse('main:post', kwargs={'pk':cur_post.id})
             return redirect(url)
 
         return self.get(request, form)
