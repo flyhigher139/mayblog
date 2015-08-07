@@ -164,6 +164,9 @@ class Post(View):
 
         data['seo'] = seo
 
+        post_pages = models.Page.objects.filter(is_draft=False)
+        data['pages'] = post_pages
+
         return render(request, self.template_name, data)
 
 class Page(View):
@@ -176,6 +179,9 @@ class Page(View):
             raise Http404
         data = {'page':page}
         data['seo'] = get_site_meta()
+
+        post_pages = models.Page.objects.filter(is_draft=False)
+        data['pages'] = post_pages
 
         return render(request, self.template_name, data)
 
