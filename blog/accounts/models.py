@@ -5,9 +5,11 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
 
+@python_2_unicode_compatible
 class Account(models.Model):
     display_name = models.CharField(max_length='128')
     biography = models.TextField(null=True, blank=True)
@@ -25,9 +27,10 @@ class Account(models.Model):
         if created:
             Account.objects.get_or_create(user=instance, defaults={'display_name':instance.username})
 
-    def __unicode__(self):
+    def __str__(self):
         return self.display_name
 
+@python_2_unicode_compatible
 class SocialInfo(models.Model):
     SOCIAL_CHOICES = (
     ('fa-facebook', 'Facebook'),
@@ -41,5 +44,5 @@ class SocialInfo(models.Model):
     social = models.CharField(choices=SOCIAL_CHOICES, max_length='128')
     url = models.URLField()
 
-    def __unicode__(self):
+    def __str__(self):
         return user.name + '-' + social

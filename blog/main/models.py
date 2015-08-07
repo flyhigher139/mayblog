@@ -3,10 +3,12 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.encoding import python_2_unicode_compatible
 import markdown2
 
 # Create your models here.
 
+@python_2_unicode_compatible
 class Post(models.Model):
     title = models.CharField(max_length=256, default='new blog')
     abstract = models.TextField(null=True, blank=True)
@@ -23,21 +25,24 @@ class Post(models.Model):
         self.content_html = markdown2.markdown(self.raw, extras=['code-friendly', 'fenced-code-blocks']).encode('utf-8')
         super(Post, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
+@python_2_unicode_compatible
 class Tag(models.Model):
     name = models.CharField(max_length=256)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
+@python_2_unicode_compatible
 class Category(models.Model):
     name = models.CharField(max_length=256)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
+@python_2_unicode_compatible
 class Page(models.Model):
     title = models.CharField(max_length=256, default='new page')
     slug = models.CharField(max_length=256, default='slug')
@@ -52,15 +57,16 @@ class Page(models.Model):
         self.content_html = markdown2.markdown(self.raw, extras=['code-friendly', 'fenced-code-blocks'])
         super(Post, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
+@python_2_unicode_compatible
 class BlogMeta(models.Model):
     key = models.CharField(max_length=256)
     value = models.CharField(max_length=256, null=True, blank=True)
     flag = models.BooleanField(default=False)
     misc = models.CharField(max_length=256, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.key
 
