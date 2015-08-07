@@ -13,6 +13,8 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from guardian.decorators import permission_required
+
 from . import forms
 
 PER_PAGE = settings.MAY_BLOG['PER_PAGE_ADMIN']
@@ -96,6 +98,8 @@ class RegisterView(View):
 
 class UsersView(View):
     template_name = 'accounts/users.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, group_id=0):
         data = {}
         
@@ -131,6 +135,8 @@ class UsersView(View):
 
 class UserView(View):
     template_name = 'accounts/user.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, pk):
         pk = int(pk)
         data = {}
@@ -152,6 +158,8 @@ class UserView(View):
 
 class GroupView(View):
     template_name = 'accounts/group.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, pk):
         pk = int(pk)
         data = {}
@@ -171,6 +179,8 @@ class GroupView(View):
 
 class UserEditView(View):
     template_name = 'accounts/user_edit.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, pk, user_form=None):
         pk = int(pk)
         data = {}
@@ -194,6 +204,7 @@ class UserEditView(View):
 
         return render(request, self.template_name, data)
 
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def post(self, request, pk):
         pk = int(pk)
         try:
@@ -229,6 +240,8 @@ class UserEditView(View):
 
 class GroupsView(View):
     template_name = 'accounts/groups.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request):
         groups = Group.objects.all()
         data = {'groups':groups}
