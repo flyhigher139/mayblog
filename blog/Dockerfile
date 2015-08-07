@@ -10,7 +10,7 @@ MAINTAINER Gevin <flyhigher139@gmail.com>
 ENV TZ "Asia/Shanghai"
 ENV TERM xterm
 
-ADD sources.list /etc/apt/sources.list
+# ADD sources.list /etc/apt/sources.list
 
 
 RUN apt-get update && apt-get install -y curl wget tar bzip2 unzip vim && \
@@ -43,6 +43,10 @@ RUN ln -s /usr/src/app/mayblog_nginx.conf /etc/nginx/sites-enabled
 ADD supervisord.conf /etc/supervisord.conf
 
 RUN /usr/bin/python2.7 manage.py collectstatic --noinput
+# RUN /usr/bin/python2.7 manage.py makemigrations
+RUN /usr/bin/python2.7 manage.py migrate
+RUN /usr/bin/python2.7 manage.py makemigrations
+RUN /usr/bin/python2.7 manage.py migrate
 
 EXPOSE 8000
 
