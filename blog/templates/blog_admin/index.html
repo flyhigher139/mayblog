@@ -55,15 +55,15 @@
             <dt>Social Network:</dt>
             <dd>
                 {% if account_info.github %}
-                    <a href='account_info.github'><i class="fa fa-github fa-lg"></i></a>
+                    <a href='{{ account_info.github }}'><i class="fa fa-github fa-lg"></i></a>
                 {% endif %}
 
                 {% if account_info.twitter %}
-                    <a href='account_info.twitter'><i class="fa fa-twitter fa-lg"></i></a>
+                    <a href='{{ account_info.twitter }}'><i class="fa fa-twitter fa-lg"></i></a>
                 {% endif %}
 
                 {% if account_info.weibo %}
-                    <a href='account_info.weibo'><i class="fa fa-weibo fa-lg"></i></a>
+                    <a href='{{ account_info.weibo }}'><i class="fa fa-weibo fa-lg"></i></a>
                 {% endif %}
 
             </dd>
@@ -72,7 +72,7 @@
             <dt>Homepage:</dt>
             <dd>
                 {% if account_info.homepage %}
-                <a href="{{account_info.homepage}}"><i class="fa fa-home fa-lg"></i></a> {{account_info.homepage}}
+                <a href="{{ account_info.homepage }}"><i class="fa fa-home fa-lg"></i></a> {{ account_info.homepage }}
                 {% endif %}
             </dd>
         </dl>
