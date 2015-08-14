@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
-from . import views, preblog, api_views
+from . import views, preblog
 
 urlpatterns = patterns('',
     # Examples:
@@ -39,11 +39,11 @@ urlpatterns += patterns('',
 )
 
 #APIs
-urlpatterns += patterns('',
-    url(r'^api/categories$', api_views.CategoryListView.as_view()),
-    url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
-    url(r'^api/tags$', api_views.TagListView.as_view()),
-    url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view(), name='api_tag'),
-    url(r'^api/posts$', api_views.PostListView.as_view()),
-    url(r'^api/posts/(?P<pk>[0-9]+)$', api_views.PostDetailView.as_view()),
-)
+# urlpatterns += patterns('',
+#     url(r'^api/categories$', api_views.CategoryListView.as_view()),
+#     url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
+#     url(r'^api/tags$', api_views.TagListView.as_view()),
+#     url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view(), name='api_tag'),
+#     url(r'^api/posts$', api_views.PostListView.as_view()),
+#     url(r'^api/posts/(?P<pk>[0-9]+)$', api_views.PostDetailView.as_view()),
+# )
