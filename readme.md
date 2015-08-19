@@ -24,6 +24,10 @@ MayBlog is a blog system with following features:
     - RESTful API (under development)
 
 
+##Preview MayBlog
+
+- [Frontend Website](http://blog.gevinzone.com/)
+- [Backend Admin Screenshot](preview.md)
 
 ##How to run it ?
 
