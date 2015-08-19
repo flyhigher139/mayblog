@@ -14,7 +14,7 @@ MayBlog is a blog system with following features:
 - Powered by django and bootstrap
 - Deployed by docker
 - Multiple deployment setting files
-- SEO support
+- Search engine optimized
 - Blog features:
     - multi-user
     - multi-role
@@ -32,19 +32,50 @@ MayBlog is a blog system with following features:
 If you want to see more about the source code, checkout the [source code readme](blog)
 
 
-###Run by docker
+###Run by docker(recommended)
 
 Run MayBlog by docker is recommended, here are some instruction：
 
-####Option 1
+####First Run
 
-Pull MayBlog image from docker hub:
+1. Build your own MayBlog image
 
+```bash
+(sudo) docker-compose build
 
+#Now you can take a cup of coffee and wait for a few minutes :)
+```
+2. Run MayBlog
 
-####Option 2
+```bash
+(sudo) docker-compose up -d
+```
+3. Get into MayBlog container and migrate database
 
-Build your own MayBlog image:
+```bash
+#Specify MayBlog container ID, eg:12345678
+(sudo) docker ps
+
+#Get into MayBlog container
+(sudo) docker exec -it 12345678 bash
+
+#Migrate datebase
+python manage.py migrate
+```
+
+####After first run
+
+- Start MayBlog
+
+```bash
+(sudo) docker-compose start
+```
+
+- Stop MayBlog
+
+```bash
+(sudo) docker-compose stop
+```
 
 
 ###Initialize MayBlog
