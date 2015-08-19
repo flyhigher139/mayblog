@@ -27,7 +27,8 @@ data:
   restart: always
   image: sameersbn/mysql:latest
   volumes:
-    - /var/lib/mysql
+    # - /var/lib/mysql
+    - /home/mayblog/data:/opt/mayblog/data
   command: true
 
 # mysql:
