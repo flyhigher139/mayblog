@@ -38,17 +38,22 @@ Run MayBlog by docker is recommended, here are some instruction：
 
 ####First Run
 
-1. Build your own MayBlog image
+1\. Build your own MayBlog image
+
 ```bash
 (sudo) docker-compose build
 
 #Now you can take a cup of coffee and wait for a few minutes :)
 ```
-2. Run MayBlog
+
+2\. Run MayBlog
+
 ```bash
 (sudo) docker-compose up -d
 ```
-3. Get into MayBlog container and migrate database
+
+3\. Get into MayBlog container and migrate database
+
 ```bash
 #Specify MayBlog container ID, eg:12345678
 (sudo) docker ps
