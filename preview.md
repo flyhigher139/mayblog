@@ -19,6 +19,10 @@ Click [here](http://blog.gevinzone.com) to view MayBlog's frontend.
 
 ![mayblog_new_post](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_new_post.png)
 
+###Edit post
+
+![mayblog_post_edit](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_post_edit.png)
+
 ###Tags admin 
 
 ![mayblog_tags](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_tags.png)
