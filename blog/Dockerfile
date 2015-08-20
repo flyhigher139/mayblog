@@ -7,14 +7,14 @@
 FROM       ubuntu:14.04
 MAINTAINER Gevin <flyhigher139@gmail.com>
 
-# ADD sources.list /etc/apt/sources.list
+ADD sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get install -y curl wget tar bzip2 unzip vim && \
     apt-get install -y nginx git python-dev python-pip libmysqlclient-dev && \
     apt-get clean all
 
 
-# RUN pip install supervisor uwsgi -i http://pypi.douban.com/simple
-RUN pip install supervisor uwsgi
+RUN pip install supervisor uwsgi -i http://pypi.douban.com/simple
+# RUN pip install supervisor uwsgi
 
 ADD supervisord.conf /etc/supervisord.conf
 

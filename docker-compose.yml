@@ -18,17 +18,19 @@ mysql:
   # restart: always
   image: sameersbn/mysql:latest
   env_file: .env
-  volumes_from:
-    - data
+  # volumes_from:
+  #   - data
+  volumes:
+    - /var/lib/mysql
   ports:
     - "3306:3306"
 
-data:
-  restart: always
-  image: sameersbn/mysql:latest
-  volumes:
-    - /var/lib/mysql
-  command: true
+# data:
+#   restart: always
+#   image: sameersbn/mysql:latest
+#   volumes:
+#     - /var/lib/mysql
+#   command: true
 
 # mysql:
 #   restart: always
