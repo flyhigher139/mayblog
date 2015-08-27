@@ -58,21 +58,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    
                     <!-- <li>
-                        <a href="{% url 'main:index' %}">Home</a>
-                    </li>
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Admin</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li> -->
-                    <li>
                         <a href="{% url 'main:rss' %}">RSS</i></a>
-                    </li>
+                    </li> -->
                     {% for page in pages %}
                     <li>
                         <a href="{% url 'main:page' page.id %}">{{ page.slug }}</a>
