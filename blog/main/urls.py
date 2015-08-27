@@ -36,7 +36,7 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     # url(r'^init$', preblog.init_blog),
     url(r'^init$', preblog.BlogInitView.as_view()),
-    # url(r'^rss/$', feeds.LatestEntriesFeed2()),
+    url(r'^rss/$', feeds.LatestEntriesFeed2(), name='rss'),
     # url(r'^post/(?P<pk>[0-9]+)/rss/$', feeds.LatestEntriesFeed())
 )
 

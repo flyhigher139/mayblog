@@ -38,22 +38,26 @@ class LatestEntriesFeed(Feed):
         # return '/'
 
 class LatestEntriesFeed2(Feed):
-    feed_type = Atom1Feed
+    # feed_type = Atom1Feed
+    # subtitle = 'MayBlog'
 
-    title = "MayBlog"
-    link = "/"
+    # title = "MayBlog"
+    # link = "/"
     # description = "MayBlog Rss"
 
     # def get_object(self, request, pk):
     #     # return get_object_or_404(Post, pk=id)
     #     return Post.objects.get(pk=pk)
 
-    # def title(self, obj):
-    #     return "MayBlog: %s posts" % obj.title
+    def title(self):
+        return "MayBlog RSS"
 
-    # def link(self, item):
-    #     return reverse('main:post', args=[item.pk])
-    #     # return '/'
+    def link(self, item):
+        return reverse('main:rss')
+        # return '/rss/'
+
+    def description(self):
+        return "MayBlog description"
 
     def items(self):
         return Post.objects.filter(is_draft=False)
