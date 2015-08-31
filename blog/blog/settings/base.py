@@ -153,5 +153,6 @@ MAY_BLOG = {
     'COMMENT_OPT':{
         'duoshuo':'mayblog',
     },
+    'RSS_NUM': 30,
 }
 
