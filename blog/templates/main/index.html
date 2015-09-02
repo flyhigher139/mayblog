@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% load static %}
+
+{% block title %}{{ seo.title }}{% endblock %}
 {% block header %}
 <header class="intro-header" style="background-image: url('http://7d9q7a.com1.z0.glb.clouddn.com/mayblog-home-bg.jpg')">
         <div class="container">
@@ -9,7 +11,7 @@
                     <div class="site-heading">
                         <h1>{{ seo.title }}</h1>
                         <hr class="small">
-                        <span class="subheading">{{ seo.subtitle }}</span>
+                        <span class="subheading">{{ seo.subtitle }} <a href="{% url 'main:rss' %}"><i class="fa fa-rss"></i></a></span>
                     </div>
                 </div>
             </div>
@@ -34,7 +36,9 @@
                 <p class="post-meta">Posted by <a href="#">{{ post.author.account.display_name }}</a> on {{post.pub_time}}</p>
                 <p class="post-meta">category: <a href="#">{{ post.category.name }}</a></p>
             </div>
+            {% if not forloop.last %}
             <hr>
+            {% endif %}
             {% empty %}
                 <p class="post-subtitle">
                     No articles found here

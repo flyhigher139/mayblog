@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
-from . import views, preblog
+from . import views, preblog, feeds
 
 urlpatterns = patterns('',
     # Examples:
@@ -10,8 +10,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', views.Index.as_view(), name='index'),
-    url(r'^post/(?P<pk>[0-9]+)$', views.Post.as_view(), name='post'),
-    url(r'^page/(?P<pk>[0-9]+)$', views.Page.as_view(), name='page'),)
+    url(r'^post/(?P<pk>[0-9]+)/$', views.Post.as_view(), name='post'),
+    url(r'^page/(?P<pk>[0-9]+)/$', views.Page.as_view(), name='page'),)
 
 urlpatterns += patterns('',
     url(r'^admin/$', views.AdminIndex.as_view(), name='admin_index'),
@@ -37,6 +37,8 @@ urlpatterns += patterns('',
     # url(r'^init$', preblog.init_blog),
     url(r'^init$', preblog.BlogInitView.as_view()),
     url(r'^reinit-meta$', preblog.ReInitBlogMetaView.as_view()),
+    url(r'^rss/$', feeds.LatestEntriesFeed2(), name='rss'),
+    # url(r'^post/(?P<pk>[0-9]+)/rss/$', feeds.LatestEntriesFeed())
 )
 
 #APIs

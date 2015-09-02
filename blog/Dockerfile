@@ -28,7 +28,6 @@ COPY . /usr/src/app
 RUN pip install -r /usr/src/app/requirements.txt
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-# RUN rm /etc/nginx/sites-enabled/default
 RUN ln -s /usr/src/app/mayblog_nginx.conf /etc/nginx/sites-enabled
 
 
