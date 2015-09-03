@@ -29,3 +29,5 @@ class BlogMetaForm(forms.Form):
     desc = forms.CharField(max_length=256, label='Description')
     author = forms.CharField(max_length=256, label='Owner')
     keywords = forms.CharField(max_length=256, label='Keywords')
+    google_verify = forms.CharField(max_length=256, label='Google Site Verification', required=False)
+    baidu_verify = forms.CharField(max_length=256, label='Baidu Site Verification', required=False)

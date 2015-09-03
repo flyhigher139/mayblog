@@ -60,6 +60,18 @@ def get_site_meta():
     except models.BlogMeta.DoesNotExist:
         pass
 
+    try:
+        record = models.BlogMeta.objects.get(key='google_verify')
+        seo['google_verify'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    try:
+        record = models.BlogMeta.objects.get(key='baidu_verify')
+        seo['baidu_verify'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
     return seo
 
 def get_user_info(user):
@@ -224,6 +236,14 @@ class AdminBlogMeta(View):
             
             record = models.BlogMeta.objects.get(key='blog_subtitle')
             record.value = form.cleaned_data['subtitle']
+            record.save()
+
+            record = models.BlogMeta.objects.get(key='google_verify')
+            record.value = form.cleaned_data['google_verify']
+            record.save()
+            
+            record = models.BlogMeta.objects.get(key='baidu_verify')
+            record.value = form.cleaned_data['baidu_verify']
             record.save()
 
             msg = 'Succeed to update blog meta'
