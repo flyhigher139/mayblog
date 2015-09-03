@@ -3,6 +3,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
 import markdown2
 
@@ -27,6 +28,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('main:post', kwargs={ 'pk': self.id })
 
 @python_2_unicode_compatible
 class Tag(models.Model):
@@ -59,6 +63,9 @@ class Page(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('main:page', kwargs={ 'pk': self.id })
 
 @python_2_unicode_compatible
 class BlogMeta(models.Model):

@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
-from . import views, preblog, feeds
+from django.contrib.sitemaps.views import sitemap
+
+from . import views, preblog, feeds, sitemaps
 
 urlpatterns = patterns('',
     # Examples:
@@ -38,7 +40,7 @@ urlpatterns += patterns('',
     url(r'^init$', preblog.BlogInitView.as_view()),
     url(r'^reinit-meta$', preblog.ReInitBlogMetaView.as_view()),
     url(r'^rss/$', feeds.LatestEntriesFeed2(), name='rss'),
-    # url(r'^post/(?P<pk>[0-9]+)/rss/$', feeds.LatestEntriesFeed())
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps.sitemaps}, name='django.contrib.sitemaps.views.sitemap')
 )
 
 #APIs
