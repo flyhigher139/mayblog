@@ -4,7 +4,7 @@ blog:
   ports:
     - "8000:8000"
   links:
-    - mysql:mysql
+    - mayblog_db:mayblog_db
   # volumes:
   #   - /usr/src/app/static
   env_file: .env
@@ -14,36 +14,17 @@ blog:
   # command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
 
 
-mysql:
+
+mayblog_db:
   # restart: always
-  image: sameersbn/mysql:latest
+  image: mysql:5.6.26
   env_file: .env
-  # volumes_from:
-  #   - data
   volumes:
     - /var/lib/mysql
   ports:
     - "3306:3306"
 
-# data:
-#   # restart: always
-#   image: sameersbn/mysql:latest
-#   volumes:
-#     - /var/lib/mysql
-#   command: true
 
-# mysql:
-#   restart: always
-#   image: mysql:5.7
-#   # env_file: .env
-#   volumes_from:
-#     - data
-#   ports:
-#     - "3306:3306"
 
-# data:
-#   restart: always
-#   image: mysql:5.7
-#   volumes:
-#     - /var/lib/mysql
-#   command: true
+
+

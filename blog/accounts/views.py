@@ -10,6 +10,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import View
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
+from guardian.decorators import permission_required
 
 from . import forms
 
@@ -94,6 +98,8 @@ class RegisterView(View):
 
 class UsersView(View):
     template_name = 'accounts/users.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, group_id=0):
         data = {}
         
@@ -129,6 +135,8 @@ class UsersView(View):
 
 class UserView(View):
     template_name = 'accounts/user.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, pk):
         pk = int(pk)
         data = {}
@@ -150,6 +158,8 @@ class UserView(View):
 
 class GroupView(View):
     template_name = 'accounts/group.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, pk):
         pk = int(pk)
         data = {}
@@ -169,6 +179,8 @@ class GroupView(View):
 
 class UserEditView(View):
     template_name = 'accounts/user_edit.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request, pk, user_form=None):
         pk = int(pk)
         data = {}
@@ -192,6 +204,7 @@ class UserEditView(View):
 
         return render(request, self.template_name, data)
 
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def post(self, request, pk):
         pk = int(pk)
         try:
@@ -227,6 +240,8 @@ class UserEditView(View):
 
 class GroupsView(View):
     template_name = 'accounts/groups.html'
+
+    @method_decorator(permission_required('main.change_user', accept_global_perms=True))
     def get(self, request):
         groups = Group.objects.all()
         data = {'groups':groups}
@@ -234,9 +249,86 @@ class GroupsView(View):
         return render(request, self.template_name, data)
 
 class ProfileView(View):
-    template_name = ''
-    def get(self, request):
-        return HttpResponse('waiting to code')
+    template_name = 'accounts/settings_profile.html'
+
+    @method_decorator(login_required)
+    def get(self, request, form=None):
+        data = {}
+        form_data = {
+            'display_name' : request.user.account.display_name,
+            'biography' : request.user.account.biography,
+            'homepage' : request.user.account.homepage,
+            'weixin' : request.user.account.weixin,
+            'douban' : request.user.account.douban,
+            'weibo' : request.user.account.weibo,
+            'twitter' : request.user.account.twitter,
+            'github' : request.user.account.github
+        }
+
+        if not form:
+            form = forms.ProfileForm(initial=form_data)
+
+        data['form'] = form
+        data['is_profile'] = True
+
+        return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = forms.ProfileForm(request.POST)
+        if form.is_valid():
+            account = request.user.account
+
+            account.display_name = form.cleaned_data['display_name']
+            account.biography = form.cleaned_data['biography']
+            account.homepage = form.cleaned_data['homepage']
+            account.weixin = form.cleaned_data['weixin']
+            account.douban = form.cleaned_data['douban']
+            account.weibo = form.cleaned_data['weibo']
+            account.twitter = form.cleaned_data['twitter']
+            account.github = form.cleaned_data['github']
+
+            account.save()
+
+            msg = 'Succeed to update profile'
+            url = reverse('accounts:profile')
+            messages.add_message(request, messages.SUCCESS, msg)
+            return redirect(url)
+
+        return self.get(request, form)
+
+class ChangePasswordView(View):
+    template_name = 'accounts/settings_profile.html'
+
+    @method_decorator(login_required)
+    def get(self, request, form=None):
+        data = {}
+        if not form:
+            form = forms.ChangePasswordForm(initial={'username':request.user.username})
+
+        data['form'] = form
+        data['is_password'] = True
+
+        return render(request, self.template_name, data)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        form = forms.ChangePasswordForm(request.POST)
+        if form.is_valid():
+            password = form.cleaned_data['new_password']
+            user = request.user
+            user.set_password(password)
+
+            user.save()
+
+            msg = 'Succeed to update profile'
+            url = reverse('accounts:change_password')
+            messages.add_message(request, messages.SUCCESS, msg)
+            return redirect(url)
+
+        return self.get(request, form)
+
+
 
 
 

@@ -13,33 +13,33 @@ from django.contrib import messages
 from accounts import forms
 from . import models
 
-def init_blog(request):
-    # Create superuser
-    # get_user_model().objects.create_superuser(username='su', email='su@email.com', password='su')
-    try:
-        su = User.objects.get(username='su')
-    except User.DoesNotExist:
-        User.objects.create_superuser(username='su', email='su@email.com', password='su')
-    # Create admin group
-    group = create_admin_group()
+# def init_blog(request):
+#     # Create superuser
+#     # get_user_model().objects.create_superuser(username='su', email='su@email.com', password='su')
+#     try:
+#         su = User.objects.get(username='su')
+#     except User.DoesNotExist:
+#         User.objects.create_superuser(username='su', email='su@email.com', password='su')
+#     # Create admin group
+#     group = create_admin_group()
 
-    # Create editor group
-    group = create_editor_group()
+#     # Create editor group
+#     group = create_editor_group()
 
-    # Create writer group
-    group = create_writer_group()
+#     # Create writer group
+#     group = create_writer_group()
 
-    # Create contributor group
-    group = create_contributor_group()
+#     # Create contributor group
+#     group = create_contributor_group()
 
-    # Create reader group
-    group = create_reader_group()
+#     # Create reader group
+#     group = create_reader_group()
 
 
-    # Create default category
-    default_category, created = models.Category.objects.get_or_create(name='default')
+#     # Create default category
+#     default_category, created = models.Category.objects.get_or_create(name='default')
 
-    return HttpResponse('succeed to init blog')
+#     return HttpResponse('succeed to init blog')
 
 class BlogInitView(View):
     template_name = 'main/simple_form.html'
@@ -98,11 +98,15 @@ class BlogInitView(View):
 
 
             # Blog meta data
-            obj, created = models.BlogMeta.objects.get_or_create(key='blog_name', defaults={'value':'MayBlog'})
-            obj, created = models.BlogMeta.objects.get_or_create(key='blog_subtitle', defaults={'value':'Welcome to MayBlog'})
-            obj, created = models.BlogMeta.objects.get_or_create(key='blog_desc', defaults={'value':'desc'})
-            obj, created = models.BlogMeta.objects.get_or_create(key='owner', defaults={'value':'MayBlog'})
-            obj, created = models.BlogMeta.objects.get_or_create(key='keywords', defaults={'value':'MayBlog'})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='blog_name', defaults={'value':'MayBlog'})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='blog_subtitle', defaults={'value':'Welcome to MayBlog'})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='blog_desc', defaults={'value':'desc'})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='owner', defaults={'value':'MayBlog'})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='keywords', defaults={'value':'MayBlog'})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='google_verify', defaults={'value':''})
+            # obj, created = models.BlogMeta.objects.get_or_create(key='baidu_verify', defaults={'value':''})
+            init_blog_meta()
+
 
             msg = 'Successfully Initialized'
             messages.add_message(request, messages.SUCCESS, msg)
@@ -111,6 +115,24 @@ class BlogInitView(View):
 
         else:
             return self.get(request, form)
+
+class ReInitBlogMetaView(View):
+    def get(self, request):
+        init_blog_meta()
+
+        msg = 'Successfully reinitialized blog meta'
+        messages.add_message(request, messages.SUCCESS, msg)
+        url = reverse('main:admin_index')
+        return redirect(url)
+
+def init_blog_meta():
+    obj, created = models.BlogMeta.objects.get_or_create(key='blog_name', defaults={'value':'MayBlog'})
+    obj, created = models.BlogMeta.objects.get_or_create(key='blog_subtitle', defaults={'value':'Welcome to MayBlog'})
+    obj, created = models.BlogMeta.objects.get_or_create(key='blog_desc', defaults={'value':'desc'})
+    obj, created = models.BlogMeta.objects.get_or_create(key='owner', defaults={'value':'MayBlog'})
+    obj, created = models.BlogMeta.objects.get_or_create(key='keywords', defaults={'value':'MayBlog'})
+    obj, created = models.BlogMeta.objects.get_or_create(key='google_verify', defaults={'value':''})
+    obj, created = models.BlogMeta.objects.get_or_create(key='baidu_verify', defaults={'value':''})
 
 def create_admin_group():
     group, created = Group.objects.get_or_create(name='administrator')
@@ -192,3 +214,4 @@ def create_reader_group():
 
 
     return group
+

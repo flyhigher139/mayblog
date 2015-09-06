@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, include, url
-from . import views, preblog, api_views
+from django.contrib.sitemaps.views import sitemap
+
+from . import views, preblog, feeds, sitemaps
 
 urlpatterns = patterns('',
     # Examples:
@@ -10,8 +12,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', views.Index.as_view(), name='index'),
-    url(r'^post/(?P<pk>[0-9]+)$', views.Post.as_view(), name='post'),
-    url(r'^page/(?P<pk>[0-9]+)$', views.Page.as_view(), name='page'),)
+    url(r'^post/(?P<pk>[0-9]+)/$', views.Post.as_view(), name='post'),
+    url(r'^page/(?P<pk>[0-9]+)/$', views.Page.as_view(), name='page'),)
 
 urlpatterns += patterns('',
     url(r'^admin/$', views.AdminIndex.as_view(), name='admin_index'),
@@ -36,14 +38,17 @@ urlpatterns += patterns('',
 urlpatterns += patterns('',
     # url(r'^init$', preblog.init_blog),
     url(r'^init$', preblog.BlogInitView.as_view()),
+    url(r'^reinit-meta$', preblog.ReInitBlogMetaView.as_view()),
+    url(r'^rss/$', feeds.LatestEntriesFeed2(), name='rss'),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps.sitemaps}, name='django.contrib.sitemaps.views.sitemap')
 )
 
 #APIs
-urlpatterns += patterns('',
-    url(r'^api/categories$', api_views.CategoryListView.as_view()),
-    url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
-    url(r'^api/tags$', api_views.TagListView.as_view()),
-    url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view(), name='api_tag'),
-    url(r'^api/posts$', api_views.PostListView.as_view()),
-    url(r'^api/posts/(?P<pk>[0-9]+)$', api_views.PostDetailView.as_view()),
-)
+# urlpatterns += patterns('',
+#     url(r'^api/categories$', api_views.CategoryListView.as_view()),
+#     url(r'^api/categories/(?P<pk>[0-9]+)$', api_views.CategoryDetailView.as_view()),
+#     url(r'^api/tags$', api_views.TagListView.as_view()),
+#     url(r'^api/tags/(?P<pk>[0-9]+)$', api_views.TagDetailView.as_view(), name='api_tag'),
+#     url(r'^api/posts$', api_views.PostListView.as_view()),
+#     url(r'^api/posts/(?P<pk>[0-9]+)$', api_views.PostDetailView.as_view()),
+# )

@@ -3,6 +3,7 @@
 
 from django import forms
 from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate
 
 def group_values():
     groups = Group.objects.all()
@@ -52,6 +53,35 @@ class UserGroupForm(forms.Form):
         # self.fields['groups'].choices = groups
         # self.fields['groups'].widget = forms.SelectMultiple(attrs={'size':len(groups)})
         self.fields['groups'] = forms.MultipleChoiceField(choices=groups, widget=forms.SelectMultiple(attrs={'size':len(groups)}))
+
+class ProfileForm(forms.Form):
+    display_name = forms.CharField(max_length='128')
+    biography = forms.CharField(required=False, widget=forms.Textarea)
+    homepage = forms.URLField(required=False)
+    weixin = forms.URLField(required=False)
+    douban = forms.URLField(required=False)
+    weibo = forms.URLField(required=False)
+    twitter = forms.URLField(required=False)
+    github = forms.URLField(required=False)
+
+class ChangePasswordForm(forms.Form):
+    username = forms.CharField(max_length=256, widget=forms.HiddenInput)
+    old_password = forms.CharField(max_length=256, widget=forms.PasswordInput)
+    new_password = forms.CharField(max_length=256, widget=forms.PasswordInput)
+    confirm_password = forms.CharField(max_length=256, widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super(ChangePasswordForm, self).clean()
+        new_password = cleaned_data.get('new_password')
+        confirm_password = cleaned_data.get('confirm_password')
+        if new_password != confirm_password:
+            raise forms.ValidationError('Two passwords are not the same')
+
+        username = cleaned_data.get('username')
+        password = cleaned_data.get('old_password')
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise forms.ValidationError('username and password does not match')
 
 
     

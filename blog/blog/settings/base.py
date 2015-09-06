@@ -37,11 +37,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'rest_framework',
     'bootstrap3',
     'guardian',
     'main',
     'accounts',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -132,9 +134,13 @@ ANONYMOUS_USER_ID = -1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    )
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAdminUser',
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination'
 }
 
 #################################
@@ -148,5 +154,6 @@ MAY_BLOG = {
     'COMMENT_OPT':{
         'duoshuo':'mayblog',
     },
+    'RSS_NUM': 30,
 }
 

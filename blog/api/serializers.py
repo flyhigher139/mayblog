@@ -3,7 +3,7 @@
 
 from rest_framework import serializers
 
-from . import models
+from main import models
 
 class AuthorDisplayField(serializers.RelatedField):
     def to_representation(self, value):

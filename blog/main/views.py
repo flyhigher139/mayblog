@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # from django.utils.encoding import smart_text
 from django.db.models import Count, Q
+from django.contrib.auth.models import User
 
 from guardian.shortcuts import assign_perm, get_perms
 from guardian.core import ObjectPermissionChecker
@@ -56,6 +57,18 @@ def get_site_meta():
     try:
         record = models.BlogMeta.objects.get(key='blog_subtitle')
         seo['subtitle'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    try:
+        record = models.BlogMeta.objects.get(key='google_verify')
+        seo['google_verify'] = record.value
+    except models.BlogMeta.DoesNotExist:
+        pass
+
+    try:
+        record = models.BlogMeta.objects.get(key='baidu_verify')
+        seo['baidu_verify'] = record.value
     except models.BlogMeta.DoesNotExist:
         pass
 
@@ -163,6 +176,9 @@ class Post(View):
 
         data['seo'] = seo
 
+        post_pages = models.Page.objects.filter(is_draft=False)
+        data['pages'] = post_pages
+
         return render(request, self.template_name, data)
 
 class Page(View):
@@ -176,6 +192,9 @@ class Page(View):
         data = {'page':page}
         data['seo'] = get_site_meta()
 
+        post_pages = models.Page.objects.filter(is_draft=False)
+        data['pages'] = post_pages
+
         return render(request, self.template_name, data)
 
 class AdminIndex(View):
@@ -187,7 +206,7 @@ class AdminIndex(View):
 
 class AdminBlogMeta(View):
     template_name = 'main/simple_form.html'
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_blogmeta', accept_global_perms=True))
     def get(self, request, form=None):
         if not form:
             form = forms.BlogMetaForm(initial=get_site_meta())
@@ -195,7 +214,7 @@ class AdminBlogMeta(View):
         data = {'form':form}
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_blogmeta', accept_global_perms=True))
     def post(self, request):
         form = forms.BlogMetaForm(request.POST)
         if form.is_valid():
@@ -219,6 +238,14 @@ class AdminBlogMeta(View):
             record.value = form.cleaned_data['subtitle']
             record.save()
 
+            record = models.BlogMeta.objects.get(key='google_verify')
+            record.value = form.cleaned_data['google_verify']
+            record.save()
+            
+            record = models.BlogMeta.objects.get(key='baidu_verify')
+            record.value = form.cleaned_data['baidu_verify']
+            record.save()
+
             msg = 'Succeed to update blog meta'
             messages.add_message(request, messages.SUCCESS, msg)
             url = reverse('main:admin_index')
@@ -234,7 +261,7 @@ class AdminPosts(View):
     template_name_posts = 'blog_admin/posts.html'
     template_name_pages = 'blog_admin/pages.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def get(self, request, is_blog_page=False):
         data = {}
         draft = request.GET.get('draft')
@@ -304,6 +331,7 @@ class AdminPost(View):
                 form_data['title'] = post.title
                 form_data['content'] = post.raw
                 form_data['abstract'] = post.abstract
+                form_data['author_id'] = post.author.id
                 data['edit_flag'] = True
             except models.Post.DoesNotExist:
                 raise Http404
@@ -331,8 +359,9 @@ class AdminPost(View):
                     pk = int(pk)
                     cur_post = models.Post.objects.get(pk=pk)
                     checker = ObjectPermissionChecker(request.user)
-                    if not checker.has_perm('change_post', cur_post):
-                        return HttpResponseForbidden('forbidden')
+                    if not checker.has_perm('change_post', cur_post) \
+                        and not request.user.has_perm('main.change_post'):
+                        return HttpResponseForbidden('forbidden1')
                 except models.Post.DoesNotExist:
                     raise Http404
             cur_post.title = form.cleaned_data['title']
@@ -340,7 +369,8 @@ class AdminPost(View):
             cur_post.abstract = form.cleaned_data['abstract']
             # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             # cur_post.content_html = smart_text(html)
-            cur_post.author = request.user
+            cur_post.author = User.objects.get(pk=form.cleaned_data['author_id']) if form.cleaned_data['author_id'] else request.user
+            # cur_post.author = request.user
             tag_ids = request.POST.getlist('tags')
             category_id = request.POST.get('category', None)
             # return HttpResponse(len(tag_ids))
@@ -367,6 +397,8 @@ class AdminPost(View):
             assign_perm('main.change_post', request.user, cur_post)
             assign_perm('main.delete_post', request.user, cur_post)
 
+            if request.POST.get('preview'):
+                url = reverse('main:post', kwargs={'pk':cur_post.id})
             return redirect(url)
 
         return self.get(request, form)
@@ -386,6 +418,7 @@ class AdminPage(View):
                 form_data['title'] = page.title
                 form_data['content'] = page.raw
                 form_data['slug'] = page.slug
+                form_data['author_id'] = page.author.id
                 data['edit_flag'] = True
             except models.Post.DoesNotExist:
                 raise Http404
@@ -414,7 +447,8 @@ class AdminPage(View):
             cur_post.slug = form.cleaned_data['slug']
             # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             # cur_post.content_html = smart_text(html)
-            cur_post.author = request.user
+            # cur_post.author = request.user
+            cur_post.author = User.objects.get(pk=form.cleaned_data['author_id']) if form.cleaned_data['author_id'] else request.user
 
             if request.POST.get('publish'):
                 cur_post.is_draft = False
@@ -486,7 +520,7 @@ class DeletePage(View):
 class AdminTags(View):
     template_name = 'blog_admin/tags.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_tag', accept_global_perms=True))
     def get(self, request, form=None):
         if not form:
             form = forms.TagForm()
@@ -508,7 +542,7 @@ class AdminTags(View):
 
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_tag', accept_global_perms=True))
     def post(self, request, form=None):
         form = forms.TagForm(request.POST)
         if form.is_valid():
@@ -526,7 +560,7 @@ class AdminTags(View):
 class AdminCategory(View):
     template_name = 'blog_admin/category.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_category', accept_global_perms=True))
     def get(self, request, form=None):
         if not form:
             form = forms.CategoryForm()
@@ -544,7 +578,7 @@ class AdminCategory(View):
 
         return render(request, self.template_name, data)
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_category', accept_global_perms=True))
     def post(self, request, form=None):
         form = forms.CategoryForm(request.POST)
         if form.is_valid():
@@ -562,7 +596,7 @@ class AdminCategory(View):
 class AdminFilterPosts(View):
     template_name = 'blog_admin/posts.html'
 
-    @method_decorator(login_required)
+    @method_decorator(permission_required('main.add_post', accept_global_perms=True))
     def get(self, request):
         tag_id = request.GET.get('tag')
         category_id = request.GET.get('category')
@@ -608,9 +642,13 @@ def filter_posts_by_category(pk):
     posts = category.post_set.all()
     return posts
 
+# In MayBlog's permission system, if you can change tags, 
+# you can also change categories
+@permission_required('main.change_tag', accept_global_perms=True)
 def simple_update(request, pk, flag=None):
     # flag = request.GET.get('flag', '')
-    if not flag:        raise Http404
+    if not flag:
+        raise Http404
 
     if flag.lower() == 'tag':
         model = models.Tag
@@ -631,6 +669,9 @@ def simple_update(request, pk, flag=None):
 
     return HttpResponse('Succeed to update {0}'.format(flag))
 
+# In MayBlog's permission system, if you can delete tags, 
+# you can also delete categories
+@permission_required('main.delete_tag', accept_global_perms=True)
 def simple_delete(request, pk, flag=None):
     # flag = request.GET.get('flag', '')
     if not flag:

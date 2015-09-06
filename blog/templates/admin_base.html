@@ -12,10 +12,14 @@
     <title>{% block title %}May Blog Admin{% endblock %}</title>
 
     {% load static %}
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    
     <!-- Bootstrap Core CSS -->
 
-    <link href="http://cdn.staticfile.org/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{% static 'css/mayblog.css' %} " rel="stylesheet">
     {# Load the tag library #}
     {% load bootstrap3 %}
@@ -63,18 +67,25 @@
           <ul class="nav navbar-nav">
             <li class="_active"><a href="{% url 'main:admin_index' %}">Home <span class="sr-only">(current)</span></a></li>
             <!-- <li><a href="#">Link</a></li> -->
+            {% if perms.main.add_post %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Posts <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{% url 'main:admin_posts' %}">All Posts</a></li>
                 <li><a href="{% url 'main:admin_post' %}">New Post</a></li>
                 <li><a href="{% url 'main:admin_posts' %}?draft=true">Drafts</a></li>
+                {% if perms.main.add_tag %}
                 <li class="divider"></li>
                 <li><a href="{% url 'main:admin_tags' %}">Tags</a></li>
+                {% endif %}
+
+                {% if perms.main.add_category %}
                 <li class="divider"></li>
                 <li><a href="{% url 'main:admin_category' %}">Category</a></li>
+                {% endif %}
               </ul>
             </li>
+            {% endif %}
             {% if perms.main.add_page %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Pages <span class="caret"></span></a>
@@ -112,7 +123,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ request.user.username }} <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Settings</a></li>
+                <li><a href="{% url 'accounts:profile' %}">Settings</a></li>
                 <!-- <li><a href="#">Another action</a></li> -->
                 <!-- <li><a href="#">Something else here</a></li> -->
                 <li class="divider"></li>
@@ -155,23 +166,23 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <ul class="list-inline text-center">
                         <li>
-                            <a href="#">
+                            <a href="https://creativecommons.org/licenses/" target="_blank">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-creative-commons fa-stack-1x fa-inverse"></i>
                                 </span>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="{% url 'main:rss' %}">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                    <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
                                 </span>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="https://github.com/flyhigher139/mayblog" target="_blank">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
@@ -186,11 +197,11 @@
     </footer>
 
     <!-- jQuery -->
-    <script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="http://cdn.staticfile.org/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="http://cdn.staticfile.org/bootbox.js/4.3.0/bootbox.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/bootbox.js/4.4.0/bootbox.min.js"></script>
     
 
     <!-- Custom Theme JavaScript -->
