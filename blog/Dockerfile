@@ -9,7 +9,7 @@ MAINTAINER Gevin <flyhigher139@gmail.com>
 
 ADD sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get install -y curl wget tar bzip2 unzip vim && \
-    apt-get install -y nginx git python-dev python-pip libmysqlclient-dev && \
+    apt-get install -y nginx git python-dev python-pip libpq-dev && \
     apt-get clean all
 
 

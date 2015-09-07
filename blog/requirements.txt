@@ -5,4 +5,5 @@ django-bootstrap3==5.4.0
 markdown2==2.3.0
 django-guardian
 djangorestframework==3.1
-mysqlclient
+#mysqlclient
+psycopg2==2.6

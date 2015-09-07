@@ -4,7 +4,7 @@ blog:
   ports:
     - "8000:8000"
   links:
-    - mayblog_db:mayblog_db
+    - postgres:postgres
   # volumes:
   #   - /usr/src/app/static
   env_file: .env
@@ -15,12 +15,12 @@ blog:
 
 
 
-mayblog_db:
+postgres:
   # restart: always
-  image: mysql:5.6.26
+  image: postgres:9.4.4
   env_file: .env
   volumes:
-    - /var/lib/mysql
+    - /var/lib/postgres
   ports:
     - "3306:3306"
 

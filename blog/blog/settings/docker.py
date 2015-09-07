@@ -14,17 +14,21 @@ ALLOWED_HOSTS = [host.strip() for host in os.environ['ALLOWED_HOSTS'].split(',')
 # }
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': os.environ['MYSQL_DATABASE'],
+    #     'USER': os.environ['MYSQL_USER'],
+    #     'PASSWORD': os.environ['MYSQL_PASSWORD'],
+    #     'HOST': os.environ['MYSQL_HOST'],
+    #     'PORT': os.environ['MYSQL_PORT']
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'mayblog',
-        # 'USER': 'root',
-        # 'PASSWORD': 'root_1234',
-        # 'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        # 'PORT': '3306',
-        'NAME': os.environ['MYSQL_DATABASE'],
-        'USER': os.environ['MYSQL_USER'],
-        'PASSWORD': os.environ['MYSQL_PASSWORD'],
-        'HOST': os.environ['MYSQL_HOST'],
-        'PORT': os.environ['MYSQL_PORT']
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASS'],
+        'HOST': os.environ['DB_SERVICE'],
+        'PORT': os.environ['DB_PORT']
     }
 }
