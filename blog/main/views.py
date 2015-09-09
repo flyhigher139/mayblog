@@ -167,6 +167,8 @@ class Post(View):
 
         data['comment_script'] = comment_script
 
+        data['jiathis_share'] = misc.jiathis_share(request)
+
         seo = {
             'title': post.title, 
             'desc': post.abstract,
