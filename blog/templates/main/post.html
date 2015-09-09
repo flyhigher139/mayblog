@@ -35,24 +35,53 @@
 {% endblock %}
 
 {% block main %}
+<div class="container">
     <article>
-        <div class="container">
+        <!-- <div class="container"> -->
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     {{post.content_html|safe}}
                 </div>
             </div>
-        </div>
+            
+        <!-- </div> -->
     </article>
 
+    <br>
+
     <article>
-        <div class="container">
+        <!-- <div class="container"> -->
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     {{ jiathis_share }}
                 </div>
             </div>
-        </div>
+
+            <br>
+
+            {% if allow_donate %}
+            <div class="row">
+                <!-- 添加捐赠图标 -->
+                <div class ="post-donate col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                  <div id="donate_board" class="donate_bar center">
+                    <a id="btn_donate" class="btn_donate" href="#" title="Donate 打赏">aa</a>
+                    <span class="donate_txt">
+                       &uarr;<br>
+                       Enjoy it ? Donate me !  欣赏此文？求鼓励，求支持！       
+                    </span>
+                    <br>
+                  </div>
+                  <!-- 微信打赏图案 -->
+                  <div id="donate_guide" class="donate_bar center hidden">
+                      <img src="http://static.ixirong.com/pic/donate/wechat.png" title="微信打赏打赏" height="164px" width="164px">
+                  </div> 
+                </div>
+                <!-- 添加捐赠图标 --> 
+                
+            </div>
+            
+            {% endif %}
+        <!-- </div> -->
     </article>
 
     <hr>
@@ -60,15 +89,25 @@
 
 
     <article>
-        <div class="container">
+        <!-- <div class="container"> -->
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     {{ comment_script }}
                 </div>
             </div>
-        </div>
+        <!-- </div> -->
     </article>
 
-    
+</div>
 
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    document.getElementById('btn_donate').onclick = function(){
+      $('#donate_board').addClass('hidden');
+      $('#donate_guide').removeClass('hidden');
+      return false
+    }
+</script>
 {% endblock %}

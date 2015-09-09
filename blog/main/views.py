@@ -169,6 +169,8 @@ class Post(View):
 
         data['jiathis_share'] = misc.jiathis_share(request)
 
+        data['allow_donate'] = settings.MAY_BLOG['ALLOW_DONATE']
+
         seo = {
             'title': post.title, 
             'desc': post.abstract,
