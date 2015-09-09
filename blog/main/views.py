@@ -167,6 +167,10 @@ class Post(View):
 
         data['comment_script'] = comment_script
 
+        data['jiathis_share'] = misc.jiathis_share(request)
+
+        data['allow_donate'] = settings.MAY_BLOG['ALLOW_DONATE']
+
         seo = {
             'title': post.title, 
             'desc': post.abstract,
@@ -346,6 +350,7 @@ class AdminPost(View):
         data['tags'] = tags
         catagories = models.Category.objects.all()
         data['catagories'] = catagories
+        data['pk'] = pk
         return render(request, self.template_name, data)
 
     @method_decorator(permission_required('main.add_post', accept_global_perms=True))
@@ -383,6 +388,9 @@ class AdminPost(View):
 
             else:
                 cur_post.is_draft=True
+                if request.POST.get('preview'):
+                    cur_post.save()
+                    return HttpResponse(cur_post.id)
 
                 msg = 'Draft has been saved!'
                 messages.add_message(request, messages.SUCCESS, msg)

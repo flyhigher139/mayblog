@@ -90,6 +90,10 @@ When the blog is run, checkout `http://host:port/init` to initialize the system
 
 It will create the superuser, user groups(administrator, editor, writer, contributor, and reader), and assign permissions for each group.
 
+##License
+
+MayBlog is under [GPL2](LICENSE)
+
 ##What's more
 
 If you find a bug or want to add a new feature, just issue me.
