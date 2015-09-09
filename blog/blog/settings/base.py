@@ -154,7 +154,7 @@ MAY_BLOG = {
     'COMMENT_OPT':{
         'duoshuo':'mayblog',
     },
-    'ALLOW_DONATE': False,
+    'ALLOW_DONATE': True,
     'RSS_NUM': 30,
 }
 
