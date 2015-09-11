@@ -99,6 +99,7 @@ class Index(View):
         
         tag = request.GET.get('tag')
         category = request.GET.get('category')
+        keywords = request.GET.get('keywords')
         try:
             tag = int(tag) if tag else 0
             category = int(category) if category else 0
@@ -112,6 +113,8 @@ class Index(View):
         else:
             posts = models.Post.objects.all()
         posts = posts.filter(is_draft=False).order_by('-id')
+        if keywords:
+            posts = posts.filter(Q(title__contains=keywords) | Q(raw__contains=keywords))
         post_pages = models.Page.objects.filter(is_draft=False)
 
         paginator = Paginator(posts, PER_PAGE)
