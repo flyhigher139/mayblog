@@ -33,8 +33,8 @@
                 <p class="post-subtitle">
                     {{post.abstract}}
                 </p>
-                <p class="post-meta">Posted by <a href="#">{{ post.author.account.display_name }}</a> on {{post.pub_time}}</p>
-                <p class="post-meta">category: <a href="#">{{ post.category.name }}</a></p>
+                <p class="post-meta">Posted by <a href="{% url 'main:author' post.author.id %}">{{ post.author.account.display_name }}</a> on {{ post.pub_time|date }}</p>
+                <p class="post-meta">category: <a href="{% url 'main:index' %}?category={{ post.category.id }}">{{ post.category.name }}</a></p>
             </div>
             {% if not forloop.last %}
             <hr>

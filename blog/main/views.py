@@ -231,6 +231,36 @@ class Archive(View):
 
         return render(request, self.template_name, data)
 
+class Author(View):
+    template_name = 'main/author.html'
+    def get(self, request, pk):
+        data = {}
+        data['seo'] = get_site_meta()
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+        data['user'] = user
+        data['account_info'] = user.account
+
+        posts = models.Post.objects.filter(is_draft=False, author=user)
+        paginator = Paginator(posts, PER_PAGE)
+
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            posts = paginator.page(paginator.num_pages)
+
+        data['posts'] = posts
+
+        return render(request, self.template_name, data)
+
+
 class AdminIndex(View):
     template_name = 'blog_admin/index.html'
     @method_decorator(login_required)

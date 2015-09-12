@@ -10,7 +10,7 @@
                     <div class="post-heading">
                         <h1>{{post.title}}</h1>
                         <!-- <h2 class="subheading">Problems look mighty small from 150 miles up</h2> -->
-                        <span class="meta">Posted by <a href="#">{{post.author.account.display_name}}</a> on {{post.pub_time}}</span>
+                        <span class="meta">Posted by <a href="{% url 'main:author' post.author.id %}">{{post.author.account.display_name}}</a> on {{post.pub_time}}</span>
 
                         <span class="meta">Category:
                         {% if post.category %}
