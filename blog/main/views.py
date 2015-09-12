@@ -115,6 +115,7 @@ class Index(View):
         posts = posts.filter(is_draft=False).order_by('-id')
         if keywords:
             posts = posts.filter(Q(title__contains=keywords) | Q(raw__contains=keywords))
+            data['keywords'] = keywords
         post_pages = models.Page.objects.filter(is_draft=False)
 
         paginator = Paginator(posts, PER_PAGE)
@@ -198,6 +199,32 @@ class Page(View):
             raise Http404
         data = {'page':page}
         data['seo'] = get_site_meta()
+
+        post_pages = models.Page.objects.filter(is_draft=False)
+        data['pages'] = post_pages
+
+        return render(request, self.template_name, data)
+
+class Archive(View):
+    template_name = 'main/archive.html'
+    def get(self, request):
+        data = {}
+        data['seo'] = get_site_meta()
+
+        posts = models.Post.objects.filter(is_draft=False)
+        paginator = Paginator(posts, PER_PAGE)
+
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            posts = paginator.page(paginator.num_pages)
+
+        data['posts'] = posts
 
         post_pages = models.Page.objects.filter(is_draft=False)
         data['pages'] = post_pages

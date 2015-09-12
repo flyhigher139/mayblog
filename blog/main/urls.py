@@ -13,7 +13,9 @@ urlpatterns = patterns('',
 
     url(r'^$', views.Index.as_view(), name='index'),
     url(r'^post/(?P<pk>[0-9]+)/$', views.Post.as_view(), name='post'),
-    url(r'^page/(?P<pk>[0-9]+)/$', views.Page.as_view(), name='page'),)
+    url(r'^page/(?P<pk>[0-9]+)/$', views.Page.as_view(), name='page'),
+    url(r'^archive$', views.Archive.as_view(), name='archive'),
+)
 
 urlpatterns += patterns('',
     url(r'^admin/$', views.AdminIndex.as_view(), name='admin_index'),

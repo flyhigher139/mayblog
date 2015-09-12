@@ -256,14 +256,17 @@ hr.small {
   font-weight: 700;
 }
 .caption {
-  text-align: center;
+  /*text-align: center;*/
   font-size: 14px;
   padding: 10px;
-  font-style: italic;
+  /*font-style: italic;*/
   margin: 0;
   display: block;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+}
+.caption p {
+  margin: 5px 0;
 }
 footer {
   padding: 50px 0 65px;
