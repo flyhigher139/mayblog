@@ -55,7 +55,7 @@
                 <button type="submit" class="btn btn-primary" name="publish" value="publish">Publish</button>
                 {% endif %}
                 <button type="submit" class="btn btn-success" name="draft" value="draft">Save draft</button>
-                <button type="submit" class="btn btn-default" name="preview" value="preview">Preview</button>
+                <button type="submit" class="btn btn-default" name="preview" value="preview" id="btn-preview">Preview</button>
             </div>
         
         </div>
@@ -71,4 +71,68 @@
 
 {% block js %}
 <script src="http://cdn.staticfile.org/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    $('#btn-preview').on('click', function(event){
+        // alert('preview clicked');
+        var pk = {{ pk }};
+        var post_url = '';
+        if(pk == 0)
+            post_url = "{% url 'main:admin_post' %}";
+        else
+            post_url = "{% url 'main:admin_edit_post' pk %}";
+
+        // alert(post_url);
+
+        $.ajax({
+            url: post_url,
+            type: 'POST',
+            data: {
+                    title: $('#id_title').val(),
+                    content: $('#id_content').val(),
+                    abstract: $('#id_abstract').val(),
+                    preview: 'preview'
+
+                },
+            success: function(data){
+                pk = $.trim(data);
+                url = "{% url 'main:post' pk %}";
+                window.open(url, '_blank');
+
+            },
+            async: false
+          });
+        event.preventDefault();
+        return false
+    });
+</script>
 {% endblock %}

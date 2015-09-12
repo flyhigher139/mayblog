@@ -99,6 +99,7 @@ class Index(View):
         
         tag = request.GET.get('tag')
         category = request.GET.get('category')
+        keywords = request.GET.get('keywords')
         try:
             tag = int(tag) if tag else 0
             category = int(category) if category else 0
@@ -112,6 +113,9 @@ class Index(View):
         else:
             posts = models.Post.objects.all()
         posts = posts.filter(is_draft=False).order_by('-id')
+        if keywords:
+            posts = posts.filter(Q(title__contains=keywords) | Q(raw__contains=keywords))
+            data['keywords'] = keywords
         post_pages = models.Page.objects.filter(is_draft=False)
 
         paginator = Paginator(posts, PER_PAGE)
@@ -167,6 +171,10 @@ class Post(View):
 
         data['comment_script'] = comment_script
 
+        data['jiathis_share'] = misc.jiathis_share(request)
+
+        data['allow_donate'] = settings.MAY_BLOG['ALLOW_DONATE']
+
         seo = {
             'title': post.title, 
             'desc': post.abstract,
@@ -196,6 +204,62 @@ class Page(View):
         data['pages'] = post_pages
 
         return render(request, self.template_name, data)
+
+class Archive(View):
+    template_name = 'main/archive.html'
+    def get(self, request):
+        data = {}
+        data['seo'] = get_site_meta()
+
+        posts = models.Post.objects.filter(is_draft=False)
+        paginator = Paginator(posts, PER_PAGE)
+
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            posts = paginator.page(paginator.num_pages)
+
+        data['posts'] = posts
+
+        post_pages = models.Page.objects.filter(is_draft=False)
+        data['pages'] = post_pages
+
+        return render(request, self.template_name, data)
+
+class Author(View):
+    template_name = 'main/author.html'
+    def get(self, request, pk):
+        data = {}
+        data['seo'] = get_site_meta()
+        try:
+            user = User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise Http404
+        data['user'] = user
+        data['account_info'] = user.account
+
+        posts = models.Post.objects.filter(is_draft=False, author=user)
+        paginator = Paginator(posts, PER_PAGE)
+
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            posts = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            posts = paginator.page(paginator.num_pages)
+
+        data['posts'] = posts
+
+        return render(request, self.template_name, data)
+
 
 class AdminIndex(View):
     template_name = 'blog_admin/index.html'
@@ -346,6 +410,7 @@ class AdminPost(View):
         data['tags'] = tags
         catagories = models.Category.objects.all()
         data['catagories'] = catagories
+        data['pk'] = pk
         return render(request, self.template_name, data)
 
     @method_decorator(permission_required('main.add_post', accept_global_perms=True))
@@ -383,6 +448,9 @@ class AdminPost(View):
 
             else:
                 cur_post.is_draft=True
+                if request.POST.get('preview'):
+                    cur_post.save()
+                    return HttpResponse(cur_post.id)
 
                 msg = 'Draft has been saved!'
                 messages.add_message(request, messages.SUCCESS, msg)

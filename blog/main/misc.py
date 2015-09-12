@@ -24,3 +24,14 @@ def duoshuo_comment(request, duoshuo_id, post_id, post_title, post_url):
     }
     context = RequestContext(request, data)
     return template.render(context)
+
+def jiathis_share(request):
+    '''
+    Create duoshuo script by params
+    '''
+    template_name = 'main/misc/jiathis_share.html'
+
+    template = loader.get_template(template_name)
+    data = {}
+    context = RequestContext(request, data)
+    return template.render(context)
