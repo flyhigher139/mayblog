@@ -1,8 +1,8 @@
 import os
 from base import *
 
-# DEBUG = os.environ['DEBUG']
-DEBUG = False
+DEBUG = (os.environ['DEBUG'].lower() == 'true')
+# DEBUG = False
 
 ALLOWED_HOSTS = [host.strip() for host in os.environ['ALLOWED_HOSTS'].split(',')]
 

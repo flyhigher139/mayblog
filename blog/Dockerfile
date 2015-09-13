@@ -49,4 +49,5 @@ EXPOSE 8000
 # ENTRYPOINT ["/bin/bash"]
 # CMD ["/usr/bin/python2.7", "manage.py", "runserver", "0.0.0.0:8000"]
 # CMD ["/usr/local/bin/uwsgi", "--ini", "mayblog_uwsgi.ini"]
-CMD ["/usr/local/bin/supervisord", "-n"]
+# CMD ["/usr/local/bin/supervisord", "-n"]
+CMD ["/bin/bash", "/usr/src/app/init.sh"]
