@@ -18,7 +18,7 @@ class Post(models.Model):
     update_time = models.DateTimeField(auto_now=True)
     content_html = models.TextField(null=True, blank=True)
     author = models.ForeignKey(User)
-    tags = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag', blank=True)
     category = models.ForeignKey('Category', null=True, blank=True)
     is_draft = models.BooleanField(default=False)
 

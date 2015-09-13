@@ -2,9 +2,11 @@ import os
 from base import *
 
 DEBUG = True
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'gevin-mayblog.daoapp.io', 'blog.gevinzone.com']
-# ALLOWED_HOSTS = [host.strip() for host in os.environ['ALLOWED_HOSTS'].split(',')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.daoapp.io', '.gevinzone.com', '.gevinzone.com.']
+
+DEBUG = (os.environ['DEBUG'].lower() == 'true')
+ALLOWED_HOSTS = [host.strip() for host in os.environ['ALLOWED_HOSTS'].split(',')]
+
 
 # DATABASES = {
 #     'default': {

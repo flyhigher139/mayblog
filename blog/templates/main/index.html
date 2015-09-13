@@ -33,8 +33,8 @@
                 <p class="post-subtitle">
                     {{post.abstract}}
                 </p>
-                <p class="post-meta">Posted by <a href="#">{{ post.author.account.display_name }}</a> on {{post.pub_time}}</p>
-                <p class="post-meta">category: <a href="#">{{ post.category.name }}</a></p>
+                <p class="post-meta">Posted by <a href="{% url 'main:author' post.author.id %}">{{ post.author.account.display_name }}</a> on {{ post.pub_time|date }}</p>
+                <p class="post-meta">category: <a href="{% url 'main:index' %}?category={{ post.category.id }}">{{ post.category.name }}</a></p>
             </div>
             {% if not forloop.last %}
             <hr>
@@ -57,6 +57,21 @@
             </ul>
         </div>
         <div class="col-lg-3 col-md-2">
+            <h3>Search</h3><hr/>
+            <form id="search-form">
+              <div class="form-group">
+                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+                <div class="input-group">
+                  <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                  <input type="text" class="form-control" id="search" name="keywords" placeholder="search" value="{{ keywords }}">
+                  <!-- <div class="input-group-addon">.00</div> -->
+                </div>
+              </div>
+              <!-- <button type="submit" class="btn btn-default">Transfer cash</button> -->
+            </form>
+            <!-- <hr> -->
+            <br>
+
             <h3>Tags</h3><hr/>
             {% for tag in tags %}
                 <a href="?tag={{tag.id}}" class="post-tag">
@@ -119,11 +134,13 @@
 
 {% block js %}
 <script type="text/javascript">
-$('.rm-filter').on('click', function (event) {
-    // var answer = confirm("Delete post?");
-    // return answer;
+// $('#search').keyup(function(event){
+//     if(event.keyCode == 13){
+//         $("#search-form").submit();
+//     }
+// });
 
-    // alert("something");
+$('.rm-filter').on('click', function (event) {
     location.href = "{% url 'main:index' %}";
     return false;
   });

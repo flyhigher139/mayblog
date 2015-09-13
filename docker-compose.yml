@@ -4,49 +4,27 @@ blog:
   ports:
     - "8000:8000"
   links:
-    - mysql:mysql
+    - postgres:postgres
   # volumes:
   #   - /usr/src/app/static
   env_file: .env
   # command: /usr/local/bin/uwsgi --ini /usr/src/app/mayblog_uwsgi.ini
   # command: /usr/local/bin/uwsgi --ini mayblog_uwsgi.ini
   # command: /usr/bin/python2.7 manage.py runserver 0.0.0.0:5000
-  # command: /bin/sh -c "while true; do echo hello world; sleep 1; done"
+  # command: /bin/sh -c "while true; do /usr/bin/python2.7 /usr/src/app/manage.py makemigrations; /usr/bin/python2.7 /usr/src/app/manage.py migrate; sleep 1; done"
+  # command: /bin/sh /usr/src/app/init.sh
 
 
-mysql:
+postgres:
   # restart: always
-  image: sameersbn/mysql:latest
+  image: postgres:9.4.4
   env_file: .env
-  # volumes_from:
-  #   - data
   volumes:
-    - /var/lib/mysql
+    - /var/lib/postgres
   ports:
     - "3306:3306"
 
 
-# data:
-#   restart: always
-#   image: sameersbn/mysql:latest
-#   volumes:
-#     # - /var/lib/mysql
-#     - /home/mayblog/data:/opt/mayblog/data
-#   command: true
 
 
-# mysql:
-#   restart: always
-#   image: mysql:5.7
-#   # env_file: .env
-#   volumes_from:
-#     - data
-#   ports:
-#     - "3306:3306"
 
-# data:
-#   restart: always
-#   image: mysql:5.7
-#   volumes:
-#     - /var/lib/mysql
-#   command: true
