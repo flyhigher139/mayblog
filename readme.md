@@ -1,6 +1,8 @@
 Welcome to May Blog
 ====================
 
+> Notice: MayBlog is not deprecated, but currently I pay more attention to [OctBlog](https://github.com/flyhigher139/OctBlog)
+
 ##Why it named MayBlog?
 
 Just because it is a blog system started in May, 2015. MayBlog is vivid.
