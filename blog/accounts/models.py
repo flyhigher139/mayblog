@@ -45,4 +45,4 @@ class SocialInfo(models.Model):
     url = models.URLField()
 
     def __str__(self):
-        return user.name + '-' + social
+        return self.user.name + '-' + self.social
