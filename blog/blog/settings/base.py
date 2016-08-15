@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'rest_framework',
+    'import_export',
     'bootstrap3',
     'guardian',
     'main',

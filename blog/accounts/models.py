@@ -11,7 +11,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class Account(models.Model):
-    display_name = models.CharField(max_length='128')
+    display_name = models.CharField(max_length=128)
     biography = models.TextField(null=True, blank=True)
     homepage = models.URLField(null=True, blank=True)
     weixin = models.URLField(null=True, blank=True)
@@ -41,8 +41,8 @@ class SocialInfo(models.Model):
     ('fa-bookmark', 'Other'),
 
     user = models.ForeignKey(User)
-    social = models.CharField(choices=SOCIAL_CHOICES, max_length='128')
+    social = models.CharField(choices=SOCIAL_CHOICES, max_length=128)
     url = models.URLField()
 
     def __str__(self):
-        return user.name + '-' + social
+        return self.user.name + '-' + self.social
