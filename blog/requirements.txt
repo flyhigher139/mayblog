@@ -1,9 +1,6 @@
--i http://pypi.douban.com/simple/
-
-Django==1.8.2
-django-bootstrap3==5.4.0
-markdown2==2.3.0
+Django
+django-bootstrap3
+markdown2
 django-guardian
-djangorestframework==3.1
-#mysqlclient
-psycopg2==2.6
+djangorestframework
+psycopg2

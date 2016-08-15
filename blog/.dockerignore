@@ -1,1 +1,4 @@
 *.sqlite3
+*.pyc
+*/migrations/*
+!*/migrations/__init__.py
