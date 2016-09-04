@@ -1,6 +1,7 @@
 Django
 django-bootstrap3
 markdown2
-django-guardian
 djangorestframework
 psycopg2
+django-import-export
+django-guardian

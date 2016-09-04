@@ -1,6 +1,7 @@
 blog:
   # restart: always
-  build: ./blog
+  # build: ./blog
+  image: gevin/mayblog:0.1
   ports:
     - "8000:8000"
   links:
@@ -12,7 +13,7 @@ blog:
 
 postgres:
   # restart: always
-  image: postgres:9.4.4
+  image: postgres:9.5
   env_file: .env
   volumes:
     - /var/lib/postgres
