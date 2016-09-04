@@ -1,1 +1,7 @@
--r prod_pip.txt
+Django
+django-bootstrap3
+markdown2
+djangorestframework
+psycopg2
+django-import-export
+django-guardian
