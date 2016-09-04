@@ -1,7 +1,7 @@
 blog:
   # restart: always
   # build: ./blog
-  image: gevin/mayblog:0.1
+  image: gevin/mayblog:0.1.1
   ports:
     - "8000:8000"
   links:

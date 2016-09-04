@@ -6,7 +6,7 @@ from django import forms
 class NewPost(forms.Form):
     title = forms.CharField(max_length=256)
     content = forms.CharField(widget=forms.Textarea(attrs={'rows':20}))
-    abstract = forms.CharField(widget=forms.Textarea(attrs={'rows':4}))
+    abstract = forms.CharField(widget=forms.Textarea(attrs={'rows':4}), required=False)
     author_id = forms.IntegerField(required=False, widget=forms.HiddenInput)
     # tag = forms.CharField(max_length=256, required=False)
     # category = forms.CharField(max_length=256, required=False)

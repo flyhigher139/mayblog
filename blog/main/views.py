@@ -432,6 +432,8 @@ class AdminPost(View):
             cur_post.title = form.cleaned_data['title']
             cur_post.raw = form.cleaned_data['content']
             cur_post.abstract = form.cleaned_data['abstract']
+            if not cur_post.abstract:
+                cur_post.abstract = cur_post.raw[0:140]
             # html = markdown2.markdown(cur_post.raw, extras=['code-friendly', 'fenced-code-blocks'])
             # cur_post.content_html = smart_text(html)
             cur_post.author = User.objects.get(pk=form.cleaned_data['author_id']) if form.cleaned_data['author_id'] else request.user
