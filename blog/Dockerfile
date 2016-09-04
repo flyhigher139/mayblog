@@ -7,7 +7,6 @@
 FROM       ubuntu:14.04
 MAINTAINER Gevin <flyhigher139@gmail.com>
 
-ADD sources.list /etc/apt/sources.list
 RUN apt-get update && apt-get install -y curl vim && \
     apt-get install -y nginx git python-dev python-pip libpq-dev postgresql-client && \
     apt-get clean all
