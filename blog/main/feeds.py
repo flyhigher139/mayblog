@@ -4,10 +4,56 @@ from django.utils.feedgenerator import Atom1Feed
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 
-from .models import Post
+from .models import Post, BlogMeta
 from .views import get_site_meta
 
-META_DATA = get_site_meta()
+# def get_site_meta():
+#     seo = {}
+#     try:
+#         record = BlogMeta.objects.get(key='blog_name')
+#         seo['title'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     try:
+#         record = BlogMeta.objects.get(key='blog_desc')
+#         seo['desc'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     try:
+#         record = BlogMeta.objects.get(key='owner')
+#         seo['author'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     try:
+#         record = BlogMeta.objects.get(key='keywords')
+#         seo['keywords'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     try:
+#         record = BlogMeta.objects.get(key='blog_subtitle')
+#         seo['subtitle'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     try:
+#         record = BlogMeta.objects.get(key='google_verify')
+#         seo['google_verify'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     try:
+#         record = BlogMeta.objects.get(key='baidu_verify')
+#         seo['baidu_verify'] = record.value
+#     except BlogMeta.DoesNotExist:
+#         pass
+
+#     return seo
+
+# META_DATA = get_site_meta()
 FEED_NUM = settings.MAY_BLOG['RSS_NUM']
 
 
@@ -45,15 +91,18 @@ FEED_NUM = settings.MAY_BLOG['RSS_NUM']
 
 class LatestEntriesFeed2(Feed):
 
+
     def title(self):
-        return META_DATA['title']
+        META_DATA = get_site_meta()
+        return META_DATA.get('title')
 
     def link(self, item):
         return reverse('main:rss')
         # return '/rss/'
 
     def description(self):
-        return META_DATA['subtitle']
+        META_DATA = get_site_meta()
+        return META_DATA.get('subtitle')
 
     def items(self):
         return Post.objects.filter(is_draft=False).order_by('-update_time')[:FEED_NUM]

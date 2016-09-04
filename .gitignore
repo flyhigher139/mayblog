@@ -7,3 +7,4 @@ migrations/
 !__init__.py
 !*/
 venv/
+static2/
