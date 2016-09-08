@@ -1,15 +1,16 @@
 Welcome to May Blog
 ====================
+[![](https://images.microbadger.com/badges/image/gevin/mayblog.svg)](http://microbadger.com/images/gevin/mayblog "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/gevin/mayblog.svg)](http://microbadger.com/images/gevin/mayblog "Get your own version badge on microbadger.com")
 
 > Notice: MayBlog is not deprecated, but currently I pay more attention to [OctBlog](https://github.com/flyhigher139/OctBlog)
 
-##Why it named MayBlog?
+## Why it named MayBlog?
 
 Just because it is a blog system started in May, 2015. MayBlog is vivid.
 
 :stuck_out_tongue: :stuck_out_tongue: :stuck_out_tongue:
 
-##Features
+## Features
 
 MayBlog is a blog system with following features:
 
@@ -26,30 +27,35 @@ MayBlog is a blog system with following features:
     - RESTful API (under development)
 
 
-##Preview MayBlog
+## Preview MayBlog
 
 - [Frontend Website](http://blog.gevinzone.com/)
 - [Backend Admin Screenshot](preview.md)
 
-##How to run it ?
+## How to run it ?
 
-###Run from source code
+### Run from source code
 
 If you want to see more about the source code, checkout the [source code readme](blog)
 
 
-###Run by docker(recommended)
+### Run by docker(recommended)
 
 Run MayBlog by docker is recommended, here are some instruction：
 
-####First Run
+#### First Run
 
-1\. Build your own MayBlog image
+1\. Use MayBlog image
 
 ```bash
-(sudo) docker-compose build
+(sudo) docker pull gevin/mayblog
+```
 
-#Now you can take a cup of coffee and wait for a few minutes :)
+Or you can build your own MayBlog image
+```bash
+(sudo) docker build -t mayblog .
+
+# Now you can take a cup of coffee and wait for a few minutes :)
 ```
 
 2\. Run MayBlog
@@ -61,17 +67,17 @@ Run MayBlog by docker is recommended, here are some instruction：
 3\. Get into MayBlog container and migrate database
 
 ```bash
-#Specify MayBlog container ID, eg:12345678
+# Specify MayBlog container ID, eg:12345678
 (sudo) docker ps
 
-#Get into MayBlog container
+# Get into MayBlog container
 (sudo) docker exec -it 12345678 bash
 
-#Migrate datebase
+# Migrate datebase
 python manage.py migrate
 ```
 
-####After first run
+#### After first run
 
 - Start MayBlog
 
@@ -86,17 +92,17 @@ python manage.py migrate
 ```
 
 
-###Initialize MayBlog
+### Initialize MayBlog
 
 When the blog is run, checkout `http://host:port/init` to initialize the system
 
 It will create the superuser, user groups(administrator, editor, writer, contributor, and reader), and assign permissions for each group.
 
-##License
+## License
 
 MayBlog is under [GPL2](LICENSE)
 
-##What's more
+## What's more
 
 If you find a bug or want to add a new feature, just issue me.
 Want to contribute? Please fork MayBlog and pull request to me.
