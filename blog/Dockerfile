@@ -7,16 +7,18 @@
 FROM       ubuntu:14.04
 MAINTAINER Gevin <flyhigher139@gmail.com>
 
-RUN apt-get update && apt-get install -y curl vim && \
-    apt-get install -y nginx git python-dev python-pip libpq-dev postgresql-client && \
+# COPY sources.list /etc/apt/sources.list
+RUN apt-get update && apt-get install -y vim && \
+    apt-get install -y nginx python-dev python-pip libpq-dev postgresql-client && \
     apt-get clean all
 
 
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
+# COPY pip.conf /root/.pip/pip.conf 
 RUN pip install supervisor uwsgi
 
-ADD supervisord.conf /etc/supervisord.conf
+COPY supervisord.conf /etc/supervisord.conf
 
 RUN mkdir -p /etc/supervisor.conf.d && \
     mkdir -p /var/log/supervisor
@@ -24,7 +26,7 @@ RUN mkdir -p /etc/supervisor.conf.d && \
 RUN mkdir -p /usr/src/app && mkdir -p /var/log/uwsgi
 WORKDIR /usr/src/app
 
-ADD requirements.txt /usr/src/app/requirements.txt
+COPY requirements.txt /usr/src/app/requirements.txt
 RUN pip install -r /usr/src/app/requirements.txt
 
 COPY . /usr/src/app
