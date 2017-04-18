@@ -3,15 +3,15 @@ Welcome to May Blog
 
 >MayBlog is powered by django, here are some instruction on how to run it.
 
-##How to run it ?
+## How to run it ?
 
-###Install requirements
+### Install requirements
 
 ```
 (sudo) pip install -r requirements.txt 
 ```
 
-###Create/update datebase
+### Create/update datebase
 
 For the first time, before you start the application, you need to initialize the datebase which is configured in the `settings file` and designed in `main.models.py`
 
@@ -27,11 +27,11 @@ python manage.py migrate #migrate datebase
 ```
 
 
-####ps: 
+#### ps: 
 
 I use sqlite in dev settings and mysql in prod settings, if you would like to use postgres, mongodb, etc, install relevant python prerequisite first.
 
-###Run MayBlog
+### Run MayBlog
 
 After the datebase is established, you can run the blog with command:
 
@@ -41,13 +41,13 @@ python manage.py runserver 0.0.0.0:8000
 
 Then you can visit the blog with url: http://127.0.0.1:8000
 
-###Initialize MayBlog
+### Initialize MayBlog
 
 When the blog is run, checkout `http://127.0.0.1:8000/init` to initialize the system
 
 It will create the superuser, user groups(administrator, editor, writer, contributor, and reader), and assign permissions for each group.
 
-###Admin MayBlog
+### Admin MayBlog
 
 You can create a superuser to administer MayBlog in its admin interface:
 
@@ -63,13 +63,13 @@ Then, you can administer MayBlog with following admin interface:
 - Login page: http://127.0.0.1:8000/accounts/login/
 - Register page: http://127.0.0.1:8000/accounts/register/ (if `REGISTER_IS_ALLOWED` is set to True in settings)
 
-###MayBlog settings
+### MayBlog settings
 
 By default, MayBlog uses dev settings(`blog.settings.dev`) in `blog/settings/dev.py` in development environment. 
 
 `blog.settings.prod` is used in product environment and `blog.settings.stage` is in test environment. You can overwrite these settings or create your custom settings and switch to it.
 
-####How to switch settings
+#### How to switch settings
 
 Just set your settings in bash with `export` command. For example, if you want to run MayBlog in product environment, you can switch to prod settings like this:
 
@@ -77,7 +77,7 @@ Just set your settings in bash with `export` command. For example, if you want t
 export DJANGO_SETTINGS_MODULE="blog.settings.prod"
 ```
 
-##Deploy MayBlog
+## Deploy MayBlog
 
 I recommend you to deploy MayBlog by `Ubuntu + nginx + uwsgi`.
 
@@ -85,7 +85,7 @@ I recommend you to deploy MayBlog by `Ubuntu + nginx + uwsgi`.
 
 *Using [MayBlog's docker image](https://registry.hub.docker.com/u/gevin/mayblog/) is another recommended option*
 
-###What's more
+### What's more
 
 If you find a bug or want to add a new feature, just issue me.
 Want to contribute? Please fork MayBlog and pull request to me.

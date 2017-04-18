@@ -1,39 +1,39 @@
 MayBlog RESTful API Specification(To Do)
 =========================================
 
-##Blog
+## Blog
 
-###Listing Blogs
+### Listing Blogs
 
 List current user's blog
 
 List all blogs
 filter by user, category, or tag
 
-###Creating Blog
+### Creating Blog
 
-###Updating Blog
+### Updating Blog
 
-###Deleting Blog
+### Deleting Blog
 
-##Tag
+## Tag
 
-###Creating Tag
+### Creating Tag
 
-###Listing Tag
+### Listing Tag
 
-###Updating Tag
+### Updating Tag
 
-###Deleting Tag
+### Deleting Tag
 
 
-##Category
+## Category
 
-###Creating Category
+### Creating Category
 
-###Listing Category
+### Listing Category
 
-###Updating Category
+### Updating Category
 
-###Deleting Category
+### Deleting Category
 
