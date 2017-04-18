@@ -1,52 +1,52 @@
 MayBlog Preview
 ===============
 
-##Frontend Website
+## Frontend Website
 
 Click [here](http://blog.gevinzone.com) to view MayBlog's frontend.
 
-##Backend System
+## Backend System
 
-###Home
+### Home
 
 ![mayblog_home](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_home.png)
 
-###Posts 
+### Posts 
 
 ![mayblog_posts](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_posts.png)
 
-###New post 
+### New post 
 
 ![mayblog_new_post](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_new_post.png)
 
-###Edit post
+### Edit post
 
 ![mayblog_post_edit](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_post_edit.png)
 
-###Tags admin 
+### Tags admin 
 
 ![mayblog_tags](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_tags.png)
 
-###Category admin 
+### Category admin 
 
 ![mayblog_categories](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_categories.png)
 
-###User admin 
+### User admin 
 
 ![mayblog_user_admin](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_user_admin.png)
 
-###User details 
+### User details 
 
 ![mayblog_user_detail](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_user_detail.png)
 
-###User edit 
+### User edit 
 
 ![mayblog_user_edit](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_user_edit.png)
 
-###User group admin 
+### User group admin 
 
 ![mayblog_user_group](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_user_group.png)
 
-###User group details 
+### User group details 
 
 ![mayblog_group_details](http://7tsygu.com1.z0.glb.clouddn.com/mayblog_group_details.png)
