@@ -29,7 +29,7 @@ MayBlog is a blog system with following features:
 
 ## Preview MayBlog
 
-- [Frontend Website](http://blog.gevinzone.com/)
+- [Frontend Website](http://blog.igevin.info/)
 - [Backend Admin Screenshot](preview.md)
 
 ## How to run it ?
